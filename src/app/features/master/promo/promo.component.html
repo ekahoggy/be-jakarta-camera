@@ -25,19 +25,29 @@
               <table datatable [dtOptions]="dtOptions" class="table">
                 <thead>
                   <tr>
-                    <th width="150">Kode</th>
+                    <th width="10%">Status</th>
+                    <th width="10%">Flashsale</th>
+                    <th width="10%">Kode</th>
                     <th>Nama</th>
-                    <th width="200">Tanggal Mulai</th>
-                    <th width="200">Tanggal Selesai</th>
-                    <th width="80">Actions</th>
+                    <th width="20%">Tanggal Mulai</th>
+                    <th width="20%">Tanggal Selesai</th>
+                    <th width="5%">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td>
+                      <span class="badge bg-label-success me-1" *ngIf="item.is_status === 1">Aktif</span>
+                      <span class="badge bg-label-danger me-1" *ngIf="item.is_status === 0">Tidak Aktif</span>
+                    </td>
+                    <td>
+                      <span class="badge bg-label-success me-1" *ngIf="item.is_flashsale === 1">Ya</span>
+                      <span class="badge bg-label-danger me-1" *ngIf="item.is_flashsale === 0">Tidak</span>
+                    </td>
                     <td> {{ item.kode }} </td>
                     <td> {{ item.promo }} </td>
-                    <td> {{ item.tanggal_mulai }} </td>
-                    <td> {{ item.tanggal_selesai }} </td>
+                    <td> {{ item.tanggal_mulai }} {{ item.jam_mulai }} </td>
+                    <td> {{ item.tanggal_selesai }} {{ item.jam_selesai }} </td>
                     <td>
                       <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -100,9 +110,8 @@
                 <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
                 <div class="row">
                   <div class="col-8">
-                    <input class="form-control" type="date" id="tanggal_selesai"
-                      [(ngModel)]="model.tanggal_selesai" name="tanggal_selesai"
-                      placeholder="enter the Tanggal Selesai...">
+                    <input class="form-control" type="date" id="tanggal_selesai" [(ngModel)]="model.tanggal_selesai"
+                      name="tanggal_selesai" placeholder="enter the Tanggal Selesai...">
                   </div>
                   <div class="col-4">
                     <input class="form-control" type="time" id="jam_selesai" [(ngModel)]="model.jam_selesai"
@@ -116,7 +125,7 @@
                 <label class="form-label" for="promo_min_beli">Min. Pembelian</label>
                 <div class="input-group input-group-merge">
                   <input type="number" class="form-control" id="promo_min_beli" placeholder="0"
-                  [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1">
+                    [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1">
                   <span class="input-group-text" id="promo_min_beli">unit</span>
                 </div>
               </div>
@@ -159,7 +168,7 @@
                   <th class="align-middle" width="15%">Harga</th>
                   <th class="align-middle" width="10%">Jumlah</th>
                   <th class="align-middle" width="10%">Sisa</th>
-                  <th class="align-middle" width="15%">Diskon</th>
+                  <th class="align-middle" width="10%">Diskon</th>
                 </tr>
               </thead>
               <tbody>
@@ -171,41 +180,36 @@
                       </button>
                     </td>
                     <td>
-                      <ng-select [items]="listProduk" [(ngModel)]="item.produk" bindLabel="nama" bindValue="id" name="itemproduk">
+                      <ng-select [items]="listProduk" [(ngModel)]="item.produk" bindLabel="nama" bindValue="id"
+                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)">
                         <ng-template ng-label-tmp let-item="item">
-                            <!-- <img height="15" width="15" [src]="item.avatar"/> -->
-                            {{item.nama}}
+                          <!-- <img height="15" width="15" [src]="item.avatar"/> -->
+                          {{item.nama}}
                         </ng-template>
-                    </ng-select>
-                    </td>
-                    <td>
-                      <select class="form-select" id="tipe" aria-label="Select tye" [(ngModel)]="item.tipe"
-                        name="tipe_{{i}}">
-                        <option value="color"> Color </option>
-                        <option value="size"> Size </option>
-                      </select>
+                      </ng-select>
                     </td>
                     <td>
                       <div class="input-group input-group-merge">
-                        <span class="input-group-text text-capitalize" id="varian">{{ selectedProduk[i].tipe
-                          }}</span>
-                        <input type="text" class="form-control"
-                          [placeholder]="selectedProduk[i].tipe == 'color' ? 'Black' : 'Small'"
-                          aria-describedby="varian" [(ngModel)]="item.varian" name="varian_{{i}}">
+                        <span class="input-group-text text-end" id="harga_{{i}}">Rp</span>
+                        <input type='text' class="form-control text-end" mask="separator.3" thousandSeparator="." [(ngModel)]="item.harga"
+                          name="harga_{{i}}" disabled>
                       </div>
                     </td>
                     <td>
                       <div class="input-group input-group-merge">
-                        <span class="input-group-text" id="harga">Rp</span>
-                        <input type="text" class="form-control text-end" placeholder="0" aria-describedby="harga"
-                          [(ngModel)]="item.harga" name="harga_{{i}}">
+                        <input type="text" class="form-control text-end" mask="000" thousandSeparator="." [(ngModel)]="item.jumlah" name="jumlah_{{i}}">
                       </div>
                     </td>
                     <td>
                       <div class="input-group input-group-merge">
-                        <input type="text" class="form-control text-end" placeholder="0" aria-describedby="harga"
-                        [(ngModel)]="item.harga" name="harga_{{i}}">
-                        <span class="input-group-text" id="harga">%</span>
+                        <input type="text" class="form-control text-end" [(ngModel)]="item.sisa" name="sisa_{{i}}" disabled>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-merge">
+                        <input type="text" class="form-control text-end" mask="00"
+                          [(ngModel)]="item.diskon" name="diskon_{{i}}">
+                        <span class="input-group-text" id="diskon">%</span>
                       </div>
                     </td>
                   </tr>
@@ -225,7 +229,7 @@
           <i class="bx bx-chevron-left me-1"></i>
           Back
         </button>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" (click)="save()">
           <i class="bx bx-save me-1"></i>
           Save
         </button>

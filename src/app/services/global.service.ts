@@ -68,7 +68,7 @@ export class GlobalService {
         withCredentials: withCredentials,
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: this.token,
+          Authorization: 'Bearer '+this.token,
         }),
       };
       return this.http.post(this.apiURL + path, payloads, reqHeader);
@@ -89,7 +89,7 @@ export class GlobalService {
         withCredentials: withCredentials,
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: this.token,
+          Authorization: 'Bearer '+ this.token,
         }),
       };
       return this.http.put(this.apiURL + path, payloads, reqHeader);

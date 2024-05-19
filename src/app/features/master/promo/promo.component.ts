@@ -103,8 +103,12 @@ export class PromoComponent implements OnInit {
   }
 
   save() {
-    const final = Object.assign(this.model)
-    this.globalService.DataPost('/promo/save', final, true).subscribe((res: any) => {
+    let data = {
+      main: this.model,
+      detail: this.selectedProduk
+    };
+    const final = Object.assign(data)
+    this.globalService.DataPost('/promo/save', final).subscribe((res: any) => {
       if (res.status_code == 200) {
         this.globalService.alertSuccess('Success', 'Promo saved successfully')
         this.index();
@@ -118,12 +122,28 @@ export class PromoComponent implements OnInit {
     })
   }
 
+  changeProduk(e, i) {
+    this.selectedProduk.forEach((v, k) => {
+      if (i === k) {
+        v.nama = e.nama;
+        v.harga = e.harga;
+      }
+      if (v.id === e.id) {
+        console.log("sama");
+        // this.globalService.alertError('Gagal', 'Produk sudah ada di dalam daftar promo');
+      }
+    });
+    console.log(this.selectedProduk)
+  }
+
   addProduk() {
     let row = {
-      tipe: "color",
-      varian: "",
-      photo: "",
-      harga: ""
+      produk: "",
+      nama: "",
+      harga: 0,
+      jumlah: 1,
+      sisa: "-",
+      diskon: 0
     }
     this.selectedProduk.push(row);
   }
