@@ -65,45 +65,105 @@
     </div>
     <div class="card" *ngIf="showForm">
       <div class="card-body">
-        <div class="row">
+        <form class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="ms-3 mb-0">Form Promo</h4>
             </div>
           </div>
           <div class="col-12">
-            <form>
-              <div class="mb-3">
-                <label class="form-label" for="kode">Kode</label>
-                <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
-                  placeholder="kode...">
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="promo">Promo</label>
-                <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" name="promo"
-                  placeholder="promo...">
-              </div>
-              <div class="mb-3">
-                <div class="row">
-                  <div class="col-6">
-                    <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
-                    <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
-                      id="html5-datetime-local-input">
-                  </div>
-                  <div class="col-6">
-                    <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
-                    <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
-                      id="html5-datetime-local-input">
-                  </div>
+            <div class="mb-3">
+              <label class="form-label" for="kode">Kode</label>
+              <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
+                placeholder="kode...">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="promo">Promo</label>
+              <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" name="promo"
+                placeholder="promo...">
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-6">
+                  <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
+                  <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
+                    id="html5-datetime-local-input">
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
+                  <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
+                    id="html5-datetime-local-input">
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label" for="description">Deskripsi</label>
-                <textarea id="description" class="form-control" rows="4" placeholder="Description..."></textarea>
-              </div>
-            </form>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="description">Deskripsi</label>
+              <textarea id="description" class="form-control" rows="4" placeholder="Description..."></textarea>
+            </div>
           </div>
-        </div>
+          <div class="col-12">
+            <div class="divider">
+              <div class="divider-text">Produk</div>
+            </div>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="align-middle">Image</th>
+                  <th class="align-middle" width="150">Type</th>
+                  <th class="align-middle" width="170">Variant</th>
+                  <th class="align-middle">Price</th>
+                  <th class="align-middle">
+                    <button class="btn btn-sm btn-success" (click)="addProduk()">
+                      <i class="bx bx-plus"></i>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="selectedProduk.length > 0">
+                  <tr *ngFor="let item of selectedProduk; index as i">
+                    <td>
+                      <img src="assets/img/elements/4.jpg" class="rounded" width="60" height="60" alt="">
+                    </td>
+                    <td>
+                      <select class="form-select" id="tipe" aria-label="Select tye" [(ngModel)]="item.tipe"
+                        name="tipe_{{i}}">
+                        <option value="color"> Color </option>
+                        <option value="size"> Size </option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text text-capitalize" id="varian">{{ selectedProduk[i].tipe
+                          }}</span>
+                        <input type="text" class="form-control"
+                          [placeholder]="selectedProduk[i].tipe == 'color' ? 'Black' : 'Small'" aria-describedby="varian"
+                          [(ngModel)]="item.varian" name="varian_{{i}}">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text" id="harga">Rp</span>
+                        <input type="text" class="form-control text-end" placeholder="0" aria-describedby="harga"
+                          [(ngModel)]="item.harga" name="harga_{{i}}">
+                      </div>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)">
+                        <i class="bx bx-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngIf="selectedProduk.length == 0">
+                  <tr>
+                    <td colspan="5" class="text-center">There are no produk yet</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </form>
       </div>
       <div class="card-footer text-end">
         <button class="btn btn-light me-1" (click)="index()">

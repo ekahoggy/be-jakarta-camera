@@ -16,6 +16,8 @@ export class PromoComponent implements OnInit {
   isEdit: boolean = false;
   isView: boolean = false;
   listData: any = [];
+  listProduk: any = [];
+  selectedProduk: any = [];
   model: any = {};
   isLoading: boolean = false;
 
@@ -102,5 +104,25 @@ export class PromoComponent implements OnInit {
         this.index();
       }
     })
+  }
+
+  getProduk(id) {
+    this.globalService.DataGet(`/produk/variant/${id}`, {}, false).subscribe((res: any) => {
+      this.listProduk = res.data;
+    })
+  }
+
+  addProduk() {
+    let row = {
+      tipe: "color",
+      varian: "",
+      photo: "",
+      harga: ""
+    }
+    this.selectedProduk.push(row);
+  }
+
+  removeProduk(i) {
+    this.selectedProduk.splice(i, 1);
   }
 }
