@@ -1,0 +1,95 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Masters</a>
+        </li>
+        <li class="breadcrumb-item active">Role</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Role Management</h4>
+              <button class="btn btn-primary" (click)="create()">
+                <i class="bx bx-xs bx-plus me-1"></i>
+                Create
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <table datatable [dtOptions]="dtOptions" class="table" data-page-length="5">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th width="80">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td> {{ item.name }} </td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
+                            <i class="bx bx-edit-alt me-1"></i>
+                            Edit
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);">
+                            <i class="bx bx-trash me-1"></i>
+                            Delete
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Form Role</h4>
+            </div>
+          </div>
+          <div class="col-8">
+            <form>
+              <fieldset [disabled]="isView">
+                <div class="mb-3">
+                  <label class="form-label" for="name">Name</label>
+                  <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name"
+                    placeholder="enter the name...">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Back
+        </button>
+        <button class="btn btn-primary" (click)="save()">
+          <i class="bx bx-save me-1"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-backdrop fade"></div>
+</div>

@@ -1,0 +1,143 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Users</a>
+        </li>
+        <li class="breadcrumb-item active">Admin</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Admin</h4>
+              <button class="btn btn-primary" (click)="create()">
+                <i class="bx bx-xs bx-plus me-1"></i>
+                Create
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <table datatable [dtOptions]="dtOptions" class="table">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData">
+                    <td>
+                      <img src="../assets/img/avatars/5.png" width="50" alt="Avatar" class="rounded-circle">
+                      {{ item.name }}
+                    </td>
+                    <td>
+                      {{ item.email }}
+                    </td>
+                    <td>
+                      <span class="badge bg-label-success me-1">{{ item.is_active }}</span>
+                    </td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)"><i class="bx bx-edit-alt me-1"></i>
+                            Edit</a>
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="delete(item.id)"><i class="bx bx-trash me-1"></i>
+                            Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Form Admin</h4>
+            </div>
+          </div>
+          <div class="col-12">
+            <form>
+              <div class="mb-3">
+                <label class="form-label" for="basic-default-fullname">Full Name</label>
+                <input type="text" class="form-control" id="basic-default-fullname" placeholder="John Doe" name="name" [(ngModel)]="model.name">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-default-fullname">Username</label>
+                <input type="text" class="form-control" id="basic-default-username" placeholder="JohnDoe" name="username" [(ngModel)]="model.username">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-default-email">Email</label>
+                <div class="input-group input-group-merge">
+                  <input type="text" id="basic-default-email" class="form-control" placeholder="john.doe"
+                    aria-label="john.doe" aria-describedby="basic-default-email2" name="email" [(ngModel)]="model.email">
+                  <span class="input-group-text" id="basic-default-email2">{{'@example.com'}}</span>
+                </div>
+                <div class="form-text">You can use letters, numbers periods</div>
+              </div>
+              <div class="mb-3">
+                <label for="html5-password-input" class="form-label">Password</label>
+                <input class="form-control" type="password" value="password" id="html5-password-input" name="password" [(ngModel)]="model.password"/>
+                <div class="form-text" *ngIf="isEdit">If no change, you can empty this password</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-default-phone">Phone No</label>
+                <input type="text" id="basic-default-phone" class="form-control phone-mask" placeholder="658 799 8941" name="phone_number" [(ngModel)]="model.phone_number">
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Address</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="address" [(ngModel)]="model.address"></textarea>
+              </div>
+              <!--
+                <div class="mb-3">
+                  <label for="exampleDataList" class="form-label">Role</label>
+                  <input
+                    class="form-control"
+                    list="datalistOptions"
+                    id="exampleDataList"
+                    placeholder="Type to search..."
+                  />
+                  <datalist id="datalistOptions">
+                    <option value="San Francisco"></option>
+                    <option value="New York"></option>
+                    <option value="Seattle"></option>
+                    <option value="Los Angeles"></option>
+                    <option value="Chicago"></option>
+                  </datalist>
+                </div>
+              -->
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Back
+        </button>
+        <button class="btn btn-primary" (click)="save()">
+          <i class="bx bx-save me-1"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-backdrop fade"></div>
+</div>

@@ -1,0 +1,122 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Masters</a>
+        </li>
+        <li class="breadcrumb-item active">Promo</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Promo</h4>
+              <button class="btn btn-primary" (click)="create()">
+                <i class="bx bx-xs bx-plus me-1"></i>
+                Create
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <table datatable [dtOptions]="dtOptions" class="table">
+                <thead>
+                  <tr>
+                    <th width="150">Kode</th>
+                    <th>Nama</th>
+                    <th width="200">Tanggal Mulai</th>
+                    <th width="200">Tanggal Selesai</th>
+                    <th width="80">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td> {{ item.kode }} </td>
+                    <td> {{ item.promo }} </td>
+                    <td> {{ item.tanggal_mulai }} </td>
+                    <td> {{ item.tanggal_selesai }} </td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
+                            <i class="bx bx-edit-alt me-1"></i>
+                            Edit
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);">
+                            <i class="bx bx-trash me-1"></i>
+                            Delete
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Form Promo</h4>
+            </div>
+          </div>
+          <div class="col-12">
+            <form>
+              <div class="mb-3">
+                <label class="form-label" for="kode">Kode</label>
+                <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
+                  placeholder="kode...">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="promo">Promo</label>
+                <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" name="promo"
+                  placeholder="promo...">
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-6">
+                    <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
+                    <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
+                      id="html5-datetime-local-input">
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
+                    <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
+                      id="html5-datetime-local-input">
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="description">Deskripsi</label>
+                <textarea id="description" class="form-control" rows="4" placeholder="Description..."></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Back
+        </button>
+        <button class="btn btn-primary">
+          <i class="bx bx-save me-1"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-backdrop fade"></div>
+</div>

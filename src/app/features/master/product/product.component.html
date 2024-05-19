@@ -1,0 +1,342 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Masters</a>
+        </li>
+        <li class="breadcrumb-item active">Product</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Product</h4>
+              <button class="btn btn-primary" (click)="create()">
+                <i class="bx bx-xs bx-plus me-1"></i>
+                Create
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <table datatable [dtOptions]="dtOptions" class="table">
+                <thead>
+                  <tr>
+                    <th width="100">Sku</th>
+                    <th>Nama</th>
+                    <th class="text-center" width="150">Kategori</th>
+                    <th class="text-end" width="300">Harga</th>
+                    <th class="text-center" width="100">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td> {{ item.sku }} </td>
+                    <td> {{ item.nama }} </td>
+                    <td class="text-center"> {{ item.kategori }} </td>
+                    <td class="text-end"> Rp.{{ item.harga }} </td>
+                    <td>
+                      <div class="dropdown text-center">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
+                            <i class="bx bx-edit-alt me-1"></i>
+                            Edit
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);">
+                            <i class="bx bx-trash me-1"></i>
+                            Delete
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Form Product</h4>
+            </div>
+          </div>
+          <div class="col-12">
+            <fieldset [disabled]="isView">
+              <form>
+                <div class="row">
+                  <!-- Image -->
+                  <div class="col-12">
+                    <div class="mb-3">
+                      <img src="assets/img/elements/18.jpg" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" *ngIf="listPhoto.length==0">
+                      <div class="d-flex gap-3" *ngIf="listPhoto.length > 0">
+                        <ng-container *ngFor="let item of listPhoto; index as i">
+                          <div class="position-relative">
+                            <button class="badge badge-center rounded-pill bg-danger border-0 position-absolute top-0 end-0" (click)="removePhoto(i)">
+                              <i class="bx bx-trash"></i>
+                            </button>
+                            <img [src]="item.foto.base64" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" *ngIf="item.foto.base64">
+                            <img [src]="item.foto" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" *ngIf="!item.foto.base64">
+                          </div>
+                        </ng-container>
+                      </div>
+                      <div class="button-wrapper mt-3">
+                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                          <span class="d-none d-sm-block">Upload Image</span>
+                          <i class="bx bx-upload d-block d-sm-none"></i>
+                          <input type="file" id="upload" class="account-file-input" hidden=""
+                            accept="image/png, image/jpeg" (change)="onFileSelected($event)">
+                        </label>
+                        <!-- <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+													<i class="bx bx-reset d-block d-sm-none"></i>
+													<span class="d-none d-sm-block">Reset</span>
+												</button> -->
+
+                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="divider">
+                      <div class="divider-text">Detail Produk</div>
+                    </div>
+                  </div>
+                  <!-- Detail Product -->
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label class="form-label" for="sku">SKU</label>
+                      <input type="text" class="form-control" id="sku" [(ngModel)]="model.sku" name="sku"
+                        placeholder="Sku Code...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="nama">Name</label>
+                      <input type="text" class="form-control" id="nama" [(ngModel)]="model.nama" name="nama"
+                        placeholder="Name product...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="kategori">Category</label>
+                      <select class="form-select" id="m_kategori_id" aria-label="Select category"
+                        [(ngModel)]="model.m_kategori_id" name="m_kategori_id">
+                        <option *ngFor="let item of listCategory" [value]="item.id"> {{ item.kategori }} </option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="harga">Price</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text" id="harga">Rp</span>
+                        <input type="text" class="form-control" id="harga" placeholder="0" [(ngModel)]="model.harga"
+                          name="harga" placeholder="Price...">
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3">
+											<label class="form-label" for="tags">Tags</label>
+											<select multiple="" class="form-select" id="tags" aria-label="Multiple select example" [(ngModel)]="model.tags" name="tags">
+												<option value="Camera">Camera</option>
+												<option value="Promo">Promo</option>
+												<option value="DLSR">DLSR</option>
+											</select>
+										</div> -->
+                    <div class="divider">
+                      <div class="divider-text">Link E-commerce</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="link_tokped">Tokopedia</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text" id="link_tokped">https://</span>
+                          <input type="text" class="form-control" id="link_tokped" placeholder="0"
+                            [(ngModel)]="model.link_tokped" name="link_tokped" placeholder="e-commerce.com/">
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="link_shopee">Shopee</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text" id="link_shopee">https://</span>
+                          <input type="text" class="form-control" id="link_shopee" placeholder="0"
+                            [(ngModel)]="model.link_shopee" name="link_shopee" placeholder="e-commerce.com/">
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="link_bukalapak">Bukalapak</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text" id="link_bukalapak">https://</span>
+                          <input type="text" class="form-control" id="link_bukalapak" placeholder="0"
+                            [(ngModel)]="model.link_bukalapak" name="link_bukalapak" placeholder="e-commerce.com/">
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="link_lazada">Lazada</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text" id="link_lazada">https://</span>
+                          <input type="text" class="form-control" id="link_lazada" placeholder="0"
+                            [(ngModel)]="model.link_lazada" name="link_lazada" placeholder="e-commerce.com/">
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="link_blibli">Blibli</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text" id="link_blibli">https://</span>
+                          <input type="text" class="form-control" id="link_blibli" placeholder="0"
+                            [(ngModel)]="model.link_blibli" name="link_blibli" placeholder="e-commerce.com/">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label class="form-label" for="detail_produk">Detail Product</label>
+                      <textarea id="detail_produk" class="form-control" [(ngModel)]="model.detail_produk"
+                        name="detail_produk" rows="4" placeholder="Detail product..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="description">Description</label>
+                      <textarea id="description" class="form-control" [(ngModel)]="model.deskripsi" name="deskripsi"
+                        rows="4" placeholder="Description..."></textarea>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label" for="in_box">In Box</label>
+                      <textarea id="in_box" class="form-control" [(ngModel)]="model.in_box" name="in_box" rows="4"
+                        placeholder="In box..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <div class="divider">
+                        <div class="divider-text">Varian</div>
+                      </div>
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th class="align-middle">Image</th>
+                            <th class="align-middle" width="150">Type</th>
+                            <th class="align-middle" width="170">Variant</th>
+                            <th class="align-middle">Price</th>
+                            <th class="align-middle">
+                              <button class="btn btn-sm btn-success" (click)="addVariant()">
+                                <i class="bx bx-plus"></i>
+                              </button>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngIf="listVariant.length > 0">
+                            <tr *ngFor="let item of listVariant; index as i">
+                              <td>
+                                <img src="assets/img/elements/4.jpg" class="rounded" width="60" height="60" alt="">
+                              </td>
+                              <td>
+                                <select class="form-select" id="tipe" aria-label="Select tye" [(ngModel)]="item.tipe"
+                                  name="tipe_{{i}}">
+                                  <option value="color"> Color </option>
+                                  <option value="size"> Size </option>
+                                </select>
+                              </td>
+                              <td>
+                                <div class="input-group input-group-merge">
+                                  <span class="input-group-text text-capitalize" id="varian">{{ listVariant[i].tipe
+                                    }}</span>
+                                  <input type="text" class="form-control"
+                                    [placeholder]="listVariant[i].tipe == 'color' ? 'Black' : 'Small'"
+                                    aria-describedby="varian" [(ngModel)]="item.varian" name="varian_{{i}}">
+                                </div>
+                              </td>
+                              <td>
+                                <div class="input-group input-group-merge">
+                                  <span class="input-group-text" id="harga">Rp</span>
+                                  <input type="text" class="form-control text-end" placeholder="0"
+                                    aria-describedby="harga" [(ngModel)]="item.harga" name="harga_{{i}}">
+                                </div>
+                              </td>
+                              <td>
+                                <button class="btn btn-sm btn-danger" (click)="removeVariant(i)">
+                                  <i class="bx bx-trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="listVariant.length == 0">
+                            <tr>
+                              <td colspan="5" class="text-center">There are no variants yet</td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <!-- <div class="col-6">
+										<div class="divider">
+											<div class="divider-text">Ukuran</div>
+										</div>
+										<table class="table">
+											<thead>
+												<tr>
+													<th class="align-middle">Foto</th>
+													<th class="align-middle">Ukuran</th>
+													<th class="align-middle">Harga</th>
+													<th class="align-middle">
+														<button class="btn btn-sm btn-success">
+															<i class="bx bx-plus"></i>
+														</button>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<img src="assets/img/elements/18.jpg" width="60" height="60" alt="">
+													</td>
+													<td>
+														<div class="input-group input-group-merge">
+															<input type="text" class="form-control" placeholder="0"
+																aria-describedby="ukuran">
+															<span class="input-group-text" id="ukuran">Cm</span>
+														</div>
+													</td>
+													<td>
+														<div class="input-group input-group-merge">
+															<span class="input-group-text" id="harga">Rp</span>
+															<input type="text" class="form-control" placeholder="0"
+																aria-describedby="harga">
+														</div>
+													</td>
+													<td>
+														<button class="btn btn-sm btn-danger">
+															<i class="bx bx-trash"></i>
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div> -->
+
+                </div>
+              </form>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Back
+        </button>
+        <button class="btn btn-primary" (click)="save()">
+          <i class="bx bx-save me-1"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-backdrop fade"></div>
+</div>
