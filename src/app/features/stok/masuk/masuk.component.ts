@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { GlobalService } from '../../../services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
-  selector: 'app-promo',
-  templateUrl: './promo.component.html',
-  styleUrls: ['./promo.component.scss']
+  selector: 'app-masuk',
+  templateUrl: './masuk.component.html',
+  styleUrls: ['./masuk.component.scss']
 })
-export class PromoComponent implements OnInit {
+export class MasukComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement: any = DataTableDirective;
   dtInstance: any = Promise<DataTables.Api>;
@@ -25,7 +25,6 @@ export class PromoComponent implements OnInit {
   constructor(
     private globalService: GlobalService,
   ) { }
-
 
   ngOnInit(): void {
     this.empty();
