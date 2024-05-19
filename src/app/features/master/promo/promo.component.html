@@ -71,34 +71,76 @@
               <h4 class="ms-3 mb-0">Form Promo</h4>
             </div>
           </div>
-          <div class="col-12">
-            <div class="mb-3">
-              <label class="form-label" for="kode">Kode</label>
-              <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
-                placeholder="kode...">
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="promo">Promo</label>
-              <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" name="promo"
-                placeholder="promo...">
-            </div>
-            <div class="mb-3">
-              <div class="row">
-                <div class="col-6">
-                  <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
-                  <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
-                    id="html5-datetime-local-input">
+          <div class="col-12 row">
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label" for="kode">Kode</label>
+                <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
+                  placeholder="kode...">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="promo">Promo</label>
+                <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" name="promo"
+                  placeholder="promo...">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
+                <div class="row">
+                  <div class="col-8">
+                    <input class="form-control" type="date" id="tanggal_mulai" [(ngModel)]="model.tanggal_mulai"
+                      name="tanggal_mulai" placeholder="enter the Tanggal Mulai...">
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control" type="time" id="jam_mulai" [(ngModel)]="model.jam_mulai"
+                      name="jam_mulai" placeholder="enter the time...">
+                  </div>
                 </div>
-                <div class="col-6">
-                  <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
-                  <input class="form-control" type="datetime-local" value="2021-06-18T12:30:00"
-                    id="html5-datetime-local-input">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
+                <div class="row">
+                  <div class="col-8">
+                    <input class="form-control" type="date" id="tanggal_selesai"
+                      [(ngModel)]="model.tanggal_selesai" name="tanggal_selesai"
+                      placeholder="enter the Tanggal Selesai...">
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control" type="time" id="jam_selesai" [(ngModel)]="model.jam_selesai"
+                      name="jam_selesai" placeholder="enter the time...">
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label" for="description">Deskripsi</label>
-              <textarea id="description" class="form-control" rows="4" placeholder="Description..."></textarea>
+            <div class="col-6">
+              <div class="col-6 mb-3">
+                <label class="form-label" for="promo_min_beli">Min. Pembelian</label>
+                <div class="input-group input-group-merge">
+                  <input type="number" class="form-control" id="promo_min_beli" placeholder="0"
+                  [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1">
+                  <span class="input-group-text" id="promo_min_beli">unit</span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="flashsale">Flashsale</label>
+                <div>
+                  <button class="btn btn-sm py-2 px-3 me-1"
+                    [ngClass]="model.is_flashsale == 0 ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="model.is_flashsale = 0">
+                    <i class="bx bx-check me-1" *ngIf="model.is_flashsale == 0"></i>
+                    No
+                  </button>
+                  <button class="btn btn-sm py-2 px-3"
+                    [ngClass]="model.is_flashsale == 1 ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="model.is_flashsale = 1">
+                    <i class="bx bx-check me-1" *ngIf="model.is_flashsale == 1"></i>
+                    Yes
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="description">Deskripsi</label>
+                <textarea id="description" class="form-control" rows="4" placeholder="Description..."></textarea>
+              </div>
             </div>
           </div>
           <div class="col-12">
@@ -108,22 +150,33 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th class="align-middle">Image</th>
-                  <th class="align-middle" width="150">Type</th>
-                  <th class="align-middle" width="170">Variant</th>
-                  <th class="align-middle">Price</th>
-                  <th class="align-middle">
+                  <th class="align-middle" width="5%">
                     <button class="btn btn-sm btn-success" (click)="addProduk()">
                       <i class="bx bx-plus"></i>
                     </button>
                   </th>
+                  <th class="align-middle">Produk</th>
+                  <th class="align-middle" width="15%">Harga</th>
+                  <th class="align-middle" width="10%">Jumlah</th>
+                  <th class="align-middle" width="10%">Sisa</th>
+                  <th class="align-middle" width="15%">Diskon</th>
                 </tr>
               </thead>
               <tbody>
                 <ng-container *ngIf="selectedProduk.length > 0">
                   <tr *ngFor="let item of selectedProduk; index as i">
                     <td>
-                      <img src="assets/img/elements/4.jpg" class="rounded" width="60" height="60" alt="">
+                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)">
+                        <i class="bx bx-trash"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <ng-select [items]="listProduk" [(ngModel)]="item.produk" bindLabel="nama" bindValue="id" name="itemproduk">
+                        <ng-template ng-label-tmp let-item="item">
+                            <!-- <img height="15" width="15" [src]="item.avatar"/> -->
+                            {{item.nama}}
+                        </ng-template>
+                    </ng-select>
                     </td>
                     <td>
                       <select class="form-select" id="tipe" aria-label="Select tye" [(ngModel)]="item.tipe"
@@ -137,8 +190,8 @@
                         <span class="input-group-text text-capitalize" id="varian">{{ selectedProduk[i].tipe
                           }}</span>
                         <input type="text" class="form-control"
-                          [placeholder]="selectedProduk[i].tipe == 'color' ? 'Black' : 'Small'" aria-describedby="varian"
-                          [(ngModel)]="item.varian" name="varian_{{i}}">
+                          [placeholder]="selectedProduk[i].tipe == 'color' ? 'Black' : 'Small'"
+                          aria-describedby="varian" [(ngModel)]="item.varian" name="varian_{{i}}">
                       </div>
                     </td>
                     <td>
@@ -149,15 +202,17 @@
                       </div>
                     </td>
                     <td>
-                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)">
-                        <i class="bx bx-trash"></i>
-                      </button>
+                      <div class="input-group input-group-merge">
+                        <input type="text" class="form-control text-end" placeholder="0" aria-describedby="harga"
+                        [(ngModel)]="item.harga" name="harga_{{i}}">
+                        <span class="input-group-text" id="harga">%</span>
+                      </div>
                     </td>
                   </tr>
                 </ng-container>
                 <ng-container *ngIf="selectedProduk.length == 0">
                   <tr>
-                    <td colspan="5" class="text-center">There are no produk yet</td>
+                    <td colspan="6" class="text-center">There are no produk yet</td>
                   </tr>
                 </ng-container>
               </tbody>

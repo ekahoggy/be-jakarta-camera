@@ -9,6 +9,9 @@ import { ProductCategoryComponent } from './product-category/product-category.co
 import { PromoComponent } from './promo/promo.component';
 import { RoleComponent } from './role/role.component';
 import { VoucherComponent } from './voucher/voucher.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
@@ -23,7 +26,9 @@ import { VoucherComponent } from './voucher/voucher.component';
     CommonModule,
     MasterRoutingModule,
     DataTablesModule,
-    FormsModule
+    FormsModule,
+    NgSelectModule,
+    NgOptionHighlightModule
   ]
 })
 export class MasterModule { }

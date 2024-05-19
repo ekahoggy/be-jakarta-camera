@@ -19,6 +19,7 @@ export class PromoComponent implements OnInit {
   listProduk: any = [];
   selectedProduk: any = [];
   model: any = {};
+  modelDetail: any = {};
   isLoading: boolean = false;
 
   constructor(
@@ -62,6 +63,8 @@ export class PromoComponent implements OnInit {
 
   empty() {
     this.model = {};
+    this.modelDetail = {};
+    this.listProduk = [];
   }
 
   index() {
@@ -70,8 +73,11 @@ export class PromoComponent implements OnInit {
 
   create() {
     this.showForm = !this.showForm;
+    this.empty()
     this.isEdit = false;
     this.isView = false;
+    this.model.is_flashsale = 0
+    this.getProduk();
   }
 
   edit(val) {
@@ -106,9 +112,9 @@ export class PromoComponent implements OnInit {
     })
   }
 
-  getProduk(id) {
-    this.globalService.DataGet(`/produk/variant/${id}`, {}, false).subscribe((res: any) => {
-      this.listProduk = res.data;
+  getProduk() {
+    this.globalService.DataGet(`/produk`, {}, false).subscribe((res: any) => {
+      this.listProduk = res.data.list;
     })
   }
 
