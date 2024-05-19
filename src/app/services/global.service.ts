@@ -68,7 +68,7 @@ export class GlobalService {
         withCredentials: withCredentials,
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: 'Bearer '+this.token,
+          Authorization: 'Bearer ' + this.token,
         }),
       };
       return this.http.post(this.apiURL + path, payloads, reqHeader);
@@ -89,7 +89,7 @@ export class GlobalService {
         withCredentials: withCredentials,
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: 'Bearer '+ this.token,
+          Authorization: 'Bearer ' + this.token,
         }),
       };
       return this.http.put(this.apiURL + path, payloads, reqHeader);
@@ -145,6 +145,30 @@ export class GlobalService {
 
   alertQuestion(title: string, text: string, timer: number = 1500) {
     Swal.fire({ icon: "question", title: title, text: text, timer: timer });
+  }
+
+  /**
+     * Sweet alert info
+     */
+  alertInfo(title, content, html = false, timer = 3.5) {
+    if (html == false) {
+      Swal.fire({
+        title,
+        text: content,
+        icon: 'info',
+        timer: timer * 1000,
+        showConfirmButton: true,
+      });
+    } else if (html == true) {
+      Swal.fire({
+        title,
+        html: content,
+        icon: 'info',
+        timer: timer * 1000,
+        showConfirmButton: true,
+      });
+
+    }
   }
 
   isObject(variable: any) {

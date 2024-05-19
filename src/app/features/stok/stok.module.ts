@@ -10,13 +10,15 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { MasukComponent } from './masuk/masuk.component';
 import { KeluarComponent } from './keluar/keluar.component';
 import { OpnameComponent } from './opname/opname.component';
+import { KategoriComponent } from './kategori/kategori.component';
 
 
 @NgModule({
   declarations: [
     MasukComponent,
     KeluarComponent,
-    OpnameComponent
+    OpnameComponent,
+    KategoriComponent
   ],
   imports: [
     CommonModule,

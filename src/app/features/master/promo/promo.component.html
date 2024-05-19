@@ -86,12 +86,12 @@
               <div class="mb-3">
                 <label class="form-label" for="kode">Kode</label>
                 <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
-                  placeholder="kode...">
+                  placeholder="kode..." [disabled]="isEdit || isView">
               </div>
               <div class="mb-3">
                 <label class="form-label" for="promo">Promo</label>
                 <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" name="promo"
-                  placeholder="promo...">
+                  placeholder="promo..." [disabled]="isEdit || isView">
               </div>
               <div class="mb-3">
                 <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
@@ -125,7 +125,7 @@
                 <label class="form-label" for="promo_min_beli">Min. Pembelian</label>
                 <div class="input-group input-group-merge">
                   <input type="number" class="form-control" id="promo_min_beli" placeholder="0"
-                    [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1">
+                    [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1" [disabled]="isEdit || isView">
                   <span class="input-group-text" id="promo_min_beli">unit</span>
                 </div>
               </div>
@@ -156,7 +156,7 @@
               <thead>
                 <tr>
                   <th class="align-middle" width="5%">
-                    <button class="btn btn-sm btn-success" (click)="addProduk()" [disabled]="isEdit">
+                    <button class="btn btn-sm btn-success" (click)="addProduk()" [disabled]="isEdit || isView">
                       <i class="bx bx-plus"></i>
                     </button>
                   </th>
@@ -171,13 +171,13 @@
                 <ng-container *ngIf="selectedProduk.length > 0">
                   <tr *ngFor="let item of selectedProduk; index as i">
                     <td>
-                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)" [disabled]="isEdit">
+                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)" [disabled]="isEdit || isView">
                         <i class="bx bx-trash"></i>
                       </button>
                     </td>
                     <td>
                       <ng-select [items]="listProduk" [(ngModel)]="item.m_produk_id" bindLabel="nama" bindValue="id"
-                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)">
+                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)" [disabled]="isEdit || isView">
                         <ng-template ng-label-tmp let-item="item">
                           <!-- <img height="15" width="15" [src]="item.avatar"/> -->
                           {{item.nama}}
@@ -194,7 +194,7 @@
                     <td>
                       <div class="input-group input-group-merge">
                         <input type="text" class="form-control text-end" mask="000" thousandSeparator="."
-                          [(ngModel)]="item.qty" name="qty_{{i}}">
+                          [(ngModel)]="item.qty" name="qty_{{i}}" [disabled]="isEdit || isView">
                       </div>
                     </td>
                     <td>
@@ -206,7 +206,7 @@
                     <td>
                       <div class="input-group input-group-merge">
                         <input type="text" class="form-control text-end" mask="00" [(ngModel)]="item.persen"
-                          name="persen_{{i}}">
+                          name="persen_{{i}}" style="padding-right: 10px;" [disabled]="isEdit || isView">
                         <span class="input-group-text" id="persen">%</span>
                       </div>
                     </td>
@@ -227,7 +227,7 @@
           <i class="bx bx-chevron-left me-1"></i>
           Back
         </button>
-        <button class="btn btn-primary" (click)="save()">
+        <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
           <i class="bx bx-save me-1"></i>
           Save
         </button>
