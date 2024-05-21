@@ -12,7 +12,8 @@ import { VoucherComponent } from './voucher/voucher.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,10 @@ import { BrowserModule } from '@angular/platform-browser';
     DataTablesModule,
     FormsModule,
     NgSelectModule,
-    NgOptionHighlightModule
+    NgOptionHighlightModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    DragDropModule
   ]
 })
 export class MasterModule { }

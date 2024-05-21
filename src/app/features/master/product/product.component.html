@@ -78,18 +78,33 @@
                   <!-- Image -->
                   <div class="col-12">
                     <div class="mb-3">
-                      <img src="assets/img/elements/18.jpg" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" *ngIf="listPhoto.length==0">
+                      <img src="assets/img/elements/18.jpg" alt="user-avatar" class="d-block rounded" height="100"
+                        width="100" id="uploadedAvatar" *ngIf="listPhoto.length==0">
                       <div class="d-flex gap-3" *ngIf="listPhoto.length > 0">
                         <ng-container *ngFor="let item of listPhoto; index as i">
                           <div class="position-relative">
-                            <button class="badge badge-center rounded-pill bg-danger border-0 position-absolute top-0 end-0" (click)="removePhoto(i)">
+                            <button
+                              class="badge badge-center rounded-pill bg-danger border-0 position-absolute top-0 end-0"
+                              (click)="removePhoto(i)">
                               <i class="bx bx-trash"></i>
                             </button>
-                            <img [src]="item.foto.base64" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" *ngIf="item.foto.base64">
-                            <img [src]="item.foto" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" *ngIf="!item.foto.base64">
+                            <img [src]="item.foto.base64" alt="user-avatar" class="d-block rounded" height="100"
+                              width="100" id="uploadedAvatar" *ngIf="item.foto.base64">
+                            <img [src]="item.foto" alt="user-avatar" class="d-block rounded" height="100" width="100"
+                              id="uploadedAvatar" *ngIf="!item.foto.base64">
                           </div>
                         </ng-container>
                       </div>
+                      <!--
+                        <ul class="example-list"><li *ngFor="let item of items">{{ item }}</li></ul>
+                        <div class="example-container" cdkDropListGroup>
+                          <div cdkDropList [cdkDropListEnterPredicate]="dropListEnterPredicate" (cdkDropListDropped)="dropListDropped($event)"></div>
+                          <div cdkDropList *ngFor="let item of items"
+                               [cdkDropListEnterPredicate]="dropListEnterPredicate" (cdkDropListDropped)="dropListDropped($event)">
+                            <div cdkDrag class="example-box" (cdkDragMoved)="dragMoved($event);">{{item}}</div>
+                          </div>
+                        </div>
+                      -->
                       <div class="button-wrapper mt-3">
                         <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                           <span class="d-none d-sm-block">Upload Image</span>
@@ -208,117 +223,221 @@
                       <textarea id="in_box" class="form-control" [(ngModel)]="model.in_box" name="in_box" rows="4"
                         placeholder="In box..."></textarea>
                     </div>
-                    <div class="mb-3">
-                      <div class="divider">
-                        <div class="divider-text">Varian</div>
-                      </div>
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th class="align-middle">Image</th>
-                            <th class="align-middle" width="150">Type</th>
-                            <th class="align-middle" width="170">Variant</th>
-                            <th class="align-middle">Price</th>
-                            <th class="align-middle">
-                              <button class="btn btn-sm btn-success" (click)="addVariant()">
-                                <i class="bx bx-plus"></i>
-                              </button>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <ng-container *ngIf="listVariant.length > 0">
-                            <tr *ngFor="let item of listVariant; index as i">
-                              <td>
-                                <img src="assets/img/elements/4.jpg" class="rounded" width="60" height="60" alt="">
-                              </td>
-                              <td>
-                                <select class="form-select" id="tipe" aria-label="Select tye" [(ngModel)]="item.tipe"
-                                  name="tipe_{{i}}">
-                                  <option value="color"> Color </option>
-                                  <option value="size"> Size </option>
-                                </select>
-                              </td>
-                              <td>
-                                <div class="input-group input-group-merge">
-                                  <span class="input-group-text text-capitalize" id="varian">{{ listVariant[i].tipe
-                                    }}</span>
-                                  <input type="text" class="form-control"
-                                    [placeholder]="listVariant[i].tipe == 'color' ? 'Black' : 'Small'"
-                                    aria-describedby="varian" [(ngModel)]="item.varian" name="varian_{{i}}">
-                                </div>
-                              </td>
-                              <td>
-                                <div class="input-group input-group-merge">
-                                  <span class="input-group-text" id="harga">Rp</span>
-                                  <input type="text" class="form-control text-end" placeholder="0"
-                                    aria-describedby="harga" [(ngModel)]="item.harga" name="harga_{{i}}">
-                                </div>
-                              </td>
-                              <td>
-                                <button class="btn btn-sm btn-danger" (click)="removeVariant(i)">
-                                  <i class="bx bx-trash"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          </ng-container>
-                          <ng-container *ngIf="listVariant.length == 0">
-                            <tr>
-                              <td colspan="5" class="text-center">There are no variants yet</td>
-                            </tr>
-                          </ng-container>
-                        </tbody>
-                      </table>
-                    </div>
                   </div>
                 </div>
-                <div class="row">
-                  <!-- <div class="col-6">
-										<div class="divider">
-											<div class="divider-text">Ukuran</div>
-										</div>
-										<table class="table">
-											<thead>
-												<tr>
-													<th class="align-middle">Foto</th>
-													<th class="align-middle">Ukuran</th>
-													<th class="align-middle">Harga</th>
-													<th class="align-middle">
-														<button class="btn btn-sm btn-success">
-															<i class="bx bx-plus"></i>
-														</button>
-													</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>
-														<img src="assets/img/elements/18.jpg" width="60" height="60" alt="">
-													</td>
-													<td>
-														<div class="input-group input-group-merge">
-															<input type="text" class="form-control" placeholder="0"
-																aria-describedby="ukuran">
-															<span class="input-group-text" id="ukuran">Cm</span>
-														</div>
-													</td>
-													<td>
-														<div class="input-group input-group-merge">
-															<span class="input-group-text" id="harga">Rp</span>
-															<input type="text" class="form-control" placeholder="0"
-																aria-describedby="harga">
-														</div>
-													</td>
-													<td>
-														<button class="btn btn-sm btn-danger">
-															<i class="bx bx-trash"></i>
-														</button>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div> -->
 
+                <div class="row">
+                  <div class="mb-3">
+                    <div class="divider">
+                      <div class="divider-text">Varian Produk</div>
+                    </div>
+                    <div class="row pb-2">
+                      <div class="col-12 text-end">
+                        <button class="btn btn-primary me-1" (click)="addVariant()" *ngIf="buttonAtasVarian1">
+                          <i class="bx bx-plus"></i>
+                          Tambah Varian
+                        </button>
+                        <button class="btn btn-primary" (click)="removeVariant()" *ngIf="!buttonAtasVarian1">
+                          <i class="bx bx-trash"></i>
+                          Hapus Varian
+                        </button>
+                      </div>
+                      <div class="col-12 pb-4" *ngIf="aktifkanVaraian1">
+                        <div class="row">
+                          <div class="col-3">
+                            Tipe Varian 1 <span style="font-size: smaller;">(Upload foto varian di tipe ini)</span>
+                          </div>
+                          <div class="col-8"></div>
+
+                          <div class="col-3">
+                            <ng-select [items]="varian" [(ngModel)]="modelVarian.varian1" bindLabel="value"
+                              bindValue="id" name="varian1" (change)="changeVarian1($event)" [addTag]="simpanVarian"
+                              dropdownPosition="bottom">
+                              <ng-template ng-label-tmp let-item="item">
+                                {{item.value}}
+                              </ng-template>
+                              <ng-template ng-footer-tmp class="p-0">
+                                <div class="select-buat-varian">Ketik untuk tambah varian 1</div>
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                          <div class="col-9" *ngIf="showVarian1">
+                            <!-- untuk warna -->
+                            <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
+                              placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue1"
+                              name="varianwarna" *ngIf="valueVarian1 == 'warna'" (change)="isiVarian1($event, 'warna')">
+                              <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <div class="d-flex justify-content-left">
+                                  <div class="varian-warna-select" [style.background]="item.warna"></div>
+                                  &nbsp;{{item.nama}}
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                            <!-- untuk ukuran -->
+                            <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
+                              placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue1"
+                              name="varianukuran" *ngIf="valueVarian1 == 'ukuran'"
+                              (change)="isiVarian1($event, 'ukuran')">
+                            </ng-select>
+                            <!-- untuk custom varian -->
+                            <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
+                              [addTag]="addTipeVarian1" placeholder="Tambahkan Tipe Varian"
+                              [(ngModel)]="modelVarian.varianValue1" name="varianCustom"
+                              *ngIf="valueVarian1 != 'warna' && valueVarian1 != 'ukuran' && valueVarian1 != ''"
+                              (change)="isiVarian1($event, 'custom')">
+                            </ng-select>
+                          </div>
+
+                          <!-- upload foto varian 1 -->
+                          <div class="col-3 pt-1" *ngIf="showVarian1"></div>
+                          <div class="col-9 pt-1" *ngIf="showVarian1">
+                            <div class="mb-3 d-flex justify-content-left">
+                              <div>
+                                <button class="btn btn-sm py-2 px-3 me-1" [disabled]="disabledFotoVarian"
+                                  [ngClass]="modelVarian.useFotoVarian == 0 ? 'btn-primary' : 'btn-outline-primary'"
+                                  (click)="modelVarian.useFotoVarian = 0">
+                                  <i class="bx bx-check me-1" *ngIf="modelVarian.useFotoVarian == 0"></i>
+                                  No
+                                </button>
+                                <button class="btn btn-sm py-2 px-3" [disabled]="disabledFotoVarian"
+                                  [ngClass]="modelVarian.useFotoVarian == 1 ? 'btn-primary' : 'btn-outline-primary'"
+                                  (click)="modelVarian.useFotoVarian = 1">
+                                  <i class="bx bx-check me-1" *ngIf="modelVarian.useFotoVarian == 1"></i>
+                                  Yes
+                                </button>
+                              </div>
+                              <label class="form-label" style="padding-left: 15px;">Gunakan foto varian</label>
+                            </div>
+                          </div>
+                          <div class="col-3 pt-1" *ngIf="showVarian1"></div>
+                          <div class="col-9 pt-1" *ngIf="showVarian1">
+                            <div class="border-upload-varian" *ngIf="modelVarian.useFotoVarian == 1">
+                              <div *ngFor="let item of modelVarian.varianValue1; index as i;">
+                                <label data-testid="labelImageUploaderContainerasdas" for="variantPicasdas"
+                                  class="css-1iijiv2"><svg class="unf-icon css-1itv5e3" viewBox="0 0 24 24" width="24"
+                                    height="24" fill="var(--color-icon-enabled, #2E3137)"
+                                    style="display: inline-block; vertical-align: middle;">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M22 7.5a5.5 5.5 0 0 0-9-4.25H5A1.76 1.76 0 0 0 3.25 5v14A1.76 1.76 0 0 0 5 20.75h14A1.76 1.76 0 0 0 20.75 19v-8A5.47 5.47 0 0 0 22 7.5Zm-1.5 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM19 19.25H5a.25.25 0 0 1-.25-.25V5A.25.25 0 0 1 5 4.75h6.74a5.5 5.5 0 0 0 7.51 7.51V19a.25.25 0 0 1-.25.25ZM9 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4.267 4.298a.749.749 0 0 1 .263.172l4.01 4a.75.75 0 0 1-1.06 1.06l-3.41-3.41-1.47 1.85a.76.76 0 0 1-1 .15l-1-.65-2.04 2.09A.75.75 0 0 1 6.5 16.5L9 14a.76.76 0 0 1 .92-.08l.92.61 1.57-2a.75.75 0 0 1 .857-.232ZM15.75 8.25H14.3a.75.75 0 0 1 0-1.5h1.45V5.3a.75.75 0 0 1 1.5 0v1.45h1.45a.75.75 0 1 1 0 1.5h-1.45V9.7a.75.75 0 1 1-1.5 0V8.25Z">
+                                    </path>
+                                  </svg>{{item}}</label>
+                                <input class="inputan" type="file" id="variantPic_{{i}}"
+                                  accept="image/x-png,image/png,image/jpg,image/jpeg">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 pb-4" *ngIf="tampilkanVarian2">
+                        <div class="row">
+                          <div class="col-3">
+                            <button class="btn btn-primary me-1" (click)="addVariant2()" *ngIf="buttonAtasVarian2">
+                              <i class="bx bx-plus"></i>
+                              Tambah Varian 2
+                            </button>
+                            <span *ngIf="aktifkanVaraian2">Tipe Varian 2</span>
+                          </div>
+                          <div class="col-8"></div>
+
+                          <div class="col-3" *ngIf="aktifkanVaraian2">
+                            <ng-select [items]="varian" [(ngModel)]="modelVarian.varian2" bindLabel="value"
+                              bindValue="id" name="varian2" (change)="changeVarian2($event)" [addTag]="simpanVarian"
+                              dropdownPosition="bottom">
+                              <ng-template ng-label-tmp let-item="item">
+                                {{item.value}}
+                              </ng-template>
+                              <ng-template ng-footer-tmp class="p-0">
+                                <div class="select-buat-varian">Ketik untuk tambah varian 2</div>
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                          <div class="col-9" *ngIf="showVarian2">
+                            <!-- untuk warna -->
+                            <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
+                              placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue2"
+                              name="varianwarna2" *ngIf="valueVarian2 == 'warna'" (change)="isiVarian2($event, 'warna')">
+                              <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <div class="d-flex justify-content-left">
+                                  <div class="varian-warna-select" [style.background]="item.warna"></div>
+                                  &nbsp;{{item.nama}}
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                            <!-- untuk ukuran -->
+                            <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
+                              placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue2"
+                              name="varianukuran2" *ngIf="valueVarian2 == 'ukuran'" (change)="isiVarian2($event, 'ukuran')">
+                            </ng-select>
+                            <!-- untuk custom varian -->
+                            <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
+                              [addTag]="addTipeVarian2" placeholder="Tambahkan Tipe Varian 2"
+                              [(ngModel)]="modelVarian.varianValue2" name="varianCustom2"
+                              *ngIf="valueVarian2 != 'warna' && valueVarian2 != 'ukuran' && valueVarian2 != ''"
+                              (change)="isiVarian2($event, 'custom')">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th class="align-middle" width="5%"></th>
+                          <th class="align-middle" width="10%" *ngIf="valueVarian1">{{ valueVarian1 }}</th>
+                          <th class="align-middle" width="10%" *ngIf="valueVarian2">{{ valueVarian2 }}</th>
+                          <th class="align-middle" width="15%">Harga</th>
+                          <th class="align-middle" width="5%">Stok</th>
+                          <th class="align-middle" width="15%">Sku</th>
+                          <th class="align-middle" width="10%">Berat</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf="listVariant.length > 0">
+                          <tr *ngFor="let item of listVariant; index as i">
+                            <td>
+                              <img src="assets/img/elements/4.jpg" class="rounded" width="60" height="60" alt="">
+                            </td>
+                            <td *ngIf="valueVarian1">
+                              <span>{{ item.varian1 }}</span>
+                            </td>
+                            <td *ngIf="valueVarian2">
+                              <span>{{ item.varian2 }}</span>
+                            </td>
+                            <td>
+                              <div class="input-group input-group-merge">
+                                <span class="input-group-text" id="harga">Rp</span>
+                                <input type="text" class="form-control text-end" placeholder="0"
+                                  aria-describedby="harga" [(ngModel)]="item.harga" name="harga_{{i}}"
+                                  mask="separator.3" thousandSeparator=".">
+                              </div>
+                            </td>
+                            <td>
+                              <input type="text" class="form-control text-end" placeholder="0" aria-describedby="stok"
+                                [(ngModel)]="item.stok" name="stok_{{i}}">
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" placeholder="JC00123" aria-describedby="sku"
+                                [(ngModel)]="item.sku" name="sku_{{i}}">
+                            </td>
+                            <td>
+                              <div class="input-group input-group-merge">
+                                <input type="text" class="form-control text-end" placeholder="0"
+                                  aria-describedby="berat" [(ngModel)]="item.berat" name="berat_{{i}}"
+                                  mask="separator.3" thousandSeparator=".">
+                                <span class="input-group-text" id="berat">g</span>
+                              </div>
+                            </td>
+                          </tr>
+                        </ng-container>
+                        <ng-container *ngIf="listVariant.length == 0">
+                          <tr>
+                            <td colspan="5" class="text-center">There are no variants yet</td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </form>
             </fieldset>

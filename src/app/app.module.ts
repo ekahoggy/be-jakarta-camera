@@ -8,6 +8,8 @@ import { LayoutsModule } from './layouts/layouts.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule } from '@angular/forms';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,9 +22,14 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     LayoutsModule,
     DataTablesModule,
-    FormsModule
+    FormsModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
-  providers: [],
+  providers: [
+    provideNgxMask(),
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

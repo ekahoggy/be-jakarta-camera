@@ -3,11 +3,11 @@ import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
 
 @Component({
-  selector: 'app-promo',
-  templateUrl: './promo.component.html',
-  styleUrls: ['./promo.component.scss']
+  selector: 'app-kategori',
+  templateUrl: './kategori.component.html',
+  styleUrls: ['./kategori.component.scss']
 })
-export class PromoComponent implements OnInit {
+export class KategoriComponent {
   @ViewChild(DataTableDirective)
   dtElement: any = DataTableDirective;
   dtInstance: any = Promise<DataTables.Api>;
@@ -16,16 +16,12 @@ export class PromoComponent implements OnInit {
   isEdit: boolean = false;
   isView: boolean = false;
   listData: any = [];
-  listProduk: any = [];
-  selectedProduk: any = [];
   model: any = {};
-  modelDetail: any = {};
   isLoading: boolean = false;
 
   constructor(
     private globalService: GlobalService,
   ) { }
-
 
   ngOnInit(): void {
     this.empty();
@@ -46,7 +42,7 @@ export class PromoComponent implements OnInit {
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/promo", params, false).subscribe((res: any) => {
+        this.globalService.DataGet("/stok/kategori", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
 
           callback({
@@ -61,98 +57,65 @@ export class PromoComponent implements OnInit {
     };
   }
 
+  reloadDataTable(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
   empty() {
     this.model = {};
-    this.modelDetail = {};
-    this.listProduk = [];
-    this.selectedProduk = [];
   }
 
   index() {
     this.showForm = !this.showForm;
+    this.empty();
   }
 
   create() {
     this.showForm = !this.showForm;
-    this.empty()
     this.isEdit = false;
     this.isView = false;
-    this.model.is_flashsale = 0
-    this.getProduk();
+    this.model.type = 'i';
   }
 
   edit(val) {
     this.showForm = !this.showForm;
     this.isEdit = true;
     this.isView = false;
-    this.getDataById(val.id);
-    this.getProduk();
+    this.getDataById(val.id)
   }
 
   view(val) {
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = true;
-    this.getDataById(val.id);
-    this.getProduk();
-  }
-
-  getDataById(id: string = null) {
-    this.isLoading = true;
-    this.globalService.DataGet(`/promo/${id}`, {}, false).subscribe((res: any) => {
-      this.model = res.data
-      this.selectedProduk = res.data.detail;
-      this.isLoading = false;
-    })
+    this.getDataById(val.id)
   }
 
   save() {
-    let data = {
-      main: this.model,
-      detail: this.selectedProduk
-    };
-    const final = Object.assign(data)
-    this.globalService.DataPost('/promo/save', final).subscribe((res: any) => {
+    const final = Object.assign(this.model)
+    this.globalService.DataPost('/stok/kategori/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
-        this.globalService.alertSuccess('Success', 'Promo saved successfully')
+        this.globalService.alertSuccess('Success', 'Category saved successfully')
         this.index();
       }
     })
   }
 
-  getProduk() {
-    this.globalService.DataGet(`/produk`, {}, false).subscribe((res: any) => {
-      this.listProduk = res.data.list;
+  delete(id) {
+    this.globalService.DataPost('/stok/kategori/status', { id: id }, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.globalService.alertSuccess('Success', 'Category Delete successfully')
+        this.reloadDataTable();
+      }
     })
   }
 
-  changeProduk(e, i) {
-    this.selectedProduk.forEach((v, k) => {
-      if (i === k) {
-        v.nama = e.nama;
-        v.harga = e.harga;
-      }
-      if (v.id === e.id) {
-        console.log("sama");
-        // this.globalService.alertError('Gagal', 'Produk sudah ada di dalam daftar promo');
-      }
-    });
-    console.log(this.selectedProduk)
-  }
-
-  addProduk() {
-    let row = {
-      m_produk_id: "",
-      nama: "",
-      harga: 0,
-      qty: 1,
-      promo_used: "-",
-      persen: 0
-    }
-    this.selectedProduk.push(row);
-  }
-
-  removeProduk(i) {
-    this.selectedProduk.splice(i, 1);
+  getDataById(id: string = null) {
+    this.isLoading = true;
+    this.globalService.DataGet(`/stok/kategori/${id}`, {}, false).subscribe((res: any) => {
+      this.model = res.data
+      this.isLoading = false;
+    })
   }
 }

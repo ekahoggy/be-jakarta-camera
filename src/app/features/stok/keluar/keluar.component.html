@@ -1,0 +1,186 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Stok</a>
+        </li>
+        <li class="breadcrumb-item active">Keluar</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Stok Keluar</h4>
+              <button class="btn btn-primary" (click)="create()">
+                <i class="bx bx-xs bx-plus me-1"></i>
+                Create
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <table datatable [dtOptions]="dtOptions" class="table">
+                <thead>
+                  <tr>
+                    <th width="10%">Status</th>
+                    <th width="10%">Tanggal</th>
+                    <th width="10%">Kode</th>
+                    <th width="20%">Kategori</th>
+                    <th width="20%">Dibuat Oleh</th>
+                    <th width="5%">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td>
+                      <span class="badge bg-label-success me-1" *ngIf="item.status === 'a'">Approved</span>
+                      <span class="badge bg-label-danger me-1" *ngIf="item.status === 'd'">Draft</span>
+                    </td>
+                    <td> {{ item.tanggal }}</td>
+                    <td> {{ item.kode }} </td>
+                    <td> {{ item.nama }} </td>
+                    <td> {{ item.pembuat }}<br>at {{ item.created_at }} </td>
+                    <td>
+                      <div class="dropdown" *ngIf="item.status != 'a'">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
+                            <i class="bx bx-edit-alt me-1"></i>
+                            Edit
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);">
+                            <i class="bx bx-trash me-1"></i>
+                            Delete
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <form class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Form Stok Keluar</h4>
+            </div>
+          </div>
+          <div class="col-12 row">
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label" for="kode">Kode</label>
+                <input type="text" class="form-control" id="kode" [(ngModel)]="model.kode" name="kode"
+                  placeholder="kode generate otomatis ..." disabled>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="tanggal">Tanggal</label>
+                <input class="form-control" type="date" id="tanggal" [(ngModel)]="model.tanggal" name="tanggal"
+                  placeholder="tanggal" [disabled]="model.status == 'a' || isView">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label" for="kategori">Kategori</label>
+                <ng-select [items]="listKategori" [(ngModel)]="model.t_stok_kategori_id" bindLabel="nama" bindValue="id"
+                  name="kategori" [disabled]="model.status == 'a' || isView">
+                  <ng-template ng-label-tmp let-item="item">
+                    {{item.nama}}
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="keterangan">Keterangan</label>
+                <textarea id="keterangan" class="form-control" rows="3" [(ngModel)]="model.catatan"
+                  name="keterangan" placeholder="Keterangan ..." [disabled]="model.status == 'a' || isView"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="divider">
+              <div class="divider-text">Produk</div>
+            </div>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="align-middle" width="5%">
+                    <button class="btn btn-sm btn-success" (click)="addProduk()" [disabled]="model.status == 'a' || isView">
+                      <i class="bx bx-plus"></i>
+                    </button>
+                  </th>
+                  <th class="align-middle">Produk</th>
+                  <th class="align-middle" width="20%" *ngIf="model.status != 'a'">Tersedia</th>
+                  <th class="align-middle" width="20%">Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="selectedProduk.length > 0">
+                  <tr *ngFor="let item of selectedProduk; index as i">
+                    <td>
+                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)" [disabled]="model.status == 'a' || isView">
+                        <i class="bx bx-trash"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <ng-select [items]="listProduk" [(ngModel)]="item.m_produk_id" bindLabel="nama" bindValue="id"
+                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)" [disabled]="model.status == 'a' || isView">
+                        <ng-template ng-label-tmp let-item="item">
+                          <!-- <img height="15" width="15" [src]="item.avatar"/> -->
+                          {{item.nama}}
+                        </ng-template>
+                      </ng-select>
+                    </td>
+                    <td *ngIf="model.status != 'a'">
+                      <div class="input-group input-group-merge">
+                        <input type="text" class="form-control text-end" [(ngModel)]="item.sisa"
+                          name="sisa_{{i}}" disabled>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-merge">
+                        <input type="text" class="form-control text-end" style="padding-right: 10px;" mask="separator.3" thousandSeparator="." [(ngModel)]="item.qty"
+                          name="qty_{{i}}" (change)="hitungSelisih(item)" [disabled]="model.status == 'a' || isView">
+                        <span class="input-group-text" id="qty">unit</span>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngIf="selectedProduk.length == 0">
+                  <tr>
+                    <td colspan="6" class="text-center">There are no produk yet</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Back
+        </button>
+        <button class="btn btn-warning me-1" (click)="save()" *ngIf="model.status != 'a'">
+          <i class="bx bx-save me-1"></i>
+          Save & Draft
+        </button>
+        <button class="btn btn-primary" (click)="save('a')" *ngIf="model.status != 'a'">
+          <i class="bx bx-save me-1"></i>
+          Save & Post
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-backdrop fade"></div>
+</div>

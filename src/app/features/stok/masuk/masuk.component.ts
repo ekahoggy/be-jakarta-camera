@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { GlobalService } from '../../../services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
+import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-promo',
-  templateUrl: './promo.component.html',
-  styleUrls: ['./promo.component.scss']
+  selector: 'app-masuk',
+  templateUrl: './masuk.component.html',
+  styleUrls: ['./masuk.component.scss']
 })
-export class PromoComponent implements OnInit {
+export class MasukComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement: any = DataTableDirective;
   dtInstance: any = Promise<DataTables.Api>;
@@ -17,15 +19,15 @@ export class PromoComponent implements OnInit {
   isView: boolean = false;
   listData: any = [];
   listProduk: any = [];
+  listKategori : any = [];
   selectedProduk: any = [];
   model: any = {};
-  modelDetail: any = {};
   isLoading: boolean = false;
 
   constructor(
     private globalService: GlobalService,
+    private datePipe: DatePipe
   ) { }
-
 
   ngOnInit(): void {
     this.empty();
@@ -46,7 +48,7 @@ export class PromoComponent implements OnInit {
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/promo", params, false).subscribe((res: any) => {
+        this.globalService.DataGet("/stok/masuk", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
 
           callback({
@@ -63,8 +65,8 @@ export class PromoComponent implements OnInit {
 
   empty() {
     this.model = {};
-    this.modelDetail = {};
     this.listProduk = [];
+    this.listKategori = [];
     this.selectedProduk = [];
   }
 
@@ -73,12 +75,15 @@ export class PromoComponent implements OnInit {
   }
 
   create() {
-    this.showForm = !this.showForm;
     this.empty()
+    this.showForm = !this.showForm;
+    let today = moment().format('Y/MM/D');
+    this.model.tanggal = this.datePipe.transform(today, 'yyyy-MM-dd');
+    this.model.type = 'i';
     this.isEdit = false;
     this.isView = false;
-    this.model.is_flashsale = 0
     this.getProduk();
+    this.getKategori();
   }
 
   edit(val) {
@@ -87,6 +92,7 @@ export class PromoComponent implements OnInit {
     this.isView = false;
     this.getDataById(val.id);
     this.getProduk();
+    this.getKategori();
   }
 
   view(val) {
@@ -95,28 +101,37 @@ export class PromoComponent implements OnInit {
     this.isView = true;
     this.getDataById(val.id);
     this.getProduk();
+    this.getKategori();
   }
 
   getDataById(id: string = null) {
     this.isLoading = true;
-    this.globalService.DataGet(`/promo/${id}`, {}, false).subscribe((res: any) => {
-      this.model = res.data
+    this.globalService.DataGet(`/stok/masuk/${id}`, {}, false).subscribe((res: any) => {
+      this.model = res.data;
       this.selectedProduk = res.data.detail;
       this.isLoading = false;
     })
   }
 
-  save() {
+  save(status = 'd') {
+    this.model.status = status;
+    delete this.model.detail;
     let data = {
       main: this.model,
       detail: this.selectedProduk
     };
     const final = Object.assign(data)
-    this.globalService.DataPost('/promo/save', final).subscribe((res: any) => {
+    this.globalService.DataPost('/stok/masuk/save', final).subscribe((res: any) => {
       if (res.status_code == 200) {
-        this.globalService.alertSuccess('Success', 'Promo saved successfully')
+        this.globalService.alertSuccess('Success', 'Stok Masuk saved successfully')
         this.index();
       }
+    })
+  }
+
+  getKategori() {
+    this.globalService.DataGet(`/stok/kategori/type/i`, {}, false).subscribe((res: any) => {
+      this.listKategori = res.data;
     })
   }
 
@@ -129,25 +144,27 @@ export class PromoComponent implements OnInit {
   changeProduk(e, i) {
     this.selectedProduk.forEach((v, k) => {
       if (i === k) {
-        v.nama = e.nama;
-        v.harga = e.harga;
+        let paramsStok = {
+          'type': 'i',
+          'm_produk_id': v.m_produk_id
+        };
+        this.globalService.DataGet(`/stok/available`, paramsStok, false).subscribe((res: any) => {
+          v.sisa = res.data;
+        })
       }
       if (v.id === e.id) {
         console.log("sama");
         // this.globalService.alertError('Gagal', 'Produk sudah ada di dalam daftar promo');
       }
     });
-    console.log(this.selectedProduk)
   }
 
   addProduk() {
     let row = {
       m_produk_id: "",
       nama: "",
-      harga: 0,
       qty: 1,
-      promo_used: "-",
-      persen: 0
+      sisa: 0
     }
     this.selectedProduk.push(row);
   }

@@ -41,7 +41,8 @@
                       {{ item.email }}
                     </td>
                     <td>
-                      <span class="badge bg-label-success me-1">{{ item.is_active }}</span>
+                      <span class="badge bg-label-success me-1" *ngIf="item.is_active ==='aktif'">{{ item.is_active }}</span>
+                      <span class="badge bg-label-danger me-1" *ngIf="item.is_active ==='terhapus'">{{ item.is_active }}</span>
                     </td>
                     <td>
                       <div class="dropdown">
