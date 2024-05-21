@@ -5,11 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { FeaturesRoutingModule } from './features-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DataTablesModule } from 'angular-datatables';
+import { OrderComponent } from './order/order.component';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    OrderComponent
   ],
   imports: [
     CommonModule,
