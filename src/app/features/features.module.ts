@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { FeaturesRoutingModule } from './features-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DataTablesModule } from 'angular-datatables';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 
 @NgModule({
