@@ -31,8 +31,11 @@ export class ProductComponent implements OnInit {
   listVariant: any = [];
 
   //varian
-  aktifkanVaraian: boolean = false;
-  buttonAtasVarian: boolean = true;
+  aktifkanVaraian1: boolean = false;
+  aktifkanVaraian2: boolean = false;
+  buttonAtasVarian1: boolean = true;
+  buttonAtasVarian2: boolean = true;
+  tampilkanVarian2: boolean = false;
   showVarian1: boolean = false;
   showVarian2: boolean = false;
   showTextInputVarian1: boolean = false;
@@ -59,6 +62,9 @@ export class ProductComponent implements OnInit {
   customTipeVarian2: any = [];
   varian1: any = [];
   varian2: any = [];
+  selectedVarian1: any = [];
+  selectedVarian2: any = [];
+  duplicate: any = [];
 
   public items: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -198,26 +204,29 @@ export class ProductComponent implements OnInit {
   }
 
   addVariant() {
-    // let row = {
-    //   tipe: "color",
-    //   varian: "",
-    //   photo: "",
-    //   harga: "",
-    //   stok: "",
-    //   sku: "",
-    //   berat: "",
-    //   status: "",
-    //   main: 0,
-    // }
+    this.aktifkanVaraian1 = true;
+    this.buttonAtasVarian1 = false;
+  }
 
-    // this.listVariant.push(row);
-    this.aktifkanVaraian = true;
-    this.buttonAtasVarian = false;
+  addVariant2() {
+    this.aktifkanVaraian2 = true;
+    this.buttonAtasVarian2 = false;
   }
 
   removeVariant() {
-    this.aktifkanVaraian = false;
-    this.buttonAtasVarian = true;
+    this.aktifkanVaraian1 = true;
+    this.aktifkanVaraian2 = false;
+    this.buttonAtasVarian1 = true;
+    this.buttonAtasVarian2 = false;
+    this.showVarian1 = false;
+    this.showVarian2 = false;
+    this.listVariant = [];
+    this.selectedVarian1 = [];
+    this.selectedVarian2 = [];
+    this.varian1 = [];
+    this.varian2 = [];
+    this.duplicate = [];
+    this.modelVarian = [];
     // this.listVariant.splice(i, 1);
   }
 
@@ -226,28 +235,70 @@ export class ProductComponent implements OnInit {
     this.modelVarian.varianValue1 = null;
     if (e) {
       this.valueVarian1 = e.id;
-      if(this.valueVarian1 == 'warna' || this.valueVarian1 == 'ukuran'){
+      if (this.valueVarian1 == 'warna' || this.valueVarian1 == 'ukuran') {
         this.globalService.DataGet(`/produk/variant/type/${e.id}`, {}, false).subscribe((res: any) => {
           this.varian1 = res.data;
         })
       }
       this.showVarian1 = true;
     }
-    else{
+    else {
       this.valueVarian1 = '';
       this.varian1 = [];
       this.showVarian1 = false;
     }
   }
+  isiVarian1(e, tipe) {
+    let pushed = {
+      nama: '',
+      tipe: '',
+      gambar: ''
+    }
+    e.forEach(item => {
+      if (this.selectedVarian1.length > 0) {
+        this.selectedVarian1.forEach(val => {
+          if (val.nama !== item.nama) {
+            pushed.nama = item.nama;
+            pushed.tipe = tipe;
+            pushed.gambar = '';
+          }
+        });
+      }
+      else {
+        pushed.nama = item.nama;
+        pushed.tipe = tipe;
+        pushed.gambar = '';
+      }
+    });
 
-  isiVarian1(e) {
+    this.selectedVarian1.push(pushed);
+
     if (this.modelVarian.varianValue1.length > 0) {
+      let row = {
+        image: '',
+        varian1: '',
+        varian2: '',
+        harga: 0,
+        stok: '',
+        berat: 0,
+        status: 1,
+        main: 0,
+      }
+
+      this.selectedVarian1.forEach(val => {
+        row.varian1 = val.nama;
+      });
+
+      this.listVariant.push(row);
       this.disabledFotoVarian = false;
+      this.tampilkanVarian2 = true;
     }
     else {
       this.disabledFotoVarian = true;
+      this.tampilkanVarian2 = false;
     }
-    console.log(this.modelVarian.varianValue1);
+
+
   }
 
   addVarian1() {
@@ -266,6 +317,116 @@ export class ProductComponent implements OnInit {
       id: item,
       value: item,
       is_deleted: true
+    }
+  );
+
+  changeVarian2(e) {
+    this.varian2 = [];
+    this.modelVarian.varianValue2 = null;
+    if (e) {
+      this.valueVarian2 = e.id;
+      if (this.valueVarian2 == 'warna' || this.valueVarian2 == 'ukuran') {
+        this.globalService.DataGet(`/produk/variant/type/${e.id}`, {}, false).subscribe((res: any) => {
+          this.varian2 = res.data;
+        })
+      }
+      this.showVarian2 = true;
+    }
+    else {
+      this.valueVarian2 = '';
+      this.varian2 = [];
+      this.showVarian2 = false;
+    }
+  }
+
+  isiVarian2(e, tipe) {
+    let pushed = {
+      nama: '',
+      tipe: '',
+      gambar: ''
+    }
+    e.forEach(item => {
+      if (this.selectedVarian2.length > 0) {
+        this.selectedVarian2.forEach(val => {
+          if (val.nama !== item.nama) {
+            pushed.nama = item.nama;
+            pushed.tipe = tipe;
+            pushed.gambar = '';
+          }
+        });
+      }
+      else {
+        pushed.nama = item.nama;
+        pushed.tipe = tipe;
+        pushed.gambar = '';
+      }
+    });
+
+    this.selectedVarian2.push(pushed);
+    this.compareAllVarian();
+
+  }
+
+  compareAllVarian() {
+    let row = {
+      image: '',
+      varian1: '',
+      varian2: '',
+      harga: 0,
+      stok: '',
+      berat: 0,
+      status: 1,
+      main: 0,
+    }
+
+    this.selectedVarian2.forEach(val => {
+      row.varian2 = val.nama;
+    });
+
+    let jumlahDatake2 = this.selectedVarian2.length;
+    if (jumlahDatake2 == 1) {
+      this.listVariant.forEach(ke1 => {
+        this.selectedVarian2.forEach(ke2 => {
+          ke1.varian2 = ke2.nama;
+        });
+      });
+    }
+    else if (jumlahDatake2 >= 2) {
+      for (let i = 0; i < jumlahDatake2; i++) {
+        this.listVariant.forEach(element => {
+          this.duplicate.push(element);
+        });
+      }
+
+      // console.log(this.selectedVarian2);
+      let data2_baru = [];
+      this.selectedVarian2.forEach(item1 => {
+        this.duplicate.forEach((item2, k) => {
+          if (item1.nama != item2.varian2 && item1.nama != item2.varian1) {
+            item2.varian2 = item1.nama;
+            data2_baru.push(item2)
+          }
+          // if (item1.nama !== item2.varian2) {
+          //   this.duplicate[k].nama = item1.nama;
+          // this.duplicate[k].gambar = item1.gambar;
+          // }
+        });
+      });
+
+      this.duplicate.concat(data2_baru);
+      console.log(this.duplicate);
+      // console.log(this.duplicate);
+    }
+  }
+
+  addVarian2() {
+    this.showTextInputVarian2 = true;
+  }
+
+  addTipeVarian2 = (item) => (
+    {
+      id: item,
+      nama: item
     }
   );
 
