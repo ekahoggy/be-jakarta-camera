@@ -12,6 +12,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { AngularTreeGridModule } from "angular-tree-grid";
+import { NgProgressModule } from 'ngx-progressbar';
+import { NgProgressHttpModule } from 'ngx-progressbar/http';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { AngularTreeGridModule } from "angular-tree-grid";
     NgxMaskDirective,
     NgxMaskPipe,
     AngularTreeGridModule,
+    NgProgressModule,
+    NgProgressHttpModule,
     NgxSpinnerModule.forRoot({ type: 'ball-atom' }),
   ],
   exports:[

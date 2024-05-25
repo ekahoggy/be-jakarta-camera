@@ -69,7 +69,7 @@
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Form Product</h4>
+              <h4 class="mb-0">Form Product</h4>
             </div>
           </div>
           <div class="col-12">
@@ -85,20 +85,40 @@
                           <div class="css-1ofqig9 " *ngFor="let v of fotoProduk; index as i" cdkDrag>
                             <div class="css-2imjyh" id="imgDropArea" tabindex="0">
                               <div id="img-0-empty">
-                                <div class="css-i62psg" id="imgComponent-0">
-                                  <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
-                                    <div class="css-phearn"></div>
-                                    <div class="css-w18sxf" *ngIf="i !== 0">{{ v.name }} {{i + 1}}</div>
-                                    <div class="css-w18sxf" *ngIf="i === 0">Foto utama</div>
-                                    <input type="file" id="produkFoto_{{i}}" style="display: none;"
-                                      accept="image/x-png,image/png,image/jpg,image/jpeg">
+                                <div class="css-i62psg" id="imgComponent-{{i}}">
+                                  <div class="d-flex justify-content-end" *ngIf="v.foto.base64">
+                                    <div class="css-1spu5f8" *ngIf="i === 0">Foto Utama</div>
+                                    <button class="badge badge-center rounded-pill bg-danger border-0"
+                                      style="z-index: 1;" (click)="removePhoto(i)">
+                                      <i class="bx bx-trash"></i>
+                                    </button>
                                   </div>
+                                  <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
+                                    <label for="upload{{i}}" tabindex="{{i}}">
+                                      <div class="css-phearn" *ngIf="!v.isFoto"></div>
+                                      <img [src]="v.foto.base64" alt="foto-produk-{{i}}"
+                                        class="d-block rounded img-preview" id="uploadProduk{{i}}"
+                                        *ngIf="v.foto.base64">
+                                      <img [src]="v.foto" alt="foto-produk-kosong-{{i}}" class="d-block rounded"
+                                        height="100" width="100" id="uploadProduk{{i}}"
+                                        *ngIf="!v.foto.base64 && v.foto !== ''">
+
+                                      <div class="css-w18sxf" *ngIf="i !== 0 && !v.isFoto">{{ v.name }} {{i + 1}}</div>
+                                      <div class="css-w18sxf" *ngIf="i === 0 && !v.isFoto">Foto utama</div>
+                                      <input type="file" id="upload{{i}}" class="account-file-input" hidden=""
+                                        accept="image/png, image/jpeg" (change)="onFileSelected($event, i)">
+                                    </label>
+                                  </div>
+
+                                </div>
+                                <div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K, min. 300 x 300 px (For
+                          Better Picture, use size min. 1.200 x 1.200 px).</p>
                       </div>
                     </div>
                   </div>
@@ -196,6 +216,44 @@
                       <textarea id="in_box" class="form-control" [(ngModel)]="model.in_box" name="in_box" rows="4"
                         placeholder="In box..."></textarea>
                     </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="berat">Weight</label>
+                      <div class="row">
+                        <div class="col-3">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control" id="berat" placeholder="0" [(ngModel)]="model.berat"
+                              name="berat" placeholder="Weight...">
+                            <span class="input-group-text" id="berat">g</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="size">Size</label>
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control" id="panjang" placeholder="0"
+                              [(ngModel)]="model.panjang" name="panjang" placeholder="Length ...">
+                            <span class="input-group-text" id="panjang">cm</span>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control" id="tinggi" placeholder="0"
+                              [(ngModel)]="model.tinggi" name="tinggi" placeholder="Height ...">
+                            <span class="input-group-text" id="tinggi">cm</span>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control" id="lebar" placeholder="0" [(ngModel)]="model.lebar"
+                              name="lebar" placeholder="Width ...">
+                            <span class="input-group-text" id="lebar">cm</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -225,7 +283,7 @@
                           <div class="col-3">
                             <ng-select [items]="varian" [(ngModel)]="modelVarian.varian1" bindLabel="value"
                               bindValue="id" name="varian1" (change)="changeVarian1($event)" [addTag]="simpanVarian"
-                              dropdownPosition="bottom">
+                              placeholder="Variant 1" dropdownPosition="bottom">
                               <ng-template ng-label-tmp let-item="item">
                                 {{item.value}}
                               </ng-template>
@@ -285,17 +343,35 @@
                           <div class="col-3 pt-1" *ngIf="showVarian1"></div>
                           <div class="col-9 pt-1" *ngIf="showVarian1">
                             <div class="border-upload-varian" *ngIf="modelVarian.useFotoVarian == 1">
-                              <div *ngFor="let item of modelVarian.varianValue1; index as i;">
-                                <label data-testid="labelImageUploaderContainer" for="variantPicasdas"
-                                  class="css-1iijiv2"><svg class="unf-icon css-1itv5e3" viewBox="0 0 24 24" width="24"
-                                    height="24" fill="var(--color-icon-enabled, #2E3137)"
+                              <div class="css-1iijiv2" *ngFor="let item of listVariant; index as i;">
+                                <div class="d-flex justify-content-end" *ngIf="item.image !== ''">
+                                  <div class="label-preview-foto-variant">{{ item.varian1 }}</div>
+                                  <button class="badge badge-center rounded-pill bg-danger border-0" style="z-index: 1;"
+                                    (click)="removePhotoVarian(i)">
+                                    <i class="bx bx-trash"></i>
+                                  </button>
+                                </div>
+                                <label data-testid="labelImageUploaderContainer" for="variantPic_{{i}}">
+                                  <svg *ngIf="item.image == ''" class="unf-icon css-1itv5e3" viewBox="0 0 24 24"
+                                    width="24" height="24" fill="var(--color-icon-enabled, #2E3137)"
                                     style="display: inline-block; vertical-align: middle;">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
                                       d="M22 7.5a5.5 5.5 0 0 0-9-4.25H5A1.76 1.76 0 0 0 3.25 5v14A1.76 1.76 0 0 0 5 20.75h14A1.76 1.76 0 0 0 20.75 19v-8A5.47 5.47 0 0 0 22 7.5Zm-1.5 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM19 19.25H5a.25.25 0 0 1-.25-.25V5A.25.25 0 0 1 5 4.75h6.74a5.5 5.5 0 0 0 7.51 7.51V19a.25.25 0 0 1-.25.25ZM9 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4.267 4.298a.749.749 0 0 1 .263.172l4.01 4a.75.75 0 0 1-1.06 1.06l-3.41-3.41-1.47 1.85a.76.76 0 0 1-1 .15l-1-.65-2.04 2.09A.75.75 0 0 1 6.5 16.5L9 14a.76.76 0 0 1 .92-.08l.92.61 1.57-2a.75.75 0 0 1 .857-.232ZM15.75 8.25H14.3a.75.75 0 0 1 0-1.5h1.45V5.3a.75.75 0 0 1 1.5 0v1.45h1.45a.75.75 0 1 1 0 1.5h-1.45V9.7a.75.75 0 1 1-1.5 0V8.25Z">
                                     </path>
-                                  </svg>{{item}}</label>
+                                  </svg>
+                                  <span *ngIf="item.image == ''">
+                                    {{item.varian1}}
+                                  </span>
+                                  <img [src]="item.image.base64" alt="foto-produk-variant-{{i}}"
+                                    class="d-block rounded img-preview-variant" id="uploadVarian{{i}}"
+                                    *ngIf="item.image.base64">
+                                  <img [src]="item.image" alt="foto-produk-variant-kosong-{{i}}" class="d-block rounded"
+                                    height="100" width="100" id="uploadVarian{{i}}"
+                                    *ngIf="!item.image.base64 && item.image !== ''">
+                                </label>
                                 <input class="inputan" type="file" id="variantPic_{{i}}"
-                                  accept="image/x-png,image/png,image/jpg,image/jpeg">
+                                  accept="image/x-png,image/png,image/jpg,image/jpeg"
+                                  (change)="onFileSelectedVarian($event, i)">
                               </div>
                             </div>
                           </div>
@@ -314,8 +390,8 @@
 
                           <div class="col-3" *ngIf="aktifkanVaraian2">
                             <ng-select [items]="varian" [(ngModel)]="modelVarian.varian2" bindLabel="value"
-                              bindValue="id" name="varian2" (change)="changeVarian2($event)" [addTag]="simpanVarian"
-                              dropdownPosition="bottom">
+                              placeholder="Variant 2" bindValue="id" name="varian2" (change)="changeVarian2($event)"
+                              [addTag]="simpanVarian" dropdownPosition="bottom">
                               <ng-template ng-label-tmp let-item="item">
                                 {{item.value}}
                               </ng-template>
@@ -358,7 +434,7 @@
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th class="align-middle" width="5%"></th>
+                          <th class="align-middle" width="5%" *ngIf="modelVarian.useFotoVarian == 1"></th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian1">{{ valueVarian1 }}</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian2">{{ valueVarian2 }}</th>
                           <th class="align-middle" width="15%">Price</th>
@@ -370,8 +446,13 @@
                       <tbody>
                         <ng-container *ngIf="listVariant.length > 0">
                           <tr *ngFor="let item of listVariant; index as i">
-                            <td>
-                              <img src="assets/img/elements/4.jpg" class="rounded" width="60" height="60" alt="">
+                            <td *ngIf="modelVarian.useFotoVarian == 1">
+                              <img [src]="item.image.base64" alt="foto-produk-variant-{{i}}"
+                                class="d-block rounded img-preview-variant" id="uploadVarian{{i}}"
+                                *ngIf="item.image.base64">
+                              <img [src]="item.image" alt="foto-produk-variant-kosong-{{i}}" class="d-block rounded"
+                                height="100" width="100" id="uploadVarian{{i}}"
+                                *ngIf="!item.image.base64 && item.image !== ''">
                             </td>
                             <td *ngIf="valueVarian1">
                               <span>{{ item.varian1 }}</span>

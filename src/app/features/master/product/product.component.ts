@@ -4,7 +4,7 @@ import { GlobalService } from '../../../services/global.service';
 import {
   CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray
 } from "@angular/cdk/drag-drop";
-import {NgFor} from '@angular/common';
+import { NgFor } from '@angular/common';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
 @Component({
@@ -76,23 +76,59 @@ export class ProductComponent implements OnInit {
   fotoProduk: any = [
     {
       'id': 1,
-      'name': "Foto"
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
     },
     {
       'id': 2,
-      'name': "Foto"
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
     },
     {
       'id': 3,
-      'name': "Foto"
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
     },
     {
       'id': 4,
-      'name': "Foto"
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
     },
     {
       'id': 5,
-      'name': "Foto"
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 6,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 7,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 8,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
     }
   ];
 
@@ -144,7 +180,6 @@ export class ProductComponent implements OnInit {
 
   empty() {
     this.model = {};
-    this.listPhoto = [];
     this.listVariant = [];
   }
 
@@ -198,7 +233,7 @@ export class ProductComponent implements OnInit {
   }
 
   save() {
-    this.model.photo = this.listPhoto;
+    this.model.photo = this.fotoProduk;
     this.model.variant = this.listVariant;
     const final = Object.assign(this.model)
     this.globalService.DataPost('/produk/save', final, true).subscribe((res: any) => {
@@ -209,26 +244,58 @@ export class ProductComponent implements OnInit {
     })
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: any, index) {
     const selectedFile = <File>event.target.files[0];
     const reader = new FileReader();
+    console.log(index);
     reader.onload = () => {
-      let item = {
-        foto: { base64: reader.result as string }
-      }
-      this.listPhoto.push(item);
+      let foto = { base64: reader.result as string }
+      this.fotoProduk.forEach((v, i) => {
+        if (i === index) {
+          this.fotoProduk[i].foto = foto;
+          this.fotoProduk[i].isFoto = true;
+        }
+      });
     };
     reader.readAsDataURL(selectedFile);
   }
 
-  removePhoto(i) {
-    this.listPhoto.splice(i, 1)
+  removePhoto(index) {
+    this.fotoProduk.forEach((v, i) => {
+      if (i === index) {
+        this.fotoProduk[i].foto = '';
+        this.fotoProduk[i].isFoto = false;
+      }
+    });
   }
 
   getListPhoto(id) {
     this.globalService.DataGet(`/produk/photo/${id}`, {}, false).subscribe((res: any) => {
-      this.listPhoto = res.data;
+      this.fotoProduk = res.data;
     })
+  }
+
+  // fungsi variant
+  onFileSelectedVarian(event: any, index) {
+    const selectedFile = <File>event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      let foto = { base64: reader.result as string }
+      this.listVariant.forEach((v, i) => {
+        if (i === index) {
+          this.listVariant[i].image = foto;
+        }
+      });
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+
+  removePhotoVarian(index) {
+    this.listVariant.forEach((v, i) => {
+      if (i === index) {
+        this.listVariant[i].image = '';
+      }
+    });
   }
 
   getListVariant(id) {
@@ -311,7 +378,9 @@ export class ProductComponent implements OnInit {
       let row = {
         image: '',
         varian1: '',
+        varian1_type: '',
         varian2: '',
+        varian2_type: '',
         harga: 0,
         stok: '',
         berat: 0,
@@ -331,8 +400,6 @@ export class ProductComponent implements OnInit {
       this.disabledFotoVarian = true;
       this.tampilkanVarian2 = false;
     }
-
-
   }
 
   addVarian1() {
@@ -405,7 +472,9 @@ export class ProductComponent implements OnInit {
     let row = {
       image: '',
       varian1: '',
+      varian1_type: '',
       varian2: '',
+      varian2_type: '',
       harga: 0,
       stok: '',
       berat: 0,
