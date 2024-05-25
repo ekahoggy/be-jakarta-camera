@@ -9,11 +9,23 @@
       </ol>
     </nav>
     <div class="card" *ngIf="!showForm">
+      <div class="card-header">
+        <div class="row form-group my-2">
+          <div class="col-2">
+            <input type="text" name="param_kategori" [(ngModel)]="modelParam.kategori"
+              class="form-control form-control-sm" placeholder="Search By Category" (input)="reloadDataTable()">
+          </div>
+          <div class="col-2">
+            <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
+              <i class="fas fa-undo"></i>Reset</button>
+          </div>
+        </div>
+      </div>
       <div class="card-body">
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Product Category</h4>
+              <h4 class="mb-0">Product Category</h4>
               <button class="btn btn-primary" (click)="create()">
                 <i class="bx bx-xs bx-plus me-1"></i>
                 Create
@@ -32,7 +44,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
-                    <td><img class="rounded" [src]="item.icon" width="80" height="80"></td>
+                    <td><img class="rounded" [src]="item.icon" width="40" height="40"></td>
                     <td> {{ item.kategori }} </td>
                     <td>
                       <div class="dropdown">

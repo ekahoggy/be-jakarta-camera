@@ -17,6 +17,7 @@ export class ProductCategoryComponent implements OnInit {
   isView: boolean = false;
   listData: any = [];
   model: any = {};
+  modelParam: any = {};
   base64Image: string | null = null;
   listCategory: any = [];
   isLoading: boolean = false;
@@ -40,7 +41,7 @@ export class ProductCategoryComponent implements OnInit {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify({}),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
@@ -57,6 +58,12 @@ export class ProductCategoryComponent implements OnInit {
         })
       },
     };
+  }
+
+  reloadDataTable(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
 
   empty() {
@@ -123,7 +130,7 @@ export class ProductCategoryComponent implements OnInit {
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.base64Image = reader.result as string; 
+      this.base64Image = reader.result as string;
     };
     reader.readAsDataURL(selectedFile);
   }
@@ -137,5 +144,13 @@ export class ProductCategoryComponent implements OnInit {
     }
 
     return icon;
+  }
+
+  reset() {
+    this.modelParam = {
+      kategori: ''
+    }
+
+    this.reloadDataTable()
   }
 }

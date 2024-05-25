@@ -10,6 +10,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { DatePipe } from '@angular/common';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,10 @@ import { DatePipe } from '@angular/common';
     DataTablesModule,
     FormsModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    NgxSpinnerModule.forRoot({ type: 'ball-atom' })
+  ],
+  exports:[
   ],
   providers: [
     provideNgxMask(),
