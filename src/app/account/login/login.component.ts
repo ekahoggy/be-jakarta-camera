@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent implements OnInit {
   model: any = {};
+  loading = false;
 
   constructor(
     private globalService: GlobalService,
@@ -26,10 +27,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     let session = {};
+    this.loading = true;
     localStorage.removeItem('session');
     localStorage.removeItem('token');
     this.globalService.DataPost('/auth/login', this.model, false).subscribe((res: any) => {
-      if (res.status_code === 200) {
+      if (res) {
         session = {
           user: res.data.user,
           token: res.data.auth
@@ -45,6 +47,15 @@ export class LoginComponent implements OnInit {
           icon: 'error'
         })
       }
-    });
+      this.loading = false;
+    },
+      err => {
+        Swal.fire({
+          title: 'Perhatian',
+          text: 'Login gagal, email dan password tidak sama',
+          icon: 'error'
+        })
+        this.loading = false;
+      });
   }
 }

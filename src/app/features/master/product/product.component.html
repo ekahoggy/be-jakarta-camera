@@ -26,10 +26,11 @@
                 <thead>
                   <tr>
                     <th width="100">Sku</th>
-                    <th>Nama</th>
-                    <th class="text-center" width="150">Kategori</th>
-                    <th class="text-end" width="300">Harga</th>
-                    <th class="text-center" width="100">Actions</th>
+                    <th>Product</th>
+                    <th class="text-center" width="150">Category</th>
+                    <th class="text-center" width="150">Brand</th>
+                    <th class="text-end" width="300">Price</th>
+                    <th class="text-center" width="100"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -78,61 +79,36 @@
                   <!-- Image -->
                   <div class="col-12">
                     <div class="mb-3">
-                      <img src="assets/img/elements/18.jpg" alt="user-avatar" class="d-block rounded" height="100"
-                        width="100" id="uploadedAvatar" *ngIf="listPhoto.length==0">
-                      <div class="d-flex gap-3" *ngIf="listPhoto.length > 0">
-                        <ng-container *ngFor="let item of listPhoto; index as i">
-                          <div class="position-relative">
-                            <button
-                              class="badge badge-center rounded-pill bg-danger border-0 position-absolute top-0 end-0"
-                              (click)="removePhoto(i)">
-                              <i class="bx bx-trash"></i>
-                            </button>
-                            <img [src]="item.foto.base64" alt="user-avatar" class="d-block rounded" height="100"
-                              width="100" id="uploadedAvatar" *ngIf="item.foto.base64">
-                            <img [src]="item.foto" alt="user-avatar" class="d-block rounded" height="100" width="100"
-                              id="uploadedAvatar" *ngIf="!item.foto.base64">
-                          </div>
-                        </ng-container>
-                      </div>
-                      <!--
-                        <ul class="example-list"><li *ngFor="let item of items">{{ item }}</li></ul>
-                        <div class="example-container" cdkDropListGroup>
-                          <div cdkDropList [cdkDropListEnterPredicate]="dropListEnterPredicate" (cdkDropListDropped)="dropListDropped($event)"></div>
-                          <div cdkDropList *ngFor="let item of items"
-                               [cdkDropListEnterPredicate]="dropListEnterPredicate" (cdkDropListDropped)="dropListDropped($event)">
-                            <div cdkDrag class="example-box" (cdkDragMoved)="dragMoved($event);">{{item}}</div>
+                      <div id="imageSection">
+                        <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+                          (cdkDropListDropped)="drop($event)">
+                          <div class="css-1ofqig9 " *ngFor="let v of fotoProduk; index as i" cdkDrag>
+                            <div class="css-2imjyh" id="imgDropArea" tabindex="0">
+                              <div id="img-0-empty">
+                                <div class="css-i62psg" id="imgComponent-0">
+                                  <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
+                                    <div class="css-phearn"></div>
+                                    <div class="css-w18sxf" *ngIf="i !== 0">{{ v.name }} {{i + 1}}</div>
+                                    <div class="css-w18sxf" *ngIf="i === 0">Foto utama</div>
+                                    <input type="file" id="produkFoto_{{i}}" style="display: none;"
+                                      accept="image/x-png,image/png,image/jpg,image/jpeg">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      -->
-                      <div class="button-wrapper mt-3">
-                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                          <span class="d-none d-sm-block">Upload Image</span>
-                          <i class="bx bx-upload d-block d-sm-none"></i>
-                          <input type="file" id="upload" class="account-file-input" hidden=""
-                            accept="image/png, image/jpeg" (change)="onFileSelected($event)">
-                        </label>
-                        <!-- <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
-													<i class="bx bx-reset d-block d-sm-none"></i>
-													<span class="d-none d-sm-block">Reset</span>
-												</button> -->
-
                         <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="divider">
-                      <div class="divider-text">Detail Produk</div>
+                      <div class="divider-text">Details Product</div>
                     </div>
                   </div>
                   <!-- Detail Product -->
                   <div class="col-6">
-                    <div class="mb-3">
-                      <label class="form-label" for="sku">SKU</label>
-                      <input type="text" class="form-control" id="sku" [(ngModel)]="model.sku" name="sku"
-                        placeholder="Sku Code...">
-                    </div>
                     <div class="mb-3">
                       <label class="form-label" for="nama">Name</label>
                       <input type="text" class="form-control" id="nama" [(ngModel)]="model.nama" name="nama"
@@ -140,10 +116,15 @@
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="kategori">Category</label>
-                      <select class="form-select" id="m_kategori_id" aria-label="Select category"
-                        [(ngModel)]="model.m_kategori_id" name="m_kategori_id">
-                        <option *ngFor="let item of listCategory" [value]="item.id"> {{ item.kategori }} </option>
-                      </select>
+                      <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Category ..."
+                        [(ngModel)]="model.m_kategori_id" name="kategori">
+                      </ng-select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="kategori">Brand</label>
+                      <ng-select [items]="listBrand" bindLabel="brand" bindValue="id" placeholder="Brand ..."
+                        [(ngModel)]="model.m_brand_id" name="brand">
+                      </ng-select>
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="harga">Price</label>
@@ -153,14 +134,6 @@
                           name="harga" placeholder="Price...">
                       </div>
                     </div>
-                    <!-- <div class="mb-3">
-											<label class="form-label" for="tags">Tags</label>
-											<select multiple="" class="form-select" id="tags" aria-label="Multiple select example" [(ngModel)]="model.tags" name="tags">
-												<option value="Camera">Camera</option>
-												<option value="Promo">Promo</option>
-												<option value="DLSR">DLSR</option>
-											</select>
-										</div> -->
                     <div class="divider">
                       <div class="divider-text">Link E-commerce</div>
                     </div>
@@ -229,23 +202,23 @@
                 <div class="row">
                   <div class="mb-3">
                     <div class="divider">
-                      <div class="divider-text">Varian Produk</div>
+                      <div class="divider-text">Variant Produk</div>
                     </div>
                     <div class="row pb-2">
                       <div class="col-12 text-end">
                         <button class="btn btn-primary me-1" (click)="addVariant()" *ngIf="buttonAtasVarian1">
                           <i class="bx bx-plus"></i>
-                          Tambah Varian
+                          Add Variant
                         </button>
                         <button class="btn btn-primary" (click)="removeVariant()" *ngIf="!buttonAtasVarian1">
                           <i class="bx bx-trash"></i>
-                          Hapus Varian
+                          Remove Variant
                         </button>
                       </div>
                       <div class="col-12 pb-4" *ngIf="aktifkanVaraian1">
                         <div class="row">
                           <div class="col-3">
-                            Tipe Varian 1 <span style="font-size: smaller;">(Upload foto varian di tipe ini)</span>
+                            Variant 1 <span style="font-size: smaller;">(Upload photo variant in this variant 1)</span>
                           </div>
                           <div class="col-8"></div>
 
@@ -257,7 +230,7 @@
                                 {{item.value}}
                               </ng-template>
                               <ng-template ng-footer-tmp class="p-0">
-                                <div class="select-buat-varian">Ketik untuk tambah varian 1</div>
+                                <div class="select-buat-varian">Type to add Variant 1</div>
                               </ng-template>
                             </ng-select>
                           </div>
@@ -313,7 +286,7 @@
                           <div class="col-9 pt-1" *ngIf="showVarian1">
                             <div class="border-upload-varian" *ngIf="modelVarian.useFotoVarian == 1">
                               <div *ngFor="let item of modelVarian.varianValue1; index as i;">
-                                <label data-testid="labelImageUploaderContainerasdas" for="variantPicasdas"
+                                <label data-testid="labelImageUploaderContainer" for="variantPicasdas"
                                   class="css-1iijiv2"><svg class="unf-icon css-1itv5e3" viewBox="0 0 24 24" width="24"
                                     height="24" fill="var(--color-icon-enabled, #2E3137)"
                                     style="display: inline-block; vertical-align: middle;">
@@ -333,9 +306,9 @@
                           <div class="col-3">
                             <button class="btn btn-primary me-1" (click)="addVariant2()" *ngIf="buttonAtasVarian2">
                               <i class="bx bx-plus"></i>
-                              Tambah Varian 2
+                              Add Variant 2
                             </button>
-                            <span *ngIf="aktifkanVaraian2">Tipe Varian 2</span>
+                            <span *ngIf="aktifkanVaraian2">Type Variant 2</span>
                           </div>
                           <div class="col-8"></div>
 
@@ -347,7 +320,7 @@
                                 {{item.value}}
                               </ng-template>
                               <ng-template ng-footer-tmp class="p-0">
-                                <div class="select-buat-varian">Ketik untuk tambah varian 2</div>
+                                <div class="select-buat-varian">Type to add Variant 2</div>
                               </ng-template>
                             </ng-select>
                           </div>
@@ -355,7 +328,8 @@
                             <!-- untuk warna -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue2"
-                              name="varianwarna2" *ngIf="valueVarian2 == 'warna'" (change)="isiVarian2($event, 'warna')">
+                              name="varianwarna2" *ngIf="valueVarian2 == 'warna'"
+                              (change)="isiVarian2($event, 'warna')">
                               <ng-template ng-option-tmp let-item="item" let-index="index">
                                 <div class="d-flex justify-content-left">
                                   <div class="varian-warna-select" [style.background]="item.warna"></div>
@@ -366,7 +340,8 @@
                             <!-- untuk ukuran -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue2"
-                              name="varianukuran2" *ngIf="valueVarian2 == 'ukuran'" (change)="isiVarian2($event, 'ukuran')">
+                              name="varianukuran2" *ngIf="valueVarian2 == 'ukuran'"
+                              (change)="isiVarian2($event, 'ukuran')">
                             </ng-select>
                             <!-- untuk custom varian -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
@@ -386,10 +361,10 @@
                           <th class="align-middle" width="5%"></th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian1">{{ valueVarian1 }}</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian2">{{ valueVarian2 }}</th>
-                          <th class="align-middle" width="15%">Harga</th>
-                          <th class="align-middle" width="5%">Stok</th>
+                          <th class="align-middle" width="15%">Price</th>
+                          <th class="align-middle" width="5%">Stock</th>
                           <th class="align-middle" width="15%">Sku</th>
-                          <th class="align-middle" width="10%">Berat</th>
+                          <th class="align-middle" width="10%">Weight</th>
                         </tr>
                       </thead>
                       <tbody>

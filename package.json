@@ -26,6 +26,7 @@
     "@popperjs/core": "^2.11.6",
     "angular-datatables": "^15.0.1",
     "angular-sweetalert": "^1.1.2",
+    "angular-tree-grid": "^7.0.0",
     "bootstrap": "^5.2.3",
     "boxicons": "^2.1.4",
     "datatables.net": "^1.13.8",
@@ -42,6 +43,7 @@
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.11.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

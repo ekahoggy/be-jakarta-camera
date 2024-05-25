@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { AngularTreeGridModule } from "angular-tree-grid";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     FormsModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    NgxSpinnerModule.forRoot({ type: 'ball-atom' })
+    AngularTreeGridModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-atom' }),
   ],
   exports:[
   ],

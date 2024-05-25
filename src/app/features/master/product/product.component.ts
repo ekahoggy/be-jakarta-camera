@@ -2,20 +2,18 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
 import {
-  CdkDrag,
-  CdkDragStart,
-  CdkDropList, CdkDropListGroup, CdkDragMove, CdkDragEnter,
-  moveItemInArray
+  CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray
 } from "@angular/cdk/drag-drop";
+import {NgFor} from '@angular/common';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  styleUrls: ['./product.component.scss'],
 })
+
 export class ProductComponent implements OnInit {
-  @ViewChild(CdkDropListGroup) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList) placeholder: CdkDropList;
   @ViewChild(DataTableDirective)
   dtElement: any = DataTableDirective;
@@ -27,6 +25,7 @@ export class ProductComponent implements OnInit {
   listData: any = [];
   model: any = {};
   listCategory: any;
+  listBrand: any;
   listPhoto: any = [];
   listVariant: any = [];
 
@@ -74,6 +73,28 @@ export class ProductComponent implements OnInit {
   public sourceIndex: number;
   public dragIndex: number;
   public activeContainer;
+  fotoProduk: any = [
+    {
+      'id': 1,
+      'name': "Foto"
+    },
+    {
+      'id': 2,
+      'name': "Foto"
+    },
+    {
+      'id': 3,
+      'name': "Foto"
+    },
+    {
+      'id': 4,
+      'name': "Foto"
+    },
+    {
+      'id': 5,
+      'name': "Foto"
+    }
+  ];
 
   constructor(
     private globalService: GlobalService,
@@ -86,6 +107,10 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.empty();
     this.getData();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.fotoProduk, event.previousIndex, event.currentIndex);
   }
 
   getData() {
@@ -133,6 +158,7 @@ export class ProductComponent implements OnInit {
     this.isEdit = false;
     this.isView = false;
     this.getListCategory();
+    this.getListBrand();
     //varian
     this.modelVarian.useFotoVarian = 0;
   }
@@ -143,6 +169,7 @@ export class ProductComponent implements OnInit {
     this.isView = false;
     this.model = val;
     this.getListCategory();
+    this.getListBrand();
     this.getListPhoto(val.id);
     this.getListVariant(val.id);
   }
@@ -153,6 +180,7 @@ export class ProductComponent implements OnInit {
     this.isView = true;
     this.model = val;
     this.getListCategory();
+    this.getListBrand();
     this.getListPhoto(val.id);
     this.getListVariant(val.id);
   }
@@ -160,6 +188,12 @@ export class ProductComponent implements OnInit {
   getListCategory() {
     this.globalService.DataGet('/kategori', {}, false).subscribe((res: any) => {
       this.listCategory = res.data.list;
+    })
+  }
+
+  getListBrand() {
+    this.globalService.DataGet('/brand', {}, false).subscribe((res: any) => {
+      this.listBrand = res.data.list;
     })
   }
 
@@ -433,102 +467,4 @@ export class ProductComponent implements OnInit {
   add() {
     this.items.push(this.items.length + 1);
   }
-
-  shuffle() {
-    this.items.sort(function () {
-      return .5 - Math.random();
-    });
-  }
-
-  dragMoved(e: CdkDragMove) {
-    let point = this.getPointerPositionOnPage(e.event);
-
-    this.listGroup._items.forEach(dropList => {
-      if (__isInsideDropListClientRect(dropList, point.x, point.y)) {
-        this.activeContainer = dropList;
-        return;
-      }
-    });
-  }
-
-  dropListDropped(e) {
-    if (!this.target)
-      return;
-
-    let phElement = this.placeholder.element.nativeElement;
-    let parent = phElement.parentElement;
-
-    phElement.style.display = 'none';
-
-    parent.removeChild(phElement);
-    parent.appendChild(phElement);
-    parent.insertBefore(this.source.element.nativeElement, parent.children[this.sourceIndex]);
-
-    this.target = null;
-    this.source = null;
-
-    if (this.sourceIndex != this.targetIndex)
-      moveItemInArray(this.items, this.sourceIndex, this.targetIndex);
-  }
-
-  dropListEnterPredicate = (drag: CdkDrag, drop: CdkDropList) => {
-    if (drop == this.placeholder)
-      return true;
-
-    if (drop != this.activeContainer)
-      return false;
-
-    let phElement = this.placeholder.element.nativeElement;
-    let sourceElement = drag.dropContainer.element.nativeElement;
-    let dropElement = drop.element.nativeElement;
-
-    let dragIndex = __indexOf(dropElement.parentElement.children, (this.source ? phElement : sourceElement));
-    let dropIndex = __indexOf(dropElement.parentElement.children, dropElement);
-
-    if (!this.source) {
-      this.sourceIndex = dragIndex;
-      this.source = drag.dropContainer;
-
-      phElement.style.width = sourceElement.clientWidth + 'px';
-      phElement.style.height = sourceElement.clientHeight + 'px';
-
-      sourceElement.parentElement.removeChild(sourceElement);
-    }
-
-    this.targetIndex = dropIndex;
-    this.target = drop;
-
-    phElement.style.display = '';
-    dropElement.parentElement.insertBefore(phElement, (dropIndex > dragIndex
-      ? dropElement.nextSibling : dropElement));
-
-    this.placeholder._dropListRef.enter(drag._dragRef, drag.element.nativeElement.offsetLeft, drag.element.nativeElement.offsetTop);
-    return false;
-  }
-
-  /** Determines the point of the page that was touched by the user. */
-  getPointerPositionOnPage(event: MouseEvent | TouchEvent) {
-    // `touches` will be empty for start/end events so we have to fall back to `changedTouches`.
-    const point = __isTouchEvent(event) ? (event.touches[0] || event.changedTouches[0]) : event;
-    const scrollPosition = this.viewportRuler.getViewportScrollPosition();
-
-    return {
-      x: point.pageX - scrollPosition.left,
-      y: point.pageY - scrollPosition.top
-    };
-  }
-}
-
-function __indexOf(collection, node) {
-  return Array.prototype.indexOf.call(collection, node);
-};
-
-/** Determines whether an event is a touch event. */
-function __isTouchEvent(event: MouseEvent | TouchEvent): event is TouchEvent {
-  return event.type.startsWith('touch');
-}
-
-function __isInsideDropListClientRect(dropList: CdkDropList, x: number, y: number) {
-  const { top, bottom, left, right } = dropList.element.nativeElement.getBoundingClientRect();
-  return y >= top && y <= bottom && x >= left && x <= right;
 }

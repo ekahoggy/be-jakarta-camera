@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
+import { AngularTreeGridComponent } from 'angular-tree-grid';
 
 @Component({
   selector: 'app-product-category',
