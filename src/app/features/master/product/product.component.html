@@ -25,20 +25,50 @@
               <table datatable [dtOptions]="dtOptions" class="table">
                 <thead>
                   <tr>
-                    <th width="100">Sku</th>
                     <th>Product</th>
-                    <th class="text-center" width="150">Category</th>
-                    <th class="text-center" width="150">Brand</th>
-                    <th class="text-end" width="300">Price</th>
-                    <th class="text-center" width="100"></th>
+                    <th width="200">Variant</th>
+                    <th width="200">MSKU</th>
+                    <th width="150">Stock</th>
+                    <th class="text-center" width="50"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
-                    <td> {{ item.sku }} </td>
-                    <td> {{ item.nama }} </td>
-                    <td class="text-center"> {{ item.kategori }} </td>
-                    <td class="text-end"> Rp.{{ item.harga }} </td>
+                    <td class="to-top">
+                      <div class="d-flex justify-content-beetwen">
+                        <img [src]="item.foto" width="100" alt="{{item.nama}}"> &nbsp;
+                        <div class="d-column">
+                          <p>{{ item.nama }}</p>
+                          <span>{{ item.sku }}</span>
+                          <span class="badge bg-label-success me-1">{{ item.kategori }}</span>
+                          <span class="badge bg-label-primary me-1">{{ item.brand }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <span *ngIf="item.variant.length == 0">-</span>
+                      <div class="d-table table-variant" *ngIf="item.variant.length > 0" style="text-align: left;">
+                        <div class="detail-variant" *ngFor="let variant of item.variant">
+                          <span>{{ variant.varian1 }} - {{ variant.varian2 }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <span *ngIf="item.variant.length == 0">-</span>
+                      <div class="d-table table-variant" *ngIf="item.variant.length > 0" style="text-align: left;">
+                        <div class="detail-variant" *ngFor="let variant of item.variant">
+                          <span>{{ variant.sku }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <span *ngIf="item.variant.length == 0">-</span>
+                      <div class="d-table table-variant" *ngIf="item.variant.length > 0" style="text-align: left;">
+                        <div class="detail-variant" *ngFor="let variant of item.variant">
+                          <span>{{ variant.stok }}</span>
+                        </div>
+                      </div>
+                    </td>
                     <td>
                       <div class="dropdown text-center">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -151,7 +181,7 @@
                       <div class="input-group input-group-merge">
                         <span class="input-group-text" id="harga">Rp</span>
                         <input type="text" class="form-control" id="harga" placeholder="0" [(ngModel)]="model.harga"
-                          name="harga" placeholder="Price...">
+                          name="harga" placeholder="Price..." mask="separator.3" thousandSeparator=".">
                       </div>
                     </div>
                     <div class="divider">
@@ -222,7 +252,7 @@
                         <div class="col-3">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="berat" placeholder="0" [(ngModel)]="model.berat"
-                              name="berat" placeholder="Weight...">
+                              name="berat" placeholder="Weight..." mask="separator.3" thousandSeparator=".">
                             <span class="input-group-text" id="berat">g</span>
                           </div>
                         </div>
@@ -234,21 +264,23 @@
                         <div class="col-4">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="panjang" placeholder="0"
-                              [(ngModel)]="model.panjang" name="panjang" placeholder="Length ...">
+                              [(ngModel)]="model.panjang" name="panjang" placeholder="Length ..." mask="separator.3"
+                              thousandSeparator=".">
                             <span class="input-group-text" id="panjang">cm</span>
                           </div>
                         </div>
                         <div class="col-4">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="tinggi" placeholder="0"
-                              [(ngModel)]="model.tinggi" name="tinggi" placeholder="Height ...">
+                              [(ngModel)]="model.tinggi" name="tinggi" placeholder="Height ..." mask="separator.3"
+                              thousandSeparator=".">
                             <span class="input-group-text" id="tinggi">cm</span>
                           </div>
                         </div>
                         <div class="col-4">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="lebar" placeholder="0" [(ngModel)]="model.lebar"
-                              name="lebar" placeholder="Width ...">
+                              name="lebar" placeholder="Width ..." mask="separator.3" thousandSeparator=".">
                             <span class="input-group-text" id="lebar">cm</span>
                           </div>
                         </div>

@@ -247,7 +247,6 @@ export class ProductComponent implements OnInit {
   onFileSelected(event: any, index) {
     const selectedFile = <File>event.target.files[0];
     const reader = new FileReader();
-    console.log(index);
     reader.onload = () => {
       let foto = { base64: reader.result as string }
       this.fotoProduk.forEach((v, i) => {
@@ -350,6 +349,7 @@ export class ProductComponent implements OnInit {
     }
   }
   isiVarian1(e, tipe) {
+    this.duplicate = [];
     let pushed = {
       nama: '',
       tipe: '',
@@ -390,6 +390,7 @@ export class ProductComponent implements OnInit {
 
       this.selectedVarian1.forEach(val => {
         row.varian1 = val.nama;
+        row.varian1_type = val.tipe;
       });
 
       this.listVariant.push(row);
@@ -422,6 +423,7 @@ export class ProductComponent implements OnInit {
   );
 
   changeVarian2(e) {
+    this.duplicate = [];
     this.varian2 = [];
     this.modelVarian.varianValue2 = null;
     if (e) {
@@ -464,26 +466,11 @@ export class ProductComponent implements OnInit {
     });
 
     this.selectedVarian2.push(pushed);
-    this.compareAllVarian();
-
-  }
-
-  compareAllVarian() {
-    let row = {
-      image: '',
-      varian1: '',
-      varian1_type: '',
-      varian2: '',
-      varian2_type: '',
-      harga: 0,
-      stok: '',
-      berat: 0,
-      status: 1,
-      main: 0,
-    }
-
-    this.selectedVarian2.forEach(val => {
-      row.varian2 = val.nama;
+    this.listVariant.forEach(vari => {
+      this.selectedVarian2.forEach(v2 => {
+        vari.varian2 = v2.nama;
+        vari.varian2_type = v2.tipe;
+      });
     });
 
     let jumlahDatake2 = this.selectedVarian2.length;
@@ -494,32 +481,27 @@ export class ProductComponent implements OnInit {
         });
       });
     }
-    else if (jumlahDatake2 >= 2) {
+    else if (jumlahDatake2 > 1) {
+      console.log(jumlahDatake2);
       for (let i = 0; i < jumlahDatake2; i++) {
         this.listVariant.forEach(element => {
           this.duplicate.push(element);
         });
       }
-
-      // console.log(this.selectedVarian2);
-      let data2_baru = [];
-      this.selectedVarian2.forEach(item1 => {
-        this.duplicate.forEach((item2, k) => {
-          if (item1.nama != item2.varian2 && item1.nama != item2.varian1) {
-            item2.varian2 = item1.nama;
-            data2_baru.push(item2)
-          }
-          // if (item1.nama !== item2.varian2) {
-          //   this.duplicate[k].nama = item1.nama;
-          // this.duplicate[k].gambar = item1.gambar;
-          // }
-        });
-      });
-
-      this.duplicate.concat(data2_baru);
-      console.log(this.duplicate);
-      // console.log(this.duplicate);
+      this.compareAllVarian();
     }
+
+  }
+
+  compareAllVarian() {
+    let data = {
+      'data_utama' : this.duplicate,
+      'data_second' : this.selectedVarian2
+    }
+    const final = Object.assign(data)
+    this.globalService.DataPost('/produk/prosesVariant', final, true).subscribe((res: any) => {
+      this.listVariant = res.data;
+    })
   }
 
   addVarian2() {

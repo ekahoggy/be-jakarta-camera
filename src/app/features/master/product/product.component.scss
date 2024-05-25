@@ -1,3 +1,23 @@
+table{
+  td{
+    padding-top: 10px !important;
+    padding-right: 0 !important;
+  }
+
+  .to-top{
+    vertical-align: text-top !important;
+  }
+}
+
+.table-variant{
+  width: 100% !important;
+  .detail-variant {
+    height: 30px;
+    padding-top: 5px !important;
+    border-bottom: 1px dashed var(--N100, #DBDEE2);
+  }
+}
+
 .example-list {
   // width: 1000px;
   max-width: 100%;
