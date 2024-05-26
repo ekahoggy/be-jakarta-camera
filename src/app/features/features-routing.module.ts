@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdminComponent } from './auth/admin/admin.component';
-import { ProductComponent } from './master/product/product.component';
 import { OrderComponent } from './order/order.component';
-import { StokModule } from './stok/stok.module';
 
 const routes: Routes = [
   {
@@ -19,7 +16,7 @@ const routes: Routes = [
   {
     path: 'order',
     component: OrderComponent,
-  }, 
+  },
   {
     path: 'users',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
@@ -31,6 +28,10 @@ const routes: Routes = [
   {
     path: 'stok',
     loadChildren: () => import('./stok/stok.module').then((m) => m.StokModule),
+  },
+  {
+    path: 'frontend',
+    loadChildren: () => import('./cms/cms.module').then((m) => m.CmsModule),
   }
 ];
 
