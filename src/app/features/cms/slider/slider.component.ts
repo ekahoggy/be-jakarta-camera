@@ -3,6 +3,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgFor } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-slider',
@@ -36,7 +37,7 @@ export class SliderComponent {
     let idSlider = '';
     if (event.currentIndex !== event.previousIndex) {
       this.listData.forEach(val => {
-        if(event.previousIndex === val.index_position){
+        if (event.previousIndex === val.index_position) {
           idSlider = val.id;
         }
       });
@@ -65,8 +66,45 @@ export class SliderComponent {
 
   create() {
     this.showForm = !this.showForm;
+    this.model = {};
     this.isEdit = false;
     this.isView = false;
+  }
+
+  edit(val) {
+    this.showForm = !this.showForm;
+    this.model = {};
+    this.isEdit = true;
+    this.isView = false;
+    this.model = val;
+  }
+
+  delete(id) {
+    Swal.fire({
+      title: 'Are you sure',
+      text: 'Delete this data?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#34c38f',
+      cancelButtonColor: '#f46a6a',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.value) {
+        this.globalService.DataPost('/slider/status', { id: id }, true).subscribe((res: any) => {
+          if (res.status_code === 200) {
+            this.globalService.alertSuccess(
+              'Done',
+              'Slider successfully deleted!'
+            );
+            this.getData();
+          } else {
+            this.globalService.alertError('Sorry', res.errors
+            );
+          }
+        });
+      }
+    });
   }
 
   save() {

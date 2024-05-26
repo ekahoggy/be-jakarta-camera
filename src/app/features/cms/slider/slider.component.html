@@ -30,12 +30,15 @@
                     <div id="img-0-empty">
                       <div class="css-i62psg" id="imgComponent-{{i}}">
                         <div class="d-flex justify-content-end" style="position: absolute;">
-                          <button class="badge badge-center rounded-pill bg-danger border-0" style="z-index: 1;">
+                          <button class="badge badge-center rounded-pill bg-danger border-0" style="z-index: 1;" (click)="delete(v.id)">
                             <i class="bx bx-trash"></i>
+                          </button>
+                          <button class="badge badge-center rounded-pill bg-warning border-0" style="z-index: 1;" (click)="edit(v)">
+                            <i class="bx bx-pencil"></i>
                           </button>
                         </div>
                         <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
-                          <img [src]="v.picture" alt="slider-{{i}}" class="d-block rounded" height="100%"
+                          <img [src]="v.picture" alt="slider-{{i}}" class="d-block rounded" height="100%" style="object-fit: contain;"
                             width="100%" id="slider-{{i}}">
                           <div class="css-w18sxf">{{ v.title }}</div>
                         </div>
