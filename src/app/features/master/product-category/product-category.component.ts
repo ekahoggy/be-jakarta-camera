@@ -102,13 +102,20 @@ export class ProductCategoryComponent implements OnInit {
 
   save() {
     this.model.icon = this.setImageBase64(this.model.icon);
+    if (this.model.icon === "assets/img/elements/18.jpg") {
+      this.model.icon = {};
+    }
     const final = Object.assign(this.model)
     this.globalService.DataPost('/kategori/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
-        this.globalService.alertSuccess('Success', 'Category saved successfully')
+        this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disimpan')
         this.index();
       }
-    })
+    },
+      error => {
+        this.empty();
+        this.globalService.alertError('Gagal', error.error.message);
+      })
   }
 
   getDataById(id: string = null) {

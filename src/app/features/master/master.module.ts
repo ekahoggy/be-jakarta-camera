@@ -11,9 +11,11 @@ import { RoleComponent } from './role/role.component';
 import { VoucherComponent } from './voucher/voucher.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     NgOptionHighlightModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    DragDropModule
+    DragDropModule,
+    CKEditorModule,
+    MatButtonModule,
+    MatIconModule
   ]
 })
 export class MasterModule { }

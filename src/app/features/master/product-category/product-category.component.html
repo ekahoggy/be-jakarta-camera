@@ -114,13 +114,15 @@
                   <textarea id="keterangan" class="form-control" rows="3" [(ngModel)]="model.keterangan"
                     name="keterangan" placeholder="Deskripsi..."></textarea>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label" for="induk_id">Induk Kategori</label>
-                  <select class="form-select" id="induk_id" aria-label="Default select example"
-                    [(ngModel)]="model.induk_id" name="induk_id">
-                    <option *ngFor="let item of listCategory" [value]="item.id"> {{ item.kategori }} </option>
-                  </select>
-                </div>
+                <!--
+                  <div class="mb-3">
+                    <label class="form-label" for="induk_id">Induk Kategori</label>
+                    <select class="form-select" id="induk_id" aria-label="Default select example"
+                      [(ngModel)]="model.induk_id" name="induk_id">
+                      <option *ngFor="let item of listCategory" [value]="item.id"> {{ item.kategori }} </option>
+                    </select>
+                  </div>
+                -->
               </fieldset>
             </form>
           </div>

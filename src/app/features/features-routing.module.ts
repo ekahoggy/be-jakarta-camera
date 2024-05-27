@@ -32,6 +32,10 @@ const routes: Routes = [
   {
     path: 'frontend',
     loadChildren: () => import('./cms/cms.module').then((m) => m.CmsModule),
+  },
+  {
+    path: 'news',
+    loadChildren: () => import('./news/news.module').then((m) => m.NewsModule),
   }
 ];
 

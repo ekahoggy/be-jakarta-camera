@@ -6,6 +6,8 @@ import {
 } from "@angular/cdk/drag-drop";
 import { NgFor } from '@angular/common';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 
 @Component({
   selector: 'app-product',
@@ -19,6 +21,7 @@ export class ProductComponent implements OnInit {
   dtElement: any = DataTableDirective;
   dtInstance: any = Promise<DataTables.Api>;
   dtOptions: DataTables.Settings = {};
+  editor = ClassicEditor;
   showForm: boolean = false;
   isEdit: boolean = false;
   isView: boolean = false;
@@ -29,6 +32,11 @@ export class ProductComponent implements OnInit {
   listBrand: any;
   listPhoto: any = [];
   listVariant: any = [];
+
+  //ckeditor
+  detail_produk: any;
+  deskripsi: any;
+  in_box: any;
 
   //varian
   changeStokSingle: boolean = false;
@@ -195,7 +203,7 @@ export class ProductComponent implements OnInit {
 
   constructor(
     private globalService: GlobalService,
-    private viewportRuler: ViewportRuler
+    private viewportRuler: ViewportRuler,
   ) {
     this.target = null;
     this.source = null;
@@ -255,14 +263,19 @@ export class ProductComponent implements OnInit {
     this.modelParam = {
       nama: '',
       m_kategori_id: null,
-      m_brand_id: null
+      m_brand_id: null,
+      is_active: '1'
     }
 
     this.reloadDataTable()
   }
 
   empty() {
+    this.modelParam.is_active = '1';
     this.model = {};
+    this.deskripsi = null;
+    this.detail_produk = null;
+    this.in_box = null;
     this.listVariant = [];
   }
 
@@ -288,6 +301,9 @@ export class ProductComponent implements OnInit {
     this.isEdit = true;
     this.isView = false;
     this.model = val;
+    this.deskripsi = this.model.deskripsi;
+    this.detail_produk = this.model.detail_produk;
+    this.in_box = this.model.in_box;
     this.getListCategory();
     this.getListBrand();
     this.getListPhoto(val.id);
@@ -299,6 +315,9 @@ export class ProductComponent implements OnInit {
     this.isEdit = false;
     this.isView = true;
     this.model = val;
+    this.deskripsi = this.model.deskripsi;
+    this.detail_produk = this.model.detail_produk;
+    this.in_box = this.model.in_box;
     this.getListCategory();
     this.getListBrand();
     this.getListPhoto(val.id);
@@ -323,10 +342,37 @@ export class ProductComponent implements OnInit {
     const final = Object.assign(this.model)
     this.globalService.DataPost('/produk/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
-        this.globalService.alertSuccess('Success', 'Product saved successfully')
+        this.globalService.alertSuccess('Berhasil', 'Produk berhasil di simpan')
         this.index();
       }
+    },
+      error => {
+        this.globalService.alertError('Gagal', error.error.message);
+      })
+  }
+
+  ubahStatus(val, status){
+    val.is_active = status
+    const final = Object.assign(val)
+    this.globalService.DataPost('/produk/ubahStatus', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.globalService.alertSuccess('Berhasil', 'Produk berhasil diubah status')
+        this.reloadDataTable();
+      }
     })
+  }
+
+  onChangeDetailEditor({ editor }: ChangeEvent, jenis){
+    const data = editor.getData();
+    if(jenis === 'detail_produk'){
+      this.model.detail_produk = data;
+    }
+    if(jenis === 'deskripsi'){
+      this.model.deskripsi = data;
+    }
+    if(jenis === 'in_box'){
+      this.model.in_box = data;
+    }
   }
 
   onFileSelected(event: any, index) {
@@ -356,6 +402,21 @@ export class ProductComponent implements OnInit {
   getListPhoto(id) {
     this.globalService.DataGet(`/produk/photo/${id}`, {}, false).subscribe((res: any) => {
       this.fotoProduk = res.data;
+      const dataCount = this.fotoProduk.length;
+      const mainCount = this.fotoProdukReset.length;
+
+      const elementsToAdd = mainCount - dataCount;
+      if (elementsToAdd > 0) {
+        for (let i = 0; i < elementsToAdd; i++) {
+          this.fotoProduk.push({
+            'id': null,
+            'name': "Foto",
+            'urutan': 0,
+            'foto': '',
+            'isFoto': false
+          });
+        }
+      }
     })
   }
 
@@ -385,9 +446,13 @@ export class ProductComponent implements OnInit {
   getListVariant(id) {
     this.globalService.DataGet(`/produk/variant/${id}`, {}, false).subscribe((res: any) => {
       this.listVariant = res.data;
-      if(this.isEdit || this.isView){
+      if (this.isEdit || this.isView) {
         this.valueVarian1 = res.varian1;
         this.valueVarian2 = res.varian2;
+      }
+
+      if (this.isEdit) {
+
       }
     })
   }
@@ -611,7 +676,7 @@ export class ProductComponent implements OnInit {
     val.is_edit = true;
   }
 
-  simpanStokList(val, i){
+  simpanStokList(val, i) {
     const final = Object.assign(val)
     this.globalService.DataPost('/produk/updateStok', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
@@ -621,11 +686,12 @@ export class ProductComponent implements OnInit {
     })
   }
 
-  simpanStokSingle(val){
+  simpanStokSingle(val) {
     const final = Object.assign(val)
     this.globalService.DataPost('/produk/updateStokProduk', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
         this.globalService.alertSuccess('Success', 'Stok Produk berhasil diubah')
+        this.changeStokSingle = false;
         this.reloadDataTable();
       }
     })

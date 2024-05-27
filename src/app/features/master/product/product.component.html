@@ -37,6 +37,13 @@
                     [(ngModel)]="modelParam.m_brand_id" name="brand">
                   </ng-select>
                 </div>
+                <div class="col-2">
+                  <select class="form-select" id="is_active" placeholder="Status"
+                    [(ngModel)]="modelParam.is_active" name="is_active">
+                    <option value="1">Aktif</option>
+                    <option value="0">Tidak Aktif</option>
+                  </select>
+                </div>
               </div>
               <div class="col-12 text-center">
                 <button class="btn btn-primary btn-rounded" (click)="reloadDataTable()">
@@ -54,9 +61,10 @@
                 <thead>
                   <tr>
                     <th>Produk</th>
-                    <th width="200">Varian</th>
-                    <th width="200">MSKU</th>
+                    <th width="200" class="text-center">Varian</th>
+                    <th width="200" class="text-center">MSKU</th>
                     <th width="150">Stok</th>
+                    <th width="100">Status</th>
                     <th class="text-center" width="50"></th>
                   </tr>
                 </thead>
@@ -95,9 +103,10 @@
                         <a href="javascript:void(0);" *ngIf="!changeStokSingle" (click)="changeStokSingle = true">
                           <i class="bx bx-edit-alt"></i>
                         </a>
-                        <input type="text" class="input-stok-single" id="stok-singgle-{{item.id}}" [(ngModel)]="item.stok"
-                          name="stok" *ngIf="changeStokSingle">
-                        <a href="javascript:void(0);" (click)="simpanStokSingle(item)" *ngIf="changeStokSingle" style="padding-left: 10px;">
+                        <input type="text" class="input-stok-single" id="stok-singgle-{{item.id}}"
+                          [(ngModel)]="item.stok" name="stok" *ngIf="changeStokSingle">
+                        <a href="javascript:void(0);" (click)="simpanStokSingle(item)" *ngIf="changeStokSingle"
+                          style="padding-left: 10px;">
                           <i class="bx bx-save"></i>
                         </a>
                       </div>
@@ -117,6 +126,11 @@
                       </div>
                     </td>
                     <td>
+                      <a class="badge bg-label-success" href="javascript:void(0)" *ngIf="item.is_active == 1">Aktif</a>
+                      <a class="badge bg-label-danger" href="javascript:void(0)" *ngIf="item.is_active == 0">Tidak
+                        Aktif</a>
+                    </td>
+                    <td>
                       <div class="dropdown text-center">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                           <i class="bx bx-dots-vertical-rounded"></i>
@@ -126,9 +140,15 @@
                             <i class="bx bx-edit-alt me-1"></i>
                             Ubah
                           </a>
-                          <a class="dropdown-item" href="javascript:void(0);">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="ubahStatus(item, 0)"
+                            *ngIf="item.is_active == 1">
                             <i class="bx bx-trash me-1"></i>
                             Hapus
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="ubahStatus(item, 1)"
+                            *ngIf="item.is_active == 0">
+                            <i class="bx bx-trash me-1"></i>
+                            Aktifkan
                           </a>
                         </div>
                       </div>
@@ -172,7 +192,7 @@
                                     </button>
                                   </div>
                                   <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
-                                    <label for="upload{{i}}" tabindex="{{i}}">
+                                    <label for="upload{{i}}" tabindex="{{i}}" style="text-align: -webkit-center;">
                                       <div class="css-phearn" *ngIf="!v.isFoto">
                                         <svg class="unf-icon css-1itv5e3" viewBox="0 0 40 40" width="40" height="40"
                                           fill="var(--color-icon-enabled, #2E3137)"
@@ -186,9 +206,8 @@
                                         class="d-block rounded img-preview" id="uploadProduk{{i}}"
                                         *ngIf="v.foto.base64 && v.isFoto">
                                       <img [src]="v.foto" alt="foto-produk-kosong-{{i}}" class="d-block rounded"
-                                        style="object-fit: contain;" height="100" width="100" id="uploadProduk{{i}}"
-                                        *ngIf="!v.foto.base64 && v.isFoto">
-
+                                        style="object-fit: contain; margin-top: -30px;" height="100" width="100"
+                                        id="uploadProduk{{i}}" *ngIf="!v.foto.base64 && v.isFoto">
                                       <div class="css-w18sxf" *ngIf="i !== 0 && !v.isFoto">{{ v.name }} {{i + 1}}</div>
                                       <div class="css-w18sxf" *ngIf="i === 0 && !v.isFoto">Foto utama</div>
                                       <input type="file" id="upload{{i}}" class="account-file-input" hidden=""
@@ -215,7 +234,7 @@
                     <div class="mb-3">
                       <label class="form-label" for="sku">SKU</label>
                       <input type="text" class="form-control" id="sku" [(ngModel)]="model.sku" name="sku"
-                        placeholder="Generate Otomatis dari sistem ... " disabled>
+                        placeholder="Generate Otomatis dari sistem ... ">
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="nama">Nama</label>
@@ -238,9 +257,54 @@
                       <label class="form-label" for="harga">Harga</label>
                       <div class="input-group input-group-merge">
                         <span class="input-group-text" id="harga">Rp</span>
-                        <input type="text" class="form-control pl-2" id="harga" placeholder="0"
-                          [(ngModel)]="model.harga" name="harga" placeholder="Harga..." mask="separator.3"
-                          thousandSeparator=".">
+                        <input type="text" class="form-control pl-2" id="harga" [(ngModel)]="model.harga" name="harga"
+                          placeholder="Harga..." mask="separator.3" thousandSeparator=".">
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="berat">Berat & Minimal Pembelian</label>
+                      <div class="row">
+                        <div class="col-3">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control pr-2" id="berat" [(ngModel)]="model.berat"
+                              name="berat" placeholder="Berat ..." mask="separator.3" thousandSeparator=".">
+                            <span class="input-group-text" id="berat">g</span>
+                          </div>
+                        </div>
+                        <div class="col-5">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control pr-2" id="min_beli" [(ngModel)]="model.min_beli"
+                              name="min_beli" placeholder="Minimal Pembelian ..." mask="separator.3"
+                              thousandSeparator=".">
+                            <span class="input-group-text" id="min_beli">PCS</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="size">Ukuran Produk</label>
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control pr-2" id="panjang" [(ngModel)]="model.panjang"
+                              name="panjang" placeholder="Panjang ..." mask="separator.3" thousandSeparator=".">
+                            <span class="input-group-text" id="panjang">cm</span>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control pr-2" id="tinggi" [(ngModel)]="model.tinggi"
+                              name="tinggi" placeholder="Tinggi ..." mask="separator.3" thousandSeparator=".">
+                            <span class="input-group-text" id="tinggi">cm</span>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control pr-2" id="lebar" [(ngModel)]="model.lebar"
+                              name="lebar" placeholder="Lebar ..." mask="separator.3" thousandSeparator=".">
+                            <span class="input-group-text" id="lebar">cm</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="divider">
@@ -251,23 +315,23 @@
                         <label class="form-label" for="link_tokped">Tokopedia</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_tokped">https://</span>
-                          <input type="text" class="form-control pl-2" id="link_tokped" placeholder="0"
-                            [(ngModel)]="model.link_tokped" name="link_tokped" placeholder="e-commerce.com/">
+                          <input type="text" class="form-control pl-2" id="link_tokped" [(ngModel)]="model.link_tokped"
+                            name="link_tokped" placeholder="e-commerce.com/">
                         </div>
                       </div>
                       <div class="col-6 mb-3">
                         <label class="form-label" for="link_shopee">Shopee</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_shopee">https://</span>
-                          <input type="text" class="form-control pl-2" id="link_shopee" placeholder="0"
-                            [(ngModel)]="model.link_shopee" name="link_shopee" placeholder="e-commerce.com/">
+                          <input type="text" class="form-control pl-2" id="link_shopee" [(ngModel)]="model.link_shopee"
+                            name="link_shopee" placeholder="e-commerce.com/">
                         </div>
                       </div>
                       <div class="col-6 mb-3">
                         <label class="form-label" for="link_bukalapak">Bukalapak</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_bukalapak">https://</span>
-                          <input type="text" class="form-control pl-2" id="link_bukalapak" placeholder="0"
+                          <input type="text" class="form-control pl-2" id="link_bukalapak"
                             [(ngModel)]="model.link_bukalapak" name="link_bukalapak" placeholder="e-commerce.com/">
                         </div>
                       </div>
@@ -275,16 +339,16 @@
                         <label class="form-label" for="link_lazada">Lazada</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_lazada">https://</span>
-                          <input type="text" class="form-control pl-2" id="link_lazada" placeholder="0"
-                            [(ngModel)]="model.link_lazada" name="link_lazada" placeholder="e-commerce.com/">
+                          <input type="text" class="form-control pl-2" id="link_lazada" [(ngModel)]="model.link_lazada"
+                            name="link_lazada" placeholder="e-commerce.com/">
                         </div>
                       </div>
                       <div class="col-6 mb-3">
                         <label class="form-label" for="link_blibli">Blibli</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_blibli">https://</span>
-                          <input type="text" class="form-control pl-2" id="link_blibli" placeholder="0"
-                            [(ngModel)]="model.link_blibli" name="link_blibli" placeholder="e-commerce.com/">
+                          <input type="text" class="form-control pl-2" id="link_blibli" [(ngModel)]="model.link_blibli"
+                            name="link_blibli" placeholder="e-commerce.com/">
                         </div>
                       </div>
                     </div>
@@ -292,61 +356,20 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <label class="form-label" for="detail_produk">Detail Produk</label>
-                      <textarea id="detail_produk" class="form-control" [(ngModel)]="model.detail_produk"
-                        name="detail_produk" rows="4" placeholder="Detail Produk..."></textarea>
+                      <ckeditor [editor]="editor" [data]="detail_produk"
+                        (change)="onChangeDetailEditor($event, 'detail_produk')" [disabled]="isView"></ckeditor>
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="description">Deskripsi</label>
-                      <textarea id="description" class="form-control" [(ngModel)]="model.deskripsi" name="deskripsi"
-                        rows="4" placeholder="Deskripsi ..."></textarea>
+                      <ckeditor [editor]="editor" [data]="deskripsi"
+                        (change)="onChangeDetailEditor($event, 'deskripsi')" [disabled]="isView"></ckeditor>
                     </div>
                     <div class="mb-4">
                       <label class="form-label" for="in_box">In Box</label>
-                      <textarea id="in_box" class="form-control" [(ngModel)]="model.in_box" name="in_box" rows="4"
-                        placeholder="In box..."></textarea>
+                      <ckeditor [editor]="editor" [data]="in_box" (change)="onChangeDetailEditor($event, 'in_box')"
+                        [disabled]="isView"></ckeditor>
                     </div>
-                    <div class="mb-3">
-                      <label class="form-label" for="berat">Berat</label>
-                      <div class="row">
-                        <div class="col-3">
-                          <div class="input-group input-group-merge">
-                            <input type="text" class="form-control pr-2" id="berat" placeholder="0"
-                              [(ngModel)]="model.berat" name="berat" placeholder="Berat ..." mask="separator.3"
-                              thousandSeparator=".">
-                            <span class="input-group-text" id="berat">g</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label" for="size">Ukuran Produk</label>
-                      <div class="row">
-                        <div class="col-4">
-                          <div class="input-group input-group-merge">
-                            <input type="text" class="form-control pr-2" id="panjang" placeholder="0"
-                              [(ngModel)]="model.panjang" name="panjang" placeholder="Panjang ..." mask="separator.3"
-                              thousandSeparator=".">
-                            <span class="input-group-text" id="panjang">cm</span>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="input-group input-group-merge">
-                            <input type="text" class="form-control pr-2" id="tinggi" placeholder="0"
-                              [(ngModel)]="model.tinggi" name="tinggi" placeholder="Tinggi ..." mask="separator.3"
-                              thousandSeparator=".">
-                            <span class="input-group-text" id="tinggi">cm</span>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="input-group input-group-merge">
-                            <input type="text" class="form-control pr-2" id="lebar" placeholder="0"
-                              [(ngModel)]="model.lebar" name="lebar" placeholder="Lebar ..." mask="separator.3"
-                              thousandSeparator=".">
-                            <span class="input-group-text" id="lebar">cm</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                 </div>
 

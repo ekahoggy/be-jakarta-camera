@@ -121,7 +121,7 @@
 
     <li class="menu-item" [routerLink]="['/masters/role']" routerLinkActive="active">
       <a href="javascript:void(0);" class="menu-link">
-        <i class="menu-icon tf-icons bx bxs-user-detail"></i>
+        <i class="menu-icon tf-icons bx bxs-cog"></i>
         <div data-i18n="Roles">Pengaturan Web</div>
       </a>
     </li>
@@ -149,6 +149,13 @@
           </a>
         </li>
       </ul>
+    </li>
+
+    <li class="menu-item" routerLinkActive="active">
+      <a href="javascript:void(0);" [routerLink]="['/frontend/slider']" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-news"></i>
+        <div data-i18n="Layouts">News</div>
+      </a>
     </li>
   </ul>
 </aside>
