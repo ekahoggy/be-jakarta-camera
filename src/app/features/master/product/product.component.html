@@ -413,7 +413,7 @@
                             <!-- untuk warna -->
                             <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue1"
-                              name="varianwarna" *ngIf="valueVarian1 == 'warna'" (change)="isiVarian1($event, 'warna')">
+                              name="varianwarna" *ngIf="valueVarian1 == 'warna'" (add)="isiVarian1($event, 'warna')" (remove)="onRemoveVarian1($event)">
                               <ng-template ng-option-tmp let-item="item" let-index="index">
                                 <div class="d-flex justify-content-left">
                                   <div class="varian-warna-select" [style.background]="item.warna"></div>
@@ -425,14 +425,14 @@
                             <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue1"
                               name="varianukuran" *ngIf="valueVarian1 == 'ukuran'"
-                              (change)="isiVarian1($event, 'ukuran')">
+                              (add)="isiVarian1($event, 'ukuran')" (remove)="onRemoveVarian1($event)">
                             </ng-select>
                             <!-- untuk custom varian -->
                             <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
                               [addTag]="addTipeVarian1" placeholder="Tambahkan Tipe Varian"
                               [(ngModel)]="modelVarian.varianValue1" name="varianCustom"
                               *ngIf="valueVarian1 != 'warna' && valueVarian1 != 'ukuran' && valueVarian1 != ''"
-                              (change)="isiVarian1($event, 'custom')">
+                              (add)="isiVarian1($event, modelVarian.varian1)" (remove)="onRemoveVarian1($event)">
                             </ng-select>
                           </div>
 
@@ -460,7 +460,7 @@
                           <div class="col-3 pt-1" *ngIf="showVarian1"></div>
                           <div class="col-9 pt-1" *ngIf="showVarian1">
                             <div class="border-upload-varian" *ngIf="modelVarian.useFotoVarian == 1">
-                              <div class="css-1iijiv2" *ngFor="let item of listVariant; index as i;">
+                              <div class="css-1iijiv2" *ngFor="let item of duplicate; index as i;">
                                 <div class="d-flex justify-content-end" *ngIf="item.image !== ''">
                                   <div class="label-preview-foto-variant">{{ item.varian1 }}</div>
                                   <button class="badge badge-center rounded-pill bg-danger border-0" style="z-index: 1;"
@@ -522,7 +522,7 @@
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue2"
                               name="varianwarna2" *ngIf="valueVarian2 == 'warna'"
-                              (change)="isiVarian2($event, 'warna')">
+                              (add)="isiVarian2($event, 'warna')" (remove)="onRemoveVarian2($event)">
                               <ng-template ng-option-tmp let-item="item" let-index="index">
                                 <div class="d-flex justify-content-left">
                                   <div class="varian-warna-select" [style.background]="item.warna"></div>
@@ -534,14 +534,14 @@
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue2"
                               name="varianukuran2" *ngIf="valueVarian2 == 'ukuran'"
-                              (change)="isiVarian2($event, 'ukuran')">
+                              (add)="isiVarian2($event, 'ukuran')" (remove)="onRemoveVarian2($event)">
                             </ng-select>
                             <!-- untuk custom varian -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               [addTag]="addTipeVarian2" placeholder="Tambahkan Tipe Varian 2"
                               [(ngModel)]="modelVarian.varianValue2" name="varianCustom2"
                               *ngIf="valueVarian2 != 'warna' && valueVarian2 != 'ukuran' && valueVarian2 != ''"
-                              (change)="isiVarian2($event, 'custom')">
+                              (add)="isiVarian2($event, modelVarian.varian1)" (remove)="onRemoveVarian2($event)">
                             </ng-select>
                           </div>
                         </div>

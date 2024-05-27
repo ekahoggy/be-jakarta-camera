@@ -351,7 +351,7 @@ export class ProductComponent implements OnInit {
       })
   }
 
-  ubahStatus(val, status){
+  ubahStatus(val, status) {
     val.is_active = status
     const final = Object.assign(val)
     this.globalService.DataPost('/produk/ubahStatus', final, true).subscribe((res: any) => {
@@ -362,15 +362,15 @@ export class ProductComponent implements OnInit {
     })
   }
 
-  onChangeDetailEditor({ editor }: ChangeEvent, jenis){
+  onChangeDetailEditor({ editor }: ChangeEvent, jenis) {
     const data = editor.getData();
-    if(jenis === 'detail_produk'){
+    if (jenis === 'detail_produk') {
       this.model.detail_produk = data;
     }
-    if(jenis === 'deskripsi'){
+    if (jenis === 'deskripsi') {
       this.model.deskripsi = data;
     }
-    if(jenis === 'in_box'){
+    if (jenis === 'in_box') {
       this.model.in_box = data;
     }
   }
@@ -426,21 +426,35 @@ export class ProductComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       let foto = { base64: reader.result as string }
-      this.listVariant.forEach((v, i) => {
+      this.duplicate.forEach((v, i) => {
         if (i === index) {
-          this.listVariant[i].image = foto;
+          this.duplicate[i].image = foto;
         }
       });
+      this.mergeImages(this.duplicate, this.listVariant);
     };
     reader.readAsDataURL(selectedFile);
   }
 
   removePhotoVarian(index) {
-    this.listVariant.forEach((v, i) => {
+    this.duplicate.forEach((v, i) => {
       if (i === index) {
-        this.listVariant[i].image = '';
+        this.duplicate[i].image = '';
       }
     });
+  }
+
+  mergeImages(data1, data2): void{
+    // Iterate through each item in data2
+    data2.forEach(item2 => {
+      // Find the corresponding item in data1 based on varian1
+      const matchedItem = data1.find(item1 => item1.varian1 === item2.varian1);
+      // If a match is found, copy the image
+      if (matchedItem) {
+        item2.image = matchedItem.image;
+      }
+    });
+    return data2;
   }
 
   getListVariant(id) {
@@ -502,36 +516,11 @@ export class ProductComponent implements OnInit {
     }
   }
   isiVarian1(e, tipe) {
-    this.duplicate = [];
-    let pushed = {
-      nama: '',
-      tipe: '',
-      gambar: ''
-    }
-    e.forEach(item => {
-      if (this.selectedVarian1.length > 0) {
-        this.selectedVarian1.forEach(val => {
-          if (val.nama !== item.nama) {
-            pushed.nama = item.nama;
-            pushed.tipe = tipe;
-            pushed.gambar = '';
-          }
-        });
-      }
-      else {
-        pushed.nama = item.nama;
-        pushed.tipe = tipe;
-        pushed.gambar = '';
-      }
-    });
-
-    this.selectedVarian1.push(pushed);
-
     if (this.modelVarian.varianValue1.length > 0) {
       let row = {
         image: '',
-        varian1: '',
-        varian1_type: '',
+        varian1: e.nama,
+        varian1_type: tipe,
         varian2: '',
         varian2_type: '',
         harga: 0,
@@ -541,12 +530,8 @@ export class ProductComponent implements OnInit {
         main: 0,
       }
 
-      this.selectedVarian1.forEach(val => {
-        row.varian1 = val.nama;
-        row.varian1_type = val.tipe;
-      });
-
       this.listVariant.push(row);
+      this.duplicate.push(row);
       this.disabledFotoVarian = false;
       this.tampilkanVarian2 = true;
     }
@@ -554,6 +539,13 @@ export class ProductComponent implements OnInit {
       this.disabledFotoVarian = true;
       this.tampilkanVarian2 = false;
     }
+  }
+
+  onRemoveVarian1(e) {
+    const removeData = this.listVariant.filter(item => item.varian1 !== e.nama);
+    const removeDataDup = this.duplicate.filter(item => item.varian1 !== e.nama);
+    this.listVariant = removeData;
+    this.duplicate = removeDataDup;
   }
 
   addVarian1() {
@@ -576,7 +568,6 @@ export class ProductComponent implements OnInit {
   );
 
   changeVarian2(e) {
-    this.duplicate = [];
     this.varian2 = [];
     this.modelVarian.varianValue2 = null;
     if (e) {
@@ -596,60 +587,34 @@ export class ProductComponent implements OnInit {
   }
 
   isiVarian2(e, tipe) {
-    let pushed = {
-      nama: '',
-      tipe: '',
-      gambar: ''
-    }
-    e.forEach(item => {
-      if (this.selectedVarian2.length > 0) {
-        this.selectedVarian2.forEach(val => {
-          if (val.nama !== item.nama) {
-            pushed.nama = item.nama;
-            pushed.tipe = tipe;
-            pushed.gambar = '';
-          }
-        });
-      }
-      else {
-        pushed.nama = item.nama;
-        pushed.tipe = tipe;
-        pushed.gambar = '';
-      }
-    });
-
-    this.selectedVarian2.push(pushed);
+    console.log(this.listVariant);
+    // console.log(this.modelVarian.varianValue2);
     this.listVariant.forEach(vari => {
-      this.selectedVarian2.forEach(v2 => {
-        vari.varian2 = v2.nama;
-        vari.varian2_type = v2.tipe;
-      });
+      vari.varian2 = e.nama;
+      vari.varian2_type = tipe;
     });
 
-    let jumlahDatake2 = this.selectedVarian2.length;
+    let jumlahDatake2 = this.modelVarian.varianValue2.length;
     if (jumlahDatake2 == 1) {
       this.listVariant.forEach(ke1 => {
-        this.selectedVarian2.forEach(ke2 => {
-          ke1.varian2 = ke2.nama;
-        });
+        ke1.varian2 = e.nama;
       });
     }
     else if (jumlahDatake2 > 1) {
-      console.log(jumlahDatake2);
-      for (let i = 0; i < jumlahDatake2; i++) {
-        this.listVariant.forEach(element => {
-          this.duplicate.push(element);
-        });
-      }
       this.compareAllVarian();
     }
+  }
 
+  onRemoveVarian2(e) {
+    const removeData = this.listVariant.filter(item => item.varian2 !== e.nama);
+    this.listVariant = removeData;
   }
 
   compareAllVarian() {
     let data = {
       'data_utama': this.duplicate,
-      'data_second': this.selectedVarian2
+      'data_second': this.modelVarian.varianValue2,
+      'type2': this.valueVarian2
     }
     const final = Object.assign(data)
     this.globalService.DataPost('/produk/prosesVariant', final, true).subscribe((res: any) => {
