@@ -6,11 +6,7 @@
           <div class="app-brand justify-content-center">
             <img src="../assets/img/logo.png" alt="logo" />
           </div>
-
-          <h4 class="mb-2">Welcome to Jakarta Camera! 👋</h4>
-          <p class="mb-4">Please sign-in to your account and start the adventure</p>
-
-
+          <h4 class="mb-2">Selamat datang di Adminpanel Jakarta Camera!👋</h4>
           <form id="formAuthentication" class="mb-3">
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
@@ -19,7 +15,7 @@
             </div>
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
-                <label class="form-label" for="password">Password</label>
+                <label class="form-label" for="password">Kata Sandi</label>
               </div>
               <div class="input-group input-group-merge">
                 <input type="password" id="password" class="form-control" name="password" [(ngModel)]="model.password"
@@ -31,7 +27,7 @@
             <div class="mb-3">
               <button class="btn btn-primary d-grid w-100 d-flex justify-content-center" type="submit" [disabled]="loading" (click)="login()" style="font-size: 16px;">
                 <i class="spinner-border text-white" style="font-size: 16px;" *ngIf="loading"></i>&nbsp;
-                <span>Sign in</span>
+                <span>Masuk</span>
               </button>
             </div>
           </form>

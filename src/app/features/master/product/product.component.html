@@ -3,9 +3,9 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-          <a href="javascript:void(0);">Masters</a>
+          <a href="javascript:void(0);">Master</a>
         </li>
-        <li class="breadcrumb-item active">Product</li>
+        <li class="breadcrumb-item active">Produk</li>
       </ol>
     </nav>
     <div class="card" *ngIf="!showForm">
@@ -13,22 +13,22 @@
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Product</h4>
+              <h4 class="ms-3 mb-0">Produk</h4>
               <button class="btn btn-primary" (click)="create()">
                 <i class="bx bx-xs bx-plus me-1"></i>
-                Create
+                Tambah
               </button>
             </div>
           </div>
           <div class="col-12">
             <div class=" text-nowrap">
-              <table datatable [dtOptions]="dtOptions" class="table">
+              <table datatable [dtOptions]="dtOptions" class="table table-list">
                 <thead>
                   <tr>
-                    <th>Product</th>
-                    <th width="200">Variant</th>
+                    <th>Produk</th>
+                    <th width="200">Varian</th>
                     <th width="200">MSKU</th>
-                    <th width="150">Stock</th>
+                    <th width="150">Stok</th>
                     <th class="text-center" width="50"></th>
                   </tr>
                 </thead>
@@ -77,11 +77,11 @@
                         <div class="dropdown-menu">
                           <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
                             <i class="bx bx-edit-alt me-1"></i>
-                            Edit
+                            Ubah
                           </a>
                           <a class="dropdown-item" href="javascript:void(0);">
                             <i class="bx bx-trash me-1"></i>
-                            Delete
+                            Hapus
                           </a>
                         </div>
                       </div>
@@ -99,7 +99,7 @@
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Form Product</h4>
+              <h4 class="mb-0">Form Produk</h4>
             </div>
           </div>
           <div class="col-12">
@@ -154,19 +154,24 @@
                   </div>
                   <div class="col-12">
                     <div class="divider">
-                      <div class="divider-text">Details Product</div>
+                      <div class="divider-text">Detail Produk</div>
                     </div>
                   </div>
                   <!-- Detail Product -->
                   <div class="col-6">
                     <div class="mb-3">
-                      <label class="form-label" for="nama">Name</label>
-                      <input type="text" class="form-control" id="nama" [(ngModel)]="model.nama" name="nama"
-                        placeholder="Name product...">
+                      <label class="form-label" for="sku">SKU</label>
+                      <input type="text" class="form-control" id="sku" [(ngModel)]="model.sku" name="sku"
+                        placeholder="Generate Otomatis dari sistem ... " disabled>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="kategori">Category</label>
-                      <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Category ..."
+                      <label class="form-label" for="nama">Nama</label>
+                      <input type="text" class="form-control" id="nama" [(ngModel)]="model.nama" name="nama"
+                        placeholder="Nama Produk">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="kategori">Kategori</label>
+                      <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Kategori ..."
                         [(ngModel)]="model.m_kategori_id" name="kategori">
                       </ng-select>
                     </div>
@@ -177,11 +182,11 @@
                       </ng-select>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="harga">Price</label>
+                      <label class="form-label" for="harga">Harga</label>
                       <div class="input-group input-group-merge">
                         <span class="input-group-text" id="harga">Rp</span>
                         <input type="text" class="form-control" id="harga" placeholder="0" [(ngModel)]="model.harga"
-                          name="harga" placeholder="Price..." mask="separator.3" thousandSeparator=".">
+                          name="harga" placeholder="Harga..." mask="separator.3" thousandSeparator=".">
                       </div>
                     </div>
                     <div class="divider">
@@ -232,14 +237,14 @@
                   </div>
                   <div class="col-6">
                     <div class="mb-3">
-                      <label class="form-label" for="detail_produk">Detail Product</label>
+                      <label class="form-label" for="detail_produk">Detail Produk</label>
                       <textarea id="detail_produk" class="form-control" [(ngModel)]="model.detail_produk"
-                        name="detail_produk" rows="4" placeholder="Detail product..."></textarea>
+                        name="detail_produk" rows="4" placeholder="Detail Produk..."></textarea>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="description">Description</label>
+                      <label class="form-label" for="description">Deskripsi</label>
                       <textarea id="description" class="form-control" [(ngModel)]="model.deskripsi" name="deskripsi"
-                        rows="4" placeholder="Description..."></textarea>
+                        rows="4" placeholder="Deskripsi ..."></textarea>
                     </div>
                     <div class="mb-4">
                       <label class="form-label" for="in_box">In Box</label>
@@ -247,24 +252,24 @@
                         placeholder="In box..."></textarea>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="berat">Weight</label>
+                      <label class="form-label" for="berat">Berat</label>
                       <div class="row">
                         <div class="col-3">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="berat" placeholder="0" [(ngModel)]="model.berat"
-                              name="berat" placeholder="Weight..." mask="separator.3" thousandSeparator=".">
+                              name="berat" placeholder="Berat ..." mask="separator.3" thousandSeparator=".">
                             <span class="input-group-text" id="berat">g</span>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="size">Size</label>
+                      <label class="form-label" for="size">Ukuran Produk</label>
                       <div class="row">
                         <div class="col-4">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="panjang" placeholder="0"
-                              [(ngModel)]="model.panjang" name="panjang" placeholder="Length ..." mask="separator.3"
+                              [(ngModel)]="model.panjang" name="panjang" placeholder="Panjang ..." mask="separator.3"
                               thousandSeparator=".">
                             <span class="input-group-text" id="panjang">cm</span>
                           </div>
@@ -272,7 +277,7 @@
                         <div class="col-4">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="tinggi" placeholder="0"
-                              [(ngModel)]="model.tinggi" name="tinggi" placeholder="Height ..." mask="separator.3"
+                              [(ngModel)]="model.tinggi" name="tinggi" placeholder="Tinggi ..." mask="separator.3"
                               thousandSeparator=".">
                             <span class="input-group-text" id="tinggi">cm</span>
                           </div>
@@ -280,7 +285,7 @@
                         <div class="col-4">
                           <div class="input-group input-group-merge">
                             <input type="text" class="form-control" id="lebar" placeholder="0" [(ngModel)]="model.lebar"
-                              name="lebar" placeholder="Width ..." mask="separator.3" thousandSeparator=".">
+                              name="lebar" placeholder="Lebar ..." mask="separator.3" thousandSeparator=".">
                             <span class="input-group-text" id="lebar">cm</span>
                           </div>
                         </div>
@@ -292,23 +297,23 @@
                 <div class="row">
                   <div class="mb-3">
                     <div class="divider">
-                      <div class="divider-text">Variant Produk</div>
+                      <div class="divider-text">Varian Produk</div>
                     </div>
                     <div class="row pb-2">
                       <div class="col-12 text-end">
                         <button class="btn btn-primary me-1" (click)="addVariant()" *ngIf="buttonAtasVarian1">
                           <i class="bx bx-plus"></i>
-                          Add Variant
+                          Tambah Varian
                         </button>
                         <button class="btn btn-primary" (click)="removeVariant()" *ngIf="!buttonAtasVarian1">
                           <i class="bx bx-trash"></i>
-                          Remove Variant
+                          Hapus Varian
                         </button>
                       </div>
                       <div class="col-12 pb-4" *ngIf="aktifkanVaraian1">
                         <div class="row">
                           <div class="col-3">
-                            Variant 1 <span style="font-size: smaller;">(Upload photo variant in this variant 1)</span>
+                            Varian 1 <span style="font-size: smaller;">(Upload Foto di varian 1)</span>
                           </div>
                           <div class="col-8"></div>
 
@@ -320,7 +325,7 @@
                                 {{item.value}}
                               </ng-template>
                               <ng-template ng-footer-tmp class="p-0">
-                                <div class="select-buat-varian">Type to add Variant 1</div>
+                                <div class="select-buat-varian">Ketik untuk tambah varian 1</div>
                               </ng-template>
                             </ng-select>
                           </div>
@@ -360,13 +365,13 @@
                                   [ngClass]="modelVarian.useFotoVarian == 0 ? 'btn-primary' : 'btn-outline-primary'"
                                   (click)="modelVarian.useFotoVarian = 0">
                                   <i class="bx bx-check me-1" *ngIf="modelVarian.useFotoVarian == 0"></i>
-                                  No
+                                  Tidak
                                 </button>
                                 <button class="btn btn-sm py-2 px-3" [disabled]="disabledFotoVarian"
                                   [ngClass]="modelVarian.useFotoVarian == 1 ? 'btn-primary' : 'btn-outline-primary'"
                                   (click)="modelVarian.useFotoVarian = 1">
                                   <i class="bx bx-check me-1" *ngIf="modelVarian.useFotoVarian == 1"></i>
-                                  Yes
+                                  Ya
                                 </button>
                               </div>
                               <label class="form-label" style="padding-left: 15px;">Gunakan foto varian</label>
@@ -414,9 +419,9 @@
                           <div class="col-3">
                             <button class="btn btn-primary me-1" (click)="addVariant2()" *ngIf="buttonAtasVarian2">
                               <i class="bx bx-plus"></i>
-                              Add Variant 2
+                              Tambah Varian 2
                             </button>
-                            <span *ngIf="aktifkanVaraian2">Type Variant 2</span>
+                            <span *ngIf="aktifkanVaraian2">Tipe Varian 2</span>
                           </div>
                           <div class="col-8"></div>
 
@@ -428,7 +433,7 @@
                                 {{item.value}}
                               </ng-template>
                               <ng-template ng-footer-tmp class="p-0">
-                                <div class="select-buat-varian">Type to add Variant 2</div>
+                                <div class="select-buat-varian">Ketik untuk tambah varian 2</div>
                               </ng-template>
                             </ng-select>
                           </div>
@@ -469,10 +474,10 @@
                           <th class="align-middle" width="5%" *ngIf="modelVarian.useFotoVarian == 1"></th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian1">{{ valueVarian1 }}</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian2">{{ valueVarian2 }}</th>
-                          <th class="align-middle" width="15%">Price</th>
-                          <th class="align-middle" width="5%">Stock</th>
+                          <th class="align-middle" width="15%">Harga</th>
+                          <th class="align-middle" width="5%">Stok</th>
                           <th class="align-middle" width="15%">Sku</th>
-                          <th class="align-middle" width="10%">Weight</th>
+                          <th class="align-middle" width="10%">Berat</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -520,7 +525,7 @@
                         </ng-container>
                         <ng-container *ngIf="listVariant.length == 0">
                           <tr>
-                            <td colspan="5" class="text-center">There are no variants yet</td>
+                            <td colspan="5" class="text-center">Tidak ada varian</td>
                           </tr>
                         </ng-container>
                       </tbody>
@@ -535,11 +540,11 @@
       <div class="card-footer text-end">
         <button class="btn btn-light me-1" (click)="index()">
           <i class="bx bx-chevron-left me-1"></i>
-          Back
+          Kembali
         </button>
         <button class="btn btn-primary" (click)="save()">
           <i class="bx bx-save me-1"></i>
-          Save
+          Simpan
         </button>
       </div>
     </div>

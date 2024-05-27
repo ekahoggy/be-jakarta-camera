@@ -3,9 +3,9 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-          <a href="javascript:void(0);">Masters</a>
+          <a href="javascript:void(0);">Master</a>
         </li>
-        <li class="breadcrumb-item active">Product Category</li>
+        <li class="breadcrumb-item active">Kategori Produk</li>
       </ol>
     </nav>
     <div class="card" *ngIf="!showForm">
@@ -13,7 +13,7 @@
         <div class="row form-group my-2">
           <div class="col-2">
             <input type="text" name="param_kategori" [(ngModel)]="modelParam.kategori"
-              class="form-control form-control-sm" placeholder="Search By Category" (input)="reloadDataTable()">
+              class="form-control form-control-sm" placeholder="Cari kategori ... " (input)="reloadDataTable()">
           </div>
           <div class="col-2">
             <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
@@ -25,10 +25,10 @@
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Product Category</h4>
+              <h4 class="mb-0">Kategori Produk</h4>
               <button class="btn btn-primary" (click)="create()">
                 <i class="bx bx-xs bx-plus me-1"></i>
-                Create
+                Tambah
               </button>
             </div>
           </div>
@@ -40,7 +40,7 @@
                   <tr>
                     <th width="120">Ikon</th>
                     <th>Kategori</th>
-                    <th width="80">Actions</th>
+                    <th width="80">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,11 +55,11 @@
                         <div class="dropdown-menu">
                           <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
                             <i class="bx bx-edit-alt me-1"></i>
-                            Edit
+                            Ubah
                           </a>
                           <a class="dropdown-item" href="javascript:void(0);">
                             <i class="bx bx-trash me-1"></i>
-                            Delete
+                            Hapus
                           </a>
                         </div>
                       </div>
@@ -77,7 +77,7 @@
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Form Product Category</h4>
+              <h4 class="ms-3 mb-0">Form Kategori Produk</h4>
             </div>
           </div>
           <div class="col-8">
@@ -105,17 +105,17 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label" for="kategori">Category</label>
+                  <label class="form-label" for="kategori">Kategori</label>
                   <input type="text" class="form-control" id="kategori" [(ngModel)]="model.kategori" name="kategori"
-                    placeholder="enter the category name...">
+                    placeholder="Kategori ...">
                 </div>
                 <div class="mb-3">
-                  <label class="form-label" for="keterangan">Description</label>
+                  <label class="form-label" for="keterangan">Deskripsi</label>
                   <textarea id="keterangan" class="form-control" rows="3" [(ngModel)]="model.keterangan"
-                    name="keterangan" placeholder="enter the description..."></textarea>
+                    name="keterangan" placeholder="Deskripsi..."></textarea>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label" for="induk_id">Parent Category</label>
+                  <label class="form-label" for="induk_id">Induk Kategori</label>
                   <select class="form-select" id="induk_id" aria-label="Default select example"
                     [(ngModel)]="model.induk_id" name="induk_id">
                     <option *ngFor="let item of listCategory" [value]="item.id"> {{ item.kategori }} </option>
@@ -129,11 +129,11 @@
       <div class="card-footer text-end">
         <button class="btn btn-light me-1" (click)="index()">
           <i class="bx bx-chevron-left me-1"></i>
-          Back
+          Kembali
         </button>
         <button class="btn btn-primary" (click)="save()">
           <i class="bx bx-save me-1"></i>
-          Save
+          Simpan
         </button>
       </div>
     </div>

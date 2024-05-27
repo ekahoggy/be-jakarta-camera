@@ -189,6 +189,7 @@ export class ProductComponent implements OnInit {
   }
 
   create() {
+    this.empty();
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = false;

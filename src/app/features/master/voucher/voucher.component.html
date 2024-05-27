@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-          <a href="javascript:void(0);">Masters</a>
+          <a href="javascript:void(0);">Master</a>
         </li>
         <li class="breadcrumb-item active">Voucher</li>
       </ol>
@@ -16,7 +16,7 @@
               <h4 class="ms-3 mb-0">Voucher</h4>
               <button class="btn btn-primary" (click)="create()">
                 <i class="bx bx-xs bx-plus me-1"></i>
-                Create
+                Tambah
               </button>
             </div>
           </div>
@@ -26,10 +26,10 @@
                 <thead>
                   <tr>
                     <th>Voucher</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Category</th>
-                    <th width="80">Actions</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Kategori</th>
+                    <th width="80">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -46,11 +46,11 @@
                         <div class="dropdown-menu">
                           <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
                             <i class="bx bx-edit-alt me-1"></i>
-                            Edit
+                            Ubah
                           </a>
                           <a class="dropdown-item" href="javascript:void(0);">
                             <i class="bx bx-trash me-1"></i>
-                            Delete
+                            Hapus
                           </a>
                         </div>
                       </div>
@@ -91,81 +91,81 @@
                         <button type="button" class="btn btn-outline-secondary account-image-reset mb-4"
                           (click)="base64Image=''">
                           <i class="bx bx-reset d-block d-sm-none"></i>
-                          <span class="d-none d-sm-block">Reset</span>
+                          <span class="d-none d-sm-block">Hapus</span>
                         </button>
 
                         <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="voucher">Name</label>
+                      <label class="form-label" for="voucher">Nama</label>
                       <input type="text" class="form-control" id="voucher" [(ngModel)]="model.voucher" name="voucher"
-                        placeholder="enter the voucher name...">
+                        placeholder="Nama Voucher ...">
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="redeem_code">Redeem Code</label>
+                      <label class="form-label" for="redeem_code">Redeem Kode</label>
                       <input type="text" class="form-control" id="redeem_code" [(ngModel)]="model.redeem_code"
-                        name="redeem_code" placeholder="enter the redeem code...">
+                        name="redeem_code" placeholder="Redeem Kode ...">
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="tanggal_mulai">Start Date</label>
+                      <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
                       <div class="row">
                         <div class="col-8">
                           <input class="form-control" type="date" id="tanggal_mulai" [(ngModel)]="model.tanggal_mulai"
-                            name="tanggal_mulai" placeholder="enter the start date...">
+                            name="tanggal_mulai" placeholder="Tanggal Mulai ...">
                         </div>
                         <div class="col-4">
                           <input class="form-control" type="time" id="jam_mulai" [(ngModel)]="model.jam_mulai"
-                            name="jam_mulai" placeholder="enter the time...">
+                            name="jam_mulai" placeholder="Waktu Mulai...">
                         </div>
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="tanggal_selesai">End Date</label>
+                      <label class="form-label" for="tanggal_selesai">Tanggal Selesai</label>
                       <div class="row">
                         <div class="col-8">
                           <input class="form-control" type="date" id="tanggal_selesai"
                             [(ngModel)]="model.tanggal_selesai" name="tanggal_selesai"
-                            placeholder="enter the end date...">
+                            placeholder="Tanggal Selesai ...">
                         </div>
                         <div class="col-4">
                           <input class="form-control" type="time" id="jam_selesai" [(ngModel)]="model.jam_selesai"
-                            name="jam_selesai" placeholder="enter the time...">
+                            name="jam_selesai" placeholder="Waktu Selesai...">
                         </div>
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="keterangan">Description</label>
+                      <label class="form-label" for="keterangan">Deskripsi</label>
                       <textarea id="keterangan" class="form-control" rows="3" [(ngModel)]="model.keterangan"
-                        name="keterangan" placeholder="enter the description..."></textarea>
+                        name="keterangan" placeholder="Deskripsi..."></textarea>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="mb-3">
-                      <label class="form-label" for="voucher">Category</label>
+                      <label class="form-label" for="voucher">Kategori</label>
                       <div>
                         <button class="btn btn-sm py-2 px-3 me-1"
                           [ngClass]="model.kategori == 'T' ? 'btn-primary' : 'btn-outline-primary'"
                           (click)="model.kategori='T'">
                           <i class="bx bx-check me-1" *ngIf="model.kategori == 'T'"></i>
-                          Transaction
+                          Transaksi
                         </button>
                         <button class="btn btn-sm py-2 px-3"
                           [ngClass]="model.kategori == 'O' ? 'btn-primary' : 'btn-outline-primary'"
                           (click)="model.kategori='O'">
                           <i class="bx bx-check me-1" *ngIf="model.kategori == 'O'"></i>
-                          Shipping Cost
+                          Ongkir
                         </button>
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="voucher">Type</label>
+                      <label class="form-label" for="voucher">Tipe</label>
                       <div>
                         <button class="btn btn-sm py-2 px-3 me-1"
                           [ngClass]="model.type == 'P' ? 'btn-primary' : 'btn-outline-primary'"
                           (click)="model.type='P';model.voucher_value=0">
                           <i class="bx bx-check me-1" *ngIf="model.type == 'P'"></i>
-                          Percentage
+                          Persen
                         </button>
                         <button class="btn btn-sm py-2 px-3"
                           [ngClass]="model.type == 'N' ? 'btn-primary' : 'btn-outline-primary'"
@@ -187,20 +187,20 @@
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="voucher_max">Maximum Voucher</label>
+                      <label class="form-label" for="voucher_max">Maksimal Voucher</label>
                       <div class="input-group">
                         <span class="input-group-text" id="voucher_max">Rp</span>
                         <input type="text" class="form-control" id="voucher_max" [(ngModel)]="model.voucher_max"
-                          name="voucher_max" placeholder="enter the maximum of voucher...">
+                          name="voucher_max" placeholder="Maksimal Nominal Voucher...">
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="voucher_min_beli">Minimum Purchase</label>
+                      <label class="form-label" for="voucher_min_beli">Minimum Pembelian</label>
                       <div class="input-group">
                         <span class="input-group-text" id="voucher_min_beli">Rp</span>
                         <input type="text" class="form-control" id="voucher_min_beli"
                           [(ngModel)]="model.voucher_min_beli" name="voucher_min_beli"
-                          placeholder="enter the minimum purchase of voucher...">
+                          placeholder="Minimum Pembelian Voucher...">
                       </div>
                     </div>
                   </div>
@@ -213,11 +213,11 @@
       <div class="card-footer text-end">
         <button class="btn btn-light me-1" (click)="index()">
           <i class="bx bx-chevron-left me-1"></i>
-          Back
+          Kembali
         </button>
         <button class="btn btn-primary" (click)="save()">
           <i class="bx bx-save me-1"></i>
-          Save
+          Simpan
         </button>
       </div>
     </div>
