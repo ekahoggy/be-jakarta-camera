@@ -31,6 +31,8 @@ export class ProductComponent implements OnInit {
   listVariant: any = [];
 
   //varian
+  changeStokSingle: boolean = false;
+  adaVarian: boolean = false;
   changeStokList: boolean = false;
   aktifkanVaraian1: boolean = false;
   aktifkanVaraian2: boolean = false;
@@ -614,6 +616,16 @@ export class ProductComponent implements OnInit {
     this.globalService.DataPost('/produk/updateStok', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
         this.globalService.alertSuccess('Success', 'Stok Varian berhasil diubah')
+        this.reloadDataTable();
+      }
+    })
+  }
+
+  simpanStokSingle(val){
+    const final = Object.assign(val)
+    this.globalService.DataPost('/produk/updateStokProduk', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.globalService.alertSuccess('Success', 'Stok Produk berhasil diubah')
         this.reloadDataTable();
       }
     })

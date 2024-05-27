@@ -67,6 +67,10 @@ export class SliderComponent {
   create() {
     this.showForm = !this.showForm;
     this.model = {};
+    this.base64Image = null;
+    this.base64ImageMobile = null;
+    this.model.picture = "assets/img/elements/18.jpg";
+    this.model.picture_mobile = "assets/img/elements/18.jpg";
     this.isEdit = false;
     this.isView = false;
   }
