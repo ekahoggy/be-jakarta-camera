@@ -1,20 +1,32 @@
-.table-list{
-  td{
+.table-list {
+  td {
     padding-top: 10px !important;
     padding-right: 0 !important;
   }
 
-  .to-top{
+  .to-top {
     vertical-align: text-top !important;
   }
 }
 
-.table-variant{
+.table-variant {
   width: 100% !important;
+
   .detail-variant {
     height: 30px;
     padding-top: 5px !important;
+    margin-bottom: 10px;
     border-bottom: 1px dashed var(--N100, #DBDEE2);
+  }
+
+  .input-stok {
+    width: 50px;
+    height: 25px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border: 1px solid #d5d5d5;
+    border-radius: 5px;
+    text-align: center;
   }
 }
 
@@ -143,7 +155,7 @@
 }
 
 .css-phearn {
-  background-image: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/icarus/kratos/8d58e463.svg);
+  // background-image: url(assets/img/icons/imgupload.svg);
   width: 40px;
   height: 40px;
   background-size: contain;

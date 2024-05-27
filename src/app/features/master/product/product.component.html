@@ -9,15 +9,27 @@
       </ol>
     </nav>
     <div class="card" *ngIf="!showForm">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Produk</h4>
+          <button class="btn btn-primary" (click)="create()">
+            <i class="bx bx-xs bx-plus me-1"></i>
+            Tambah
+          </button>
+        </div>
+      </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-12 text-end mb-5">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Produk</h4>
-              <button class="btn btn-primary" (click)="create()">
-                <i class="bx bx-xs bx-plus me-1"></i>
-                Tambah
-              </button>
+          <div class="col-12 mb-2">
+            <div class="row form-group my-2">
+              <div class="col-2">
+                <input type="text" name="param_kategori" [(ngModel)]="modelParam.kategori"
+                  class="form-control form-control-sm" placeholder="Cari kategori ... " (input)="reloadDataTable()">
+              </div>
+              <div class="col-2">
+                <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
+                  <i class="fas fa-undo"></i>Reset</button>
+              </div>
             </div>
           </div>
           <div class="col-12">
@@ -36,10 +48,10 @@
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
                     <td class="to-top">
                       <div class="d-flex justify-content-beetwen">
-                        <img [src]="item.foto" width="100" alt="{{item.nama}}"> &nbsp;
+                        <img [src]="item.foto" width="100" style="object-fit: contain;" alt="{{item.nama}}"> &nbsp;
                         <div class="d-column">
-                          <p>{{ item.nama }}</p>
-                          <span>{{ item.sku }}</span>
+                          <p style="margin-bottom: 5px;">{{ item.nama }}</p>
+                          <p style="margin-bottom: 5px;">{{ item.sku }}</p>
                           <span class="badge bg-label-success me-1">{{ item.kategori }}</span>
                           <span class="badge bg-label-primary me-1">{{ item.brand }}</span>
                         </div>
@@ -64,8 +76,15 @@
                     <td class="text-center">
                       <span *ngIf="item.variant.length == 0">-</span>
                       <div class="d-table table-variant" *ngIf="item.variant.length > 0" style="text-align: left;">
-                        <div class="detail-variant" *ngFor="let variant of item.variant">
-                          <span>{{ variant.stok }}</span>
+                        <div class="detail-variant" *ngFor="let variant of item.variant; index as i">
+                          <span *ngIf="!variant.is_edit">{{ variant.stok }}</span> &nbsp;
+                          <input type="text" class="input-stok" id="stok-variant-{{variant.id}}" [(ngModel)]="variant.stok" name="stok" *ngIf="variant.is_edit">
+                          <a href="javascript:void(0);" (click)="ubahStokList(variant, i)" *ngIf="!variant.is_edit">
+                            <i class="bx bx-edit-alt"></i>
+                          </a>
+                          <a href="javascript:void(0);" (click)="simpanStokList(variant, i)" *ngIf="variant.is_edit" style="padding-left: 10px;">
+                            <i class="bx bx-save"></i>
+                          </a>
                         </div>
                       </div>
                     </td>
@@ -125,7 +144,15 @@
                                   </div>
                                   <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
                                     <label for="upload{{i}}" tabindex="{{i}}">
-                                      <div class="css-phearn" *ngIf="!v.isFoto"></div>
+                                      <div class="css-phearn" *ngIf="!v.isFoto">
+                                        <svg class="unf-icon css-1itv5e3" viewBox="0 0 40 40" width="40" height="40"
+                                          fill="var(--color-icon-enabled, #2E3137)"
+                                          style="display: inline-block; vertical-align: middle;">
+                                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M22 7.5a5.5 5.5 0 0 0-9-4.25H5A1.76 1.76 0 0 0 3.25 5v14A1.76 1.76 0 0 0 5 20.75h14A1.76 1.76 0 0 0 20.75 19v-8A5.47 5.47 0 0 0 22 7.5Zm-1.5 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM19 19.25H5a.25.25 0 0 1-.25-.25V5A.25.25 0 0 1 5 4.75h6.74a5.5 5.5 0 0 0 7.51 7.51V19a.25.25 0 0 1-.25.25ZM9 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4.267 4.298a.749.749 0 0 1 .263.172l4.01 4a.75.75 0 0 1-1.06 1.06l-3.41-3.41-1.47 1.85a.76.76 0 0 1-1 .15l-1-.65-2.04 2.09A.75.75 0 0 1 6.5 16.5L9 14a.76.76 0 0 1 .92-.08l.92.61 1.57-2a.75.75 0 0 1 .857-.232ZM15.75 8.25H14.3a.75.75 0 0 1 0-1.5h1.45V5.3a.75.75 0 0 1 1.5 0v1.45h1.45a.75.75 0 1 1 0 1.5h-1.45V9.7a.75.75 0 1 1-1.5 0V8.25Z">
+                                          </path>
+                                        </svg>
+                                      </div>
                                       <img [src]="v.foto.base64" alt="foto-produk-{{i}}"
                                         class="d-block rounded img-preview" id="uploadProduk{{i}}"
                                         *ngIf="v.foto.base64">
@@ -471,7 +498,7 @@
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th class="align-middle" width="5%" *ngIf="modelVarian.useFotoVarian == 1"></th>
+                          <th class="align-middle" width="10%" *ngIf="modelVarian.useFotoVarian == 1">Gambar</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian1">{{ valueVarian1 }}</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian2">{{ valueVarian2 }}</th>
                           <th class="align-middle" width="15%">Harga</th>

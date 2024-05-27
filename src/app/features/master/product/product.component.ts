@@ -24,12 +24,14 @@ export class ProductComponent implements OnInit {
   isView: boolean = false;
   listData: any = [];
   model: any = {};
+  modelParam: any = {};
   listCategory: any;
   listBrand: any;
   listPhoto: any = [];
   listVariant: any = [];
 
   //varian
+  changeStokList: boolean = false;
   aktifkanVaraian1: boolean = false;
   aktifkanVaraian2: boolean = false;
   buttonAtasVarian1: boolean = true;
@@ -165,7 +167,11 @@ export class ProductComponent implements OnInit {
         };
         this.globalService.DataGet("/produk", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
-
+          this.listData.forEach(value => {
+            value.variant.forEach(v => {
+              v.is_edit = false;
+            });
+          });
           callback({
             recordsTotal: res.data.totalItems,
             recordsFiltered: res.data.totalItems,
@@ -176,6 +182,20 @@ export class ProductComponent implements OnInit {
         })
       },
     };
+  }
+
+  reloadDataTable(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
+
+  reset() {
+    this.modelParam = {
+      kategori: ''
+    }
+
+    this.reloadDataTable()
   }
 
   empty() {
@@ -496,8 +516,8 @@ export class ProductComponent implements OnInit {
 
   compareAllVarian() {
     let data = {
-      'data_utama' : this.duplicate,
-      'data_second' : this.selectedVarian2
+      'data_utama': this.duplicate,
+      'data_second': this.selectedVarian2
     }
     const final = Object.assign(data)
     this.globalService.DataPost('/produk/prosesVariant', final, true).subscribe((res: any) => {
@@ -518,5 +538,19 @@ export class ProductComponent implements OnInit {
 
   add() {
     this.items.push(this.items.length + 1);
+  }
+
+  ubahStokList(val, i) {
+    val.is_edit = true;
+  }
+
+  simpanStokList(val, i){
+    const final = Object.assign(val)
+    this.globalService.DataPost('/produk/updateStok', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.globalService.alertSuccess('Success', 'Stok Varian berhasil diubah')
+        this.reloadDataTable();
+      }
+    })
   }
 }
