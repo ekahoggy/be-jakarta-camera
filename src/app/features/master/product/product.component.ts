@@ -66,15 +66,64 @@ export class ProductComponent implements OnInit {
   selectedVarian1: any = [];
   selectedVarian2: any = [];
   duplicate: any = [];
-
-  public items: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-  public target: CdkDropList;
-  public targetIndex: number;
-  public source: CdkDropList;
-  public sourceIndex: number;
-  public dragIndex: number;
-  public activeContainer;
+  fotoProdukReset: any = [
+    {
+      'id': 1,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 2,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 3,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 4,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 5,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 6,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 7,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    },
+    {
+      'id': 8,
+      'name': "Foto",
+      'urutan': 0,
+      'foto': '',
+      'isFoto': false
+    }
+  ];
   fotoProduk: any = [
     {
       'id': 1,
@@ -133,6 +182,14 @@ export class ProductComponent implements OnInit {
       'isFoto': false
     }
   ];
+
+  public items: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  public target: CdkDropList;
+  public targetIndex: number;
+  public source: CdkDropList;
+  public sourceIndex: number;
+  public dragIndex: number;
+  public activeContainer;
 
   constructor(
     private globalService: GlobalService,
@@ -215,6 +272,7 @@ export class ProductComponent implements OnInit {
   create() {
     this.empty();
     this.showForm = !this.showForm;
+    this.fotoProduk = this.fotoProdukReset;
     this.isEdit = false;
     this.isView = false;
     this.getListCategory();
@@ -325,6 +383,10 @@ export class ProductComponent implements OnInit {
   getListVariant(id) {
     this.globalService.DataGet(`/produk/variant/${id}`, {}, false).subscribe((res: any) => {
       this.listVariant = res.data;
+      if(this.isEdit || this.isView){
+        this.valueVarian1 = res.varian1;
+        this.valueVarian2 = res.varian2;
+      }
     })
   }
 

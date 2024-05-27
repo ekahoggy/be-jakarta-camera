@@ -110,3 +110,10 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+.input-group {
+  input {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}

@@ -24,8 +24,8 @@
             <div class="row form-group my-2">
               <div class="col-12 row mb-2">
                 <div class="col-2">
-                  <input type="text" name="param_produk" [(ngModel)]="modelParam.nama"
-                    class="form-control form-control" placeholder="Cari Nama Produk ... ">
+                  <input type="text" name="param_produk" [(ngModel)]="modelParam.nama" class="form-control form-control"
+                    placeholder="Cari Nama Produk ... ">
                 </div>
                 <div class="col-2">
                   <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Kategori ..."
@@ -94,11 +94,13 @@
                       <div class="d-table table-variant" *ngIf="item.variant.length > 0" style="text-align: left;">
                         <div class="detail-variant" *ngFor="let variant of item.variant; index as i">
                           <span *ngIf="!variant.is_edit">{{ variant.stok }}</span> &nbsp;
-                          <input type="text" class="input-stok" id="stok-variant-{{variant.id}}" [(ngModel)]="variant.stok" name="stok" *ngIf="variant.is_edit">
+                          <input type="text" class="input-stok" id="stok-variant-{{variant.id}}"
+                            [(ngModel)]="variant.stok" name="stok" *ngIf="variant.is_edit">
                           <a href="javascript:void(0);" (click)="ubahStokList(variant, i)" *ngIf="!variant.is_edit">
                             <i class="bx bx-edit-alt"></i>
                           </a>
-                          <a href="javascript:void(0);" (click)="simpanStokList(variant, i)" *ngIf="variant.is_edit" style="padding-left: 10px;">
+                          <a href="javascript:void(0);" (click)="simpanStokList(variant, i)" *ngIf="variant.is_edit"
+                            style="padding-left: 10px;">
                             <i class="bx bx-save"></i>
                           </a>
                         </div>
@@ -146,15 +148,15 @@
                     <div class="mb-3">
                       <div id="imageSection">
                         <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-                          (cdkDropListDropped)="drop($event)">
-                          <div class="css-1ofqig9 " *ngFor="let v of fotoProduk; index as i" cdkDrag>
+                          (cdkDropListDropped)="drop($event)" >
+                          <div class="css-1ofqig9 " *ngFor="let v of fotoProduk; index as i" cdkDrag [cdkDragDisabled]="isView">
                             <div class="css-2imjyh" id="imgDropArea" tabindex="0">
                               <div id="img-0-empty">
                                 <div class="css-i62psg" id="imgComponent-{{i}}">
-                                  <div class="d-flex justify-content-end" *ngIf="v.foto.base64">
+                                  <div class="d-flex justify-content-end" *ngIf="v.isFoto">
                                     <div class="css-1spu5f8" *ngIf="i === 0">Foto Utama</div>
                                     <button class="badge badge-center rounded-pill bg-danger border-0"
-                                      style="z-index: 1;" (click)="removePhoto(i)">
+                                      style="z-index: 1;" (click)="removePhoto(i)" [disabled]="isView">
                                       <i class="bx bx-trash"></i>
                                     </button>
                                   </div>
@@ -172,9 +174,9 @@
                                       <img [src]="v.foto.base64" alt="foto-produk-{{i}}"
                                         class="d-block rounded img-preview" id="uploadProduk{{i}}"
                                         *ngIf="v.foto.base64">
-                                      <img [src]="v.foto" alt="foto-produk-kosong-{{i}}" class="d-block rounded"
+                                      <img [src]="v.foto" alt="foto-produk-kosong-{{i}}" class="d-block rounded" style="object-fit: contain;"
                                         height="100" width="100" id="uploadProduk{{i}}"
-                                        *ngIf="!v.foto.base64 && v.foto !== ''">
+                                        *ngIf="!v.foto.base64">
 
                                       <div class="css-w18sxf" *ngIf="i !== 0 && !v.isFoto">{{ v.name }} {{i + 1}}</div>
                                       <div class="css-w18sxf" *ngIf="i === 0 && !v.isFoto">Foto utama</div>
@@ -182,9 +184,6 @@
                                         accept="image/png, image/jpeg" (change)="onFileSelected($event, i)">
                                     </label>
                                   </div>
-
-                                </div>
-                                <div>
                                 </div>
                               </div>
                             </div>
@@ -215,20 +214,20 @@
                     <div class="mb-3">
                       <label class="form-label" for="kategori">Kategori</label>
                       <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Kategori ..."
-                        [(ngModel)]="model.m_kategori_id" name="kategori">
+                        [(ngModel)]="model.m_kategori_id" name="kategori" [disabled]="isView">
                       </ng-select>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label" for="kategori">Brand</label>
+                      <label class="form-label" for="brand">Brand</label>
                       <ng-select [items]="listBrand" bindLabel="brand" bindValue="id" placeholder="Brand ..."
-                        [(ngModel)]="model.m_brand_id" name="brand">
+                        [(ngModel)]="model.m_brand_id" name="brand" [disabled]="isView">
                       </ng-select>
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="harga">Harga</label>
                       <div class="input-group input-group-merge">
                         <span class="input-group-text" id="harga">Rp</span>
-                        <input type="text" class="form-control" id="harga" placeholder="0" [(ngModel)]="model.harga"
+                        <input type="text" class="form-control pl-2" id="harga" placeholder="0" [(ngModel)]="model.harga"
                           name="harga" placeholder="Harga..." mask="separator.3" thousandSeparator=".">
                       </div>
                     </div>
@@ -240,7 +239,7 @@
                         <label class="form-label" for="link_tokped">Tokopedia</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_tokped">https://</span>
-                          <input type="text" class="form-control" id="link_tokped" placeholder="0"
+                          <input type="text" class="form-control pl-2" id="link_tokped" placeholder="0"
                             [(ngModel)]="model.link_tokped" name="link_tokped" placeholder="e-commerce.com/">
                         </div>
                       </div>
@@ -248,7 +247,7 @@
                         <label class="form-label" for="link_shopee">Shopee</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_shopee">https://</span>
-                          <input type="text" class="form-control" id="link_shopee" placeholder="0"
+                          <input type="text" class="form-control pl-2" id="link_shopee" placeholder="0"
                             [(ngModel)]="model.link_shopee" name="link_shopee" placeholder="e-commerce.com/">
                         </div>
                       </div>
@@ -256,7 +255,7 @@
                         <label class="form-label" for="link_bukalapak">Bukalapak</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_bukalapak">https://</span>
-                          <input type="text" class="form-control" id="link_bukalapak" placeholder="0"
+                          <input type="text" class="form-control pl-2" id="link_bukalapak" placeholder="0"
                             [(ngModel)]="model.link_bukalapak" name="link_bukalapak" placeholder="e-commerce.com/">
                         </div>
                       </div>
@@ -264,7 +263,7 @@
                         <label class="form-label" for="link_lazada">Lazada</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_lazada">https://</span>
-                          <input type="text" class="form-control" id="link_lazada" placeholder="0"
+                          <input type="text" class="form-control pl-2" id="link_lazada" placeholder="0"
                             [(ngModel)]="model.link_lazada" name="link_lazada" placeholder="e-commerce.com/">
                         </div>
                       </div>
@@ -272,7 +271,7 @@
                         <label class="form-label" for="link_blibli">Blibli</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text" id="link_blibli">https://</span>
-                          <input type="text" class="form-control" id="link_blibli" placeholder="0"
+                          <input type="text" class="form-control pl-2" id="link_blibli" placeholder="0"
                             [(ngModel)]="model.link_blibli" name="link_blibli" placeholder="e-commerce.com/">
                         </div>
                       </div>
@@ -299,7 +298,7 @@
                       <div class="row">
                         <div class="col-3">
                           <div class="input-group input-group-merge">
-                            <input type="text" class="form-control" id="berat" placeholder="0" [(ngModel)]="model.berat"
+                            <input type="text" class="form-control pr-2" id="berat" placeholder="0" [(ngModel)]="model.berat"
                               name="berat" placeholder="Berat ..." mask="separator.3" thousandSeparator=".">
                             <span class="input-group-text" id="berat">g</span>
                           </div>
@@ -311,7 +310,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="input-group input-group-merge">
-                            <input type="text" class="form-control" id="panjang" placeholder="0"
+                            <input type="text" class="form-control pr-2" id="panjang" placeholder="0"
                               [(ngModel)]="model.panjang" name="panjang" placeholder="Panjang ..." mask="separator.3"
                               thousandSeparator=".">
                             <span class="input-group-text" id="panjang">cm</span>
@@ -319,7 +318,7 @@
                         </div>
                         <div class="col-4">
                           <div class="input-group input-group-merge">
-                            <input type="text" class="form-control" id="tinggi" placeholder="0"
+                            <input type="text" class="form-control pr-2" id="tinggi" placeholder="0"
                               [(ngModel)]="model.tinggi" name="tinggi" placeholder="Tinggi ..." mask="separator.3"
                               thousandSeparator=".">
                             <span class="input-group-text" id="tinggi">cm</span>
@@ -327,7 +326,7 @@
                         </div>
                         <div class="col-4">
                           <div class="input-group input-group-merge">
-                            <input type="text" class="form-control" id="lebar" placeholder="0" [(ngModel)]="model.lebar"
+                            <input type="text" class="form-control pr-2" id="lebar" placeholder="0" [(ngModel)]="model.lebar"
                               name="lebar" placeholder="Lebar ..." mask="separator.3" thousandSeparator=".">
                             <span class="input-group-text" id="lebar">cm</span>
                           </div>
@@ -344,7 +343,7 @@
                     </div>
                     <div class="row pb-2">
                       <div class="col-12 text-end">
-                        <button class="btn btn-primary me-1" (click)="addVariant()" *ngIf="buttonAtasVarian1">
+                        <button class="btn btn-primary me-1" (click)="addVariant()" *ngIf="buttonAtasVarian1 && !isView">
                           <i class="bx bx-plus"></i>
                           Tambah Varian
                         </button>
@@ -514,7 +513,7 @@
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th class="align-middle" width="10%" *ngIf="modelVarian.useFotoVarian == 1">Gambar</th>
+                          <th class="align-middle" width="10%" *ngIf="modelVarian.useFotoVarian == 1 || isView">Gambar</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian1">{{ valueVarian1 }}</th>
                           <th class="align-middle" width="10%" *ngIf="valueVarian2">{{ valueVarian2 }}</th>
                           <th class="align-middle" width="15%">Harga</th>
@@ -526,11 +525,11 @@
                       <tbody>
                         <ng-container *ngIf="listVariant.length > 0">
                           <tr *ngFor="let item of listVariant; index as i">
-                            <td *ngIf="modelVarian.useFotoVarian == 1">
+                            <td *ngIf="modelVarian.useFotoVarian == 1 || isView">
                               <img [src]="item.image.base64" alt="foto-produk-variant-{{i}}"
                                 class="d-block rounded img-preview-variant" id="uploadVarian{{i}}"
                                 *ngIf="item.image.base64">
-                              <img [src]="item.image" alt="foto-produk-variant-kosong-{{i}}" class="d-block rounded"
+                              <img [src]="item.image" alt="foto-produk-variant-kosong-{{i}}" class="d-block rounded" style="object-fit: contain;"
                                 height="100" width="100" id="uploadVarian{{i}}"
                                 *ngIf="!item.image.base64 && item.image !== ''">
                             </td>
@@ -558,7 +557,7 @@
                             </td>
                             <td>
                               <div class="input-group input-group-merge">
-                                <input type="text" class="form-control text-end" placeholder="0"
+                                <input type="text" class="form-control text-end pr-2" placeholder="0"
                                   aria-describedby="berat" [(ngModel)]="item.berat" name="berat_{{i}}"
                                   mask="separator.3" thousandSeparator=".">
                                 <span class="input-group-text" id="berat">g</span>
@@ -585,7 +584,7 @@
           <i class="bx bx-chevron-left me-1"></i>
           Kembali
         </button>
-        <button class="btn btn-primary" (click)="save()">
+        <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
           <i class="bx bx-save me-1"></i>
           Simpan
         </button>
