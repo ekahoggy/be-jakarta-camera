@@ -145,6 +145,8 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.empty();
     this.getData();
+    this.getListCategory();
+    this.getListBrand();
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -161,7 +163,7 @@ export class ProductComponent implements OnInit {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify({}),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
@@ -192,7 +194,9 @@ export class ProductComponent implements OnInit {
 
   reset() {
     this.modelParam = {
-      kategori: ''
+      nama: '',
+      m_kategori_id: null,
+      m_brand_id: null
     }
 
     this.reloadDataTable()
@@ -335,7 +339,7 @@ export class ProductComponent implements OnInit {
   }
 
   removeVariant() {
-    this.aktifkanVaraian1 = true;
+    this.aktifkanVaraian1 = false;
     this.aktifkanVaraian2 = false;
     this.buttonAtasVarian1 = true;
     this.buttonAtasVarian2 = false;
@@ -348,7 +352,6 @@ export class ProductComponent implements OnInit {
     this.varian2 = [];
     this.duplicate = [];
     this.modelVarian = [];
-    // this.listVariant.splice(i, 1);
   }
 
   changeVarian1(e) {
