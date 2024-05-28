@@ -1,213 +1,259 @@
 <div class="content-wrapper">
-	<div class="container-xxl flex-grow-1 container-p-y">
-		<nav aria-label="breadcrumb">
-			<ol class="breadcrumb breadcrumb-style1">
-				<li class="breadcrumb-item">
-					<a href="javascript:void(0);">Masters</a>
-				</li>
-				<li class="breadcrumb-item active">Monitoring Order</li>
-			</ol>
-		</nav>
-		<div class="card" *ngIf="!showForm">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12 text-end mb-5">
-						<div class="d-flex justify-content-between align-items-center">
-							<h4 class="ms-3 mb-0">Monitoring Order</h4>
-							<button class="btn btn-primary" (click)="create()">
-								<i class="bx bx-xs bx-plus me-1"></i>
-								Create
-							</button>
-						</div>
-					</div>
-					<div class="col-12">
-						<div class=" text-nowrap">
-							<table datatable [dtOptions]="dtOptions" class="table" data-page-length="5">
-								<thead>
-									<tr>
-										<th width="120">Invoice</th>
-										<th>Customer</th>
-										<th>Email</th>
-										<th>Phone Number</th>
-										<th>Total</th>
-										<th>Grand Total</th>
-										<th>Status</th>
-										<th width="80">Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr *ngFor="let item of listData" (dblclick)="view(item)">
-										<td> {{ item.invoice_number }} </td>
-										<td> {{ item.name }} </td>
-										<td> {{ item.email }} </td>
-										<td> {{ item.phone_code }} {{ item.phone_number }} </td>
-										<td> Rp {{ item.total | number }} </td>
-										<td> Rp {{ item.grand_total | number }} </td>
-										<td> 
-											<span class="badge" 
-												[ngClass]="{
-													'bg-label-warning': item.status_order == 'ordered', 
-													'bg-label-primary': item.status_order == 'processed', 
-													'bg-label-info': item.status_order == 'sent', 
-													'bg-label-success': item.status_order == 'received', 
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Masters</a>
+        </li>
+        <li class="breadcrumb-item active">Monitoring Order</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Monitoring Order</h4>
+              <!--
+                <button class="btn btn-primary" (click)="create()">
+                  <i class="bx bx-xs bx-plus me-1"></i>
+                  Create
+                </button>
+              -->
+            </div>
+          </div>
+          <div class="col-12 mb-2">
+            <div class="row form-group my-2">
+              <div class="col-12 row mb-2">
+                <div class="col-2">
+                  <input type="text" name="param_invoice" [(ngModel)]="modelParam.invoice_number" class="form-control form-control"
+                    placeholder="Cari Invoice ... ">
+                </div>
+                <div class="col-2">
+                  <select class="form-select" id="status_order" placeholder="Status"
+                    [(ngModel)]="modelParam.status_order" name="status_order">
+                    <option value="">- Semua Status -</option>
+                    <option value="ordered">Belum Bayar</option>
+                    <option value="processed">Konfirmasi</option>
+                    <option value="sent">Kirim</option>
+                    <option value="received">Selesai</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 text-center">
+                <button class="btn btn-primary btn-rounded" (click)="reloadDataTable()">
+                  <i class="bx bx-search"></i>Cari
+                </button>
+                <button class="btn btn-outline-primary btn-rounded ms-2" (click)="reset()">
+                  <i class="bx bx-refresh"></i>Reset
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <table datatable [dtOptions]="dtOptions" class="table" data-page-length="5">
+                <thead>
+                  <tr>
+                    <th width="120">Invoice</th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Total</th>
+                    <th>Grand Total</th>
+                    <th>Status</th>
+                    <th width="80">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td> {{ item.invoice_number }} </td>
+                    <td> {{ item.name }} </td>
+                    <td> {{ item.email }} </td>
+                    <td> {{ item.phone_code }} {{ item.phone_number }} </td>
+                    <td> Rp {{ item.total | number }} </td>
+                    <td> Rp {{ item.grand_total | number }} </td>
+                    <td>
+                      <span class="badge" [ngClass]="{
+													'bg-label-warning': item.status_order == 'ordered',
+													'bg-label-primary': item.status_order == 'processed',
+													'bg-label-info': item.status_order == 'sent',
+													'bg-label-success': item.status_order == 'received',
 													'bg-label-danger': item.status_order == 'canceled'
-												}"
-											>
-												{{ item.status_order }}
-											</span> 
-										</td>
-										<td class="text-center">
-											<div class="dropdown">
-												<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-													<i class="bx bx-dots-vertical-rounded"></i>
-												</button>
-												<div class="dropdown-menu">
-													<a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
-														<i class='bx bx-detail me-1'></i>
-														View
-													</a>
-													<!-- <a class="dropdown-item" href="javascript:void(0);">
-														<i class="bx bx-trash me-1"></i>
-														Delete
-													</a> -->
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="card" *ngIf="showForm">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12 text-end mb-5">
-						<div class="d-flex justify-content-between align-items-center">
-							<h4 class="ms-3 mb-0">Detail Order {{ model.invoice_number }}</h4>
-						</div>
-					</div>
-					<div class="col-12">
-						<form>
-							<!-- [disabled]="isView || isLoading" -->
-							<fieldset [disabled]="true">
-								<div class="row">
-									<div class="col-6">
-										<div class="divider">
-											<div class="divider-text">Detail Buyer</div>
-										</div>
-										<div class="mb-3">
-											<label class="form-label" for="invoice_number">Invoice Number</label>
-											<input type="text" class="form-control" id="invoice_number" [(ngModel)]="model.invoice_number" name="invoice_number" placeholder="enter the invoice number...">
-										</div>
-										<div class="mb-3">
-											<label class="form-label" for="name">Name Customer</label>
-											<input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" placeholder="enter the customer name...">
-										</div>
-										<div class="mb-3">
-											<label class="form-label" for="status_order">Status</label>
-											<input type="text" class="form-control" id="status_order" [(ngModel)]="model.status_order" name="status_order" placeholder="enter the status_order...">
-										</div>
-										<div class="mb-3">
-											<label class="form-label" for="date">Date</label>
-											<input type="text" class="form-control" id="date" [(ngModel)]="model.date" name="date" placeholder="enter the date...">
-										</div>
-										<div class="mb-3">
-											<label class="form-label" for="keterangan">Note</label>
-											<textarea id="note" class="form-control" rows="3" [(ngModel)]="model.note" name="note" placeholder="enter the note..."></textarea>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="divider">
-											<div class="divider-text">Shipping</div>
-										</div>
-										<div class="row">
-											<div class="col-6 mb-3">
-												<label class="form-label" for="recipient">Recipient</label>
-												<input type="text" class="form-control" id="recipient" [(ngModel)]="model.recipient" name="recipient" placeholder="enter the recipient...">
-											</div>
-											<div class="col-6 mb-3">
-												<label class="form-label" for="phone_number">Phone Number</label>
-												<div class="input-group">
-													<span class="input-group-text" id="phone_number">{{ model.phone_code }}</span>
-													<input type="text" class="form-control" id="phone_number" [(ngModel)]="model.phone_number" name="phone_number" placeholder="enter the phone number...">
-												</div>
-											</div>
-											<div class="col-6 mb-3">
-												<label class="form-label" for="village_name">Village</label>
-												<input type="text" class="form-control" id="village_name" [(ngModel)]="model.village_name" name="village_name" placeholder="enter the village name...">
-											</div>
-											<div class="col-6 mb-3">
-												<label class="form-label" for="subdistrict_name">Subdistrict</label>
-												<input type="text" class="form-control" id="subdistrict_name" [(ngModel)]="model.subdistrict_name" name="subdistrict_name" placeholder="enter the subdistrict name...">
-											</div>
-											<div class="col-6 mb-3">
-												<label class="form-label" for="city_name">City</label>
-												<input type="text" class="form-control" id="city_name" [(ngModel)]="model.city_name" name="city_name" placeholder="enter the village name...">
-											</div>
-											<div class="col-6 mb-3">
-												<label class="form-label" for="province_name">Province</label>
-												<input type="text" class="form-control" id="province_name" [(ngModel)]="model.province_name" name="province_name" placeholder="enter the subdistrict name...">
-											</div>
-											<div class="col-6 mb-3">
-												<label class="form-label" for="postal_code">Postal Code</label>
-												<input type="text" class="form-control" id="postal_code" [(ngModel)]="model.postal_code" name="postal_code" placeholder="enter the postal code...">
-											</div>
-											<div class="col-12 mb-3">
-												<label class="form-label" for="address">Address</label>
-												<textarea type="text" class="form-control" id="address" [(ngModel)]="model.address" name="address" placeholder="enter the address..." rows="3"></textarea>
-											</div>
-										</div>
-									</div>
-									<div class="col-8">
-										<div class="divider">
-											<div class="divider-text">Shipping</div>
-										</div>
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>SKU</th>
-													<th>Product Name</th>
-													<th>Price</th>
-													<th>Quantity</th>
-													<th>Subtotal Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr *ngFor="let item of listDetail">
-													<td>{{ item.nama }}</td>
-													<td class="text-center">{{ item.sku }}</td>
-													<td class="text-end">{{ item.price | number }}</td>
-													<td class="text-center">{{ item.subtotal_price / item.price }} pcs</td>
-													<td class="text-end">Rp {{ item.grandtotal_price | number }}</td>
-												</tr>
-												<tr>
-													<td class="text-end pe-3" colspan="4">Total</td>
-													<td class="text-end">Rp {{ grandtotal | number }}</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="card-footer text-end">
-				<button class="btn btn-light me-1" (click)="index()">
-					<i class="bx bx-chevron-left me-1"></i>
-					Back
-				</button>
-				<!-- <button class="btn btn-primary" (click)="save()">
+												}">
+                        {{ item.status_order_convert }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'ordered'" (click)="edit(item, 'processed')">
+                            <i class='bx bx-check me-1'></i>
+                            Setujui
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'processed'" (click)="edit(item, 'sent')">
+                            <i class='bx bx-archieve-out me-1'></i>
+                            Kirim
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'sent'" (click)="edit(item, 'received')">
+                            <i class='bx bx-check-shield me-1'></i>
+                            Selesai
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="ms-3 mb-0">Detail Order {{ model.invoice_number }}</h4>
+            </div>
+          </div>
+          <div class="col-12">
+            <form>
+              <!-- [disabled]="isView || isLoading" -->
+              <fieldset [disabled]="true">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="divider">
+                      <div class="divider-text">Detail Buyer</div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="invoice_number">Invoice Number</label>
+                      <input type="text" class="form-control" id="invoice_number" [(ngModel)]="model.invoice_number"
+                        name="invoice_number" placeholder="enter the invoice number...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="name">Name Customer</label>
+                      <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name"
+                        placeholder="enter the customer name...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="status_order">Status</label>
+                      <input type="text" class="form-control" id="status_order" [(ngModel)]="model.status_order"
+                        name="status_order" placeholder="enter the status_order...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="date">Date</label>
+                      <input type="text" class="form-control" id="date" [(ngModel)]="model.date" name="date"
+                        placeholder="enter the date...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="keterangan">Note</label>
+                      <textarea id="note" class="form-control" rows="3" [(ngModel)]="model.note" name="note"
+                        placeholder="enter the note..."></textarea>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="divider">
+                      <div class="divider-text">Shipping</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="recipient">Recipient</label>
+                        <input type="text" class="form-control" id="recipient" [(ngModel)]="model.recipient"
+                          name="recipient" placeholder="enter the recipient...">
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="phone_number">Phone Number</label>
+                        <div class="input-group">
+                          <span class="input-group-text" id="phone_number">{{ model.phone_code }}</span>
+                          <input type="text" class="form-control" id="phone_number" [(ngModel)]="model.phone_number"
+                            name="phone_number" placeholder="enter the phone number...">
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="village_name">Village</label>
+                        <input type="text" class="form-control" id="village_name" [(ngModel)]="model.village_name"
+                          name="village_name" placeholder="enter the village name...">
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="subdistrict_name">Subdistrict</label>
+                        <input type="text" class="form-control" id="subdistrict_name"
+                          [(ngModel)]="model.subdistrict_name" name="subdistrict_name"
+                          placeholder="enter the subdistrict name...">
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="city_name">City</label>
+                        <input type="text" class="form-control" id="city_name" [(ngModel)]="model.city_name"
+                          name="city_name" placeholder="enter the village name...">
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="province_name">Province</label>
+                        <input type="text" class="form-control" id="province_name" [(ngModel)]="model.province_name"
+                          name="province_name" placeholder="enter the subdistrict name...">
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="postal_code">Postal Code</label>
+                        <input type="text" class="form-control" id="postal_code" [(ngModel)]="model.postal_code"
+                          name="postal_code" placeholder="enter the postal code...">
+                      </div>
+                      <div class="col-12 mb-3">
+                        <label class="form-label" for="address">Address</label>
+                        <textarea type="text" class="form-control" id="address" [(ngModel)]="model.address"
+                          name="address" placeholder="enter the address..." rows="3"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <div class="divider">
+                      <div class="divider-text">Shipping</div>
+                    </div>
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>SKU</th>
+                          <th>Product Name</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th>Subtotal Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of listDetail">
+                          <td>{{ item.nama }}</td>
+                          <td class="text-center">{{ item.sku }}</td>
+                          <td class="text-end">{{ item.price | number }}</td>
+                          <td class="text-center">{{ item.subtotal_price / item.price }} pcs</td>
+                          <td class="text-end">Rp {{ item.grandtotal_price | number }}</td>
+                        </tr>
+                        <tr>
+                          <td class="text-end pe-3" colspan="4">Total</td>
+                          <td class="text-end">Rp {{ grandtotal | number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Back
+        </button>
+        <!-- <button class="btn btn-primary" (click)="save()">
 					<i class="bx bx-save me-1"></i>
 					Save
 				</button> -->
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
 
-	<div class="content-backdrop fade"></div>
+  <div class="content-backdrop fade"></div>
 </div>
