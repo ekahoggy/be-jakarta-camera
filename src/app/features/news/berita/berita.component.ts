@@ -1,19 +1,20 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
-import { AngularTreeGridComponent } from 'angular-tree-grid';
-
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 
 @Component({
   selector: 'app-berita',
   templateUrl: './berita.component.html',
   styleUrls: ['./berita.component.scss']
 })
-export class BeritaComponent {
+export class BeritaComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement: any = DataTableDirective;
   dtInstance: any = Promise<DataTables.Api>;
   dtOptions: DataTables.Settings = {};
+  editor = ClassicEditor;
   showForm: boolean = false;
   isEdit: boolean = false;
   isView: boolean = false;
@@ -22,7 +23,9 @@ export class BeritaComponent {
   modelParam: any = {};
   base64Image: string | null = null;
   listCategory: any = [];
+  listTags: any = [];
   isLoading: boolean = false;
+  content: any = null;
 
   constructor(
     private globalService: GlobalService,
@@ -47,7 +50,7 @@ export class BeritaComponent {
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/kategori", params, false).subscribe((res: any) => {
+        this.globalService.DataGet("/news", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
 
           callback({
@@ -70,7 +73,9 @@ export class BeritaComponent {
 
   empty() {
     this.model = {};
-    this.model.icon = "assets/img/elements/18.jpg";
+    this.listTags = [];
+    this.content = null;
+    this.model.image = "assets/img/elements/18.jpg";
   }
 
   index() {
@@ -82,34 +87,54 @@ export class BeritaComponent {
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = false;
-    this.getListCategory();
+    this.empty();
   }
 
   edit(val) {
     this.showForm = !this.showForm;
     this.isEdit = true;
     this.isView = false;
-    this.getListCategory(val.id);
-    this.getDataById(val.id)
+    this.model = val;
+    this.listTags = val.tags
+    this.content = val.content;
   }
 
   view(val) {
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = true;
-    this.getListCategory(val.id);
-    this.getDataById(val.id)
+    this.model = val;
+    this.listTags = val.tags
+    this.content = val.content;
+  }
+
+  ubahStatus(item, status) {
+    let data = {
+      id: item.id,
+      is_publish: status
+    };
+    const final = Object.assign(data)
+    this.globalService.DataPost('/news/status', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.globalService.alertSuccess('Berhasil', 'News diubah')
+        this.reloadDataTable()
+      }
+    },
+      error => {
+        this.empty();
+        this.globalService.alertError('Gagal', error.error.message);
+      })
   }
 
   save() {
-    this.model.icon = this.setImageBase64(this.model.icon);
-    if (this.model.icon === "assets/img/elements/18.jpg") {
-      this.model.icon = {};
+    this.model.image = this.setImageBase64(this.model.image);
+    if (this.model.image === "assets/img/elements/18.jpg") {
+      this.model.image = {};
     }
     const final = Object.assign(this.model)
-    this.globalService.DataPost('/kategori/save', final, true).subscribe((res: any) => {
+    this.globalService.DataPost('/news/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
-        this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disimpan')
+        this.globalService.alertSuccess('Berhasil', 'News berhasil disimpan')
         this.index();
       }
     },
@@ -119,18 +144,14 @@ export class BeritaComponent {
       })
   }
 
+  addCustomTag = (tag) => ({ id: tag, name: tag });
+
   getDataById(id: string = null) {
     this.isLoading = true;
-    this.globalService.DataGet(`/kategori/${id}`, {}, false).subscribe((res: any) => {
+    this.globalService.DataGet(`/news/${id}`, {}, false).subscribe((res: any) => {
       this.model = res.data
-      this.model.icon = this.globalService.getImage('kategori', this.model.icon)
+      this.model.image = this.globalService.getImage('news', this.model.image)
       this.isLoading = false;
-    })
-  }
-
-  getListCategory(id: string = null) {
-    this.globalService.DataGet('/kategori', { notEqual: id }, false).subscribe((res: any) => {
-      this.listCategory = res.data.list;
     })
   }
 
@@ -151,15 +172,19 @@ export class BeritaComponent {
         base64: this.base64Image
       }
     }
-
     return icon;
   }
 
   reset() {
     this.modelParam = {
-      kategori: ''
+      judul: ''
     }
 
     this.reloadDataTable()
+  }
+
+  onChangeDetailEditor({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    this.model.content = data;
   }
 }

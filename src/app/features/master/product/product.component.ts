@@ -4,7 +4,6 @@ import { GlobalService } from '../../../services/global.service';
 import {
   CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray
 } from "@angular/cdk/drag-drop";
-import { NgFor } from '@angular/common';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
