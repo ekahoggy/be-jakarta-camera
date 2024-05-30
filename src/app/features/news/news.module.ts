@@ -11,6 +11,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { KategoriComponent } from './kategori/kategori.component';
 import { BeritaComponent } from './berita/berita.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { BeritaComponent } from './berita/berita.component';
     NgxMaskPipe,
     DragDropModule,
     CKEditorModule,
+    MatExpansionModule
   ]
 })
 export class NewsModule { }

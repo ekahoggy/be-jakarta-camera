@@ -3,6 +3,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-berita',
@@ -26,6 +27,7 @@ export class BeritaComponent implements OnInit {
   listTags: any = [];
   isLoading: boolean = false;
   content: any = null;
+  panelOpenState = false;
 
   constructor(
     private globalService: GlobalService,
@@ -75,7 +77,12 @@ export class BeritaComponent implements OnInit {
     this.model = {};
     this.listTags = [];
     this.content = null;
+    this.base64Image = null;
     this.model.image = "assets/img/elements/18.jpg";
+  }
+
+  collapseInfo(){
+    this.panelOpenState = !this.panelOpenState;
   }
 
   index() {
@@ -88,6 +95,7 @@ export class BeritaComponent implements OnInit {
     this.isEdit = false;
     this.isView = false;
     this.empty();
+    this.getListCategory();
   }
 
   edit(val) {
@@ -95,6 +103,7 @@ export class BeritaComponent implements OnInit {
     this.isEdit = true;
     this.isView = false;
     this.model = val;
+    this.getListCategory();
     this.listTags = val.tags
     this.content = val.content;
   }
@@ -104,8 +113,15 @@ export class BeritaComponent implements OnInit {
     this.isEdit = false;
     this.isView = true;
     this.model = val;
+    this.getListCategory();
     this.listTags = val.tags
     this.content = val.content;
+  }
+
+  getListCategory() {
+    this.globalService.DataGet('/news-kategori', {}, false).subscribe((res: any) => {
+      this.listCategory = res.data;
+    })
   }
 
   ubahStatus(item, status) {
@@ -145,6 +161,7 @@ export class BeritaComponent implements OnInit {
   }
 
   addCustomTag = (tag) => ({ id: tag, name: tag });
+  addCustomKategori = (kategori) => ({ id: kategori, kategori: kategori });
 
   getDataById(id: string = null) {
     this.isLoading = true;
