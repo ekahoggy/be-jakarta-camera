@@ -5,7 +5,6 @@
         <li class="breadcrumb-item">
           <a href="javascript:void(0);">Web</a>
         </li>
-        <li class="breadcrumb-item">Beranda</li>
         <li class="breadcrumb-item active">Slider</li>
       </ol>
     </nav>
@@ -29,18 +28,26 @@
                   <div class="css-2imjyh" id="imgDropArea" tabindex="0">
                     <div id="img-0-empty">
                       <div class="css-i62psg" id="imgComponent-{{i}}">
-                        <div class="d-flex justify-content-end" style="position: absolute;">
-                          <button class="badge badge-center rounded-pill bg-danger border-0" style="z-index: 1;" (click)="delete(v.id)">
+                        <div class="d-flex justify-content-end tombol-slider">
+                          <button class="badge badge-center rounded-pill bg-danger border-0" style="z-index: 1;"
+                            (click)="delete(v.id)">
                             <i class="bx bx-trash"></i>
                           </button>
-                          <button class="badge badge-center rounded-pill bg-warning border-0" style="z-index: 1;" (click)="edit(v)">
+                          <button class="badge badge-center rounded-pill bg-warning border-0" style="z-index: 1;"
+                            (click)="edit(v)">
                             <i class="bx bx-pencil"></i>
                           </button>
                         </div>
                         <div class="css-kmq1n0" data-testid="imgAEPImgUploader">
-                          <img [src]="v.picture" alt="slider-{{i}}" class="d-block rounded" height="100%" style="object-fit: contain;"
-                            width="100%" id="slider-{{i}}">
-                          <div class="css-w18sxf">{{ v.title }}</div>
+                          <div class="col-6">
+                            <img [src]="v.picture" alt="slider-{{i}}" class="d-block rounded" height="100%" width="100%"
+                              id="slider-{{i}}">
+                          </div>
+                          <div class="col-6 css-w18sxf">
+                            <p class="title">{{ v.title }}</p>
+                            <p class="url">{{ v.url }}</p>
+                            <p class="content">{{ v.content }}</p>
+                          </div>
                         </div>
                       </div>
                     </div>

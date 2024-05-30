@@ -1,1 +1,101 @@
-<p>kategori works!</p>
+<div class="card" *ngIf="!showForm">
+  <div class="card-header">
+    <div class="row form-group my-2">
+      <div class="col-2">
+        <input type="text" name="param_kategori" [(ngModel)]="modelParam.kategori" class="form-control form-control-sm"
+          placeholder="Cari kategori ... " (input)="reloadDataTable()">
+      </div>
+      <div class="col-2">
+        <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
+          <i class="fas fa-undo"></i>Reset</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 text-end mb-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Kategori Produk</h4>
+          <button class="btn btn-primary" (click)="create()">
+            <i class="bx bx-xs bx-plus me-1"></i>
+            Tambah
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class=" text-nowrap">
+          <!---->
+          <table datatable [dtOptions]="dtOptions" class="table" data-page-length="10">
+            <thead>
+              <tr>
+                <th width="120">Ikon</th>
+                <th>Kategori</th>
+                <th width="80">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                <td><img class="rounded" [src]="item.icon" width="40" height="40"></td>
+                <td> {{ item.kategori }} </td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
+                        <i class="bx bx-edit-alt me-1"></i>
+                        Ubah
+                      </a>
+                      <a class="dropdown-item" href="javascript:void(0);">
+                        <i class="bx bx-trash me-1"></i>
+                        Hapus
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="showForm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 text-end mb-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="ms-3 mb-0">Form Kategori Produk</h4>
+        </div>
+      </div>
+      <div class="col-8">
+        <form>
+          <fieldset [disabled]="isView || isLoading">
+            <div class="mb-3">
+              <label class="form-label" for="kategori">Kategori</label>
+              <input type="text" class="form-control" id="kategori" [(ngModel)]="model.kategori" name="kategori"
+                placeholder="Kategori ...">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="keterangan">Deskripsi</label>
+              <textarea id="keterangan" class="form-control" rows="3" [(ngModel)]="model.keterangan" name="keterangan"
+                placeholder="Deskripsi..."></textarea>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-light me-1" (click)="index()">
+      <i class="bx bx-chevron-left me-1"></i>
+      Kembali
+    </button>
+    <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
+      <i class="bx bx-save me-1"></i>
+      Simpan
+    </button>
+  </div>
+</div>

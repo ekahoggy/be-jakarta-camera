@@ -2,8 +2,7 @@
   max-width: 100%;
   border: solid 1px #ccc;
   min-height: 60px;
-  display: flex;
-  flex-direction: row;
+  display: block;
   background: white;
   border-radius: 4px;
   overflow: hidden;
@@ -11,7 +10,7 @@
 
 .example-box {
   padding: 20px 10px;
-  border-right: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
   flex-direction: row;
@@ -21,8 +20,6 @@
   cursor: move;
   background: white;
   font-size: 14px;
-  flex-grow: 1;
-  flex-basis: 0;
 }
 
 .cdk-drag-preview {
@@ -67,23 +64,33 @@
   box-sizing: border-box;
   border-radius: 8px;
   margin: 10px;
-  width: 240px;
-  height: 340px;
+  // width: 240px;
+  height: 200px;
   cursor: pointer;
   border: 2px dashed var(--N100, #DBDEE2);
   text-align: -webkit-center;
   transition: all 0.25s ease 0s;
+
+  .tombol-slider {
+    position: absolute;
+    right: 40px;
+  }
 }
 
 .css-kmq1n0 {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   -webkit-box-pack: center;
   place-content: center;
-  width: 95%;
-  height: 90%;
+  height: 200px;
+  padding: 15px;
   -webkit-box-align: center;
   align-items: center;
+
+  img {
+    object-fit: cover;
+    height: 180px;
+  }
 }
 
 .css-phearn {
@@ -96,12 +103,22 @@
 }
 
 .css-w18sxf {
-  padding-top: 12px;
   font-style: normal;
   font-weight: normal;
   font-size: 1rem;
-  line-height: 20px;
+  line-height: 10px;
   color: rgba(49, 53, 59, 0.68);
+  height: 180px;
+  text-align: left;
+  padding-left: 25px;
+
+  .title{
+    font-weight: bold;
+  }
+
+  .url{
+    font-style: italic;
+  }
 }
 
 .css-1ofqig9 {
@@ -111,6 +128,6 @@
 }
 
 .css-2imjyh {
-  display: flex;
+  display: contents;
   flex-wrap: wrap;
 }
