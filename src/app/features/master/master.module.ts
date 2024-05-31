@@ -16,6 +16,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,11 @@ import {MatButtonModule} from '@angular/material/button';
     DragDropModule,
     CKEditorModule,
     MatButtonModule,
-    MatIconModule
-  ]
+    MatIconModule,
+    NgxDaterangepickerBootstrapModule.forRoot()
+  ],
+  providers: [
+    NgxDaterangepickerLocaleService
+  ],
 })
 export class MasterModule { }

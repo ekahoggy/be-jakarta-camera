@@ -236,7 +236,7 @@ export class ProductComponent implements OnInit {
         this.globalService.DataGet("/produk", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
           this.listData.forEach(value => {
-            value.variant.forEach(v => {
+            value.variant.all_varian.forEach(v => {
               v.is_edit = false;
             });
           });

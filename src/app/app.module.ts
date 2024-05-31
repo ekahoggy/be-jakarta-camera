@@ -14,6 +14,10 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { AngularTreeGridModule } from "angular-tree-grid";
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
+import {
+  NgxDaterangepickerBootstrapModule,
+  NgxDaterangepickerLocaleService,
+} from 'ngx-daterangepicker-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,7 @@ import { NgProgressHttpModule } from 'ngx-progressbar/http';
     AngularTreeGridModule,
     NgProgressModule,
     NgProgressHttpModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-atom' }),
+    NgxSpinnerModule.forRoot({ type: 'ball-atom' })
   ],
   exports:[
   ],

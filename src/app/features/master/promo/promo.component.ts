@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-promo',
@@ -21,6 +22,10 @@ export class PromoComponent implements OnInit {
   model: any = {};
   modelDetail: any = {};
   isLoading: boolean = false;
+
+  maxDate?: dayjs.Dayjs;
+  minDate?: dayjs.Dayjs;
+  invalidDates: dayjs.Dayjs[] = [];
 
   constructor(
     private globalService: GlobalService,
