@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
   menu: any = {};
+  counterPesanan: number = 0;
+
+  constructor(
+    private globalService: GlobalService,
+  ) { }
 
   ngOnInit(): void {
-    
+    this.counted();
+  }
+
+  counted(){
+    this.globalService.DataGet("/dashboard/counterPesanan", {}, false).subscribe((res: any) => {
+      this.counterPesanan = res.data.total_konfirmasi;
+    }, (error: any) => {
+      this.counterPesanan = 0;
+    })
   }
 
   openMenu(id:string) {
