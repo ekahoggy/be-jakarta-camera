@@ -13,11 +13,36 @@
         <div class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Promo</h4>
+              <h4 class="mb-0">Promo</h4>
               <button class="btn btn-primary" (click)="create()">
                 <i class="bx bx-xs bx-plus me-1"></i>
                 Create
               </button>
+            </div>
+          </div>
+          <div class="col-12 mb-2">
+            <div class="row form-group my-2">
+              <div class="col-12 row mb-2">
+                <div class="col-2">
+                  <input type="text" name="param_kode" [(ngModel)]="modelParam.kode" class="form-control form-control"
+                    placeholder="Cari Kode/Nama Promo ... ">
+                </div>
+                <div class="col-2">
+                  <select class="form-select" id="is_status" placeholder="Status"
+                    [(ngModel)]="modelParam.is_status" name="is_status">
+                    <option value="1">Aktif</option>
+                    <option value="0">Tidak Aktif</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 text-center">
+                <button class="btn btn-primary btn-rounded" (click)="reloadDataTable()">
+                  <i class="bx bx-search"></i>Cari
+                </button>
+                <button class="btn btn-outline-primary btn-rounded ms-2" (click)="reset()">
+                  <i class="bx bx-refresh"></i>Reset
+                </button>
+              </div>
             </div>
           </div>
           <div class="col-12">

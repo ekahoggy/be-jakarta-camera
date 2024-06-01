@@ -20,6 +20,7 @@ export class PromoComponent implements OnInit {
   listProduk: any = [];
   selectedProduk: any = [];
   model: any = {};
+  modelParam: any = {};
   modelDetail: any = {};
   isLoading: boolean = false;
 
@@ -33,6 +34,7 @@ export class PromoComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.modelParam.is_status = '1';
     this.empty();
     this.getData();
   }
@@ -47,7 +49,7 @@ export class PromoComponent implements OnInit {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify({}),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
@@ -64,6 +66,21 @@ export class PromoComponent implements OnInit {
         })
       },
     };
+  }
+
+  reloadDataTable(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
+
+  reset() {
+    this.modelParam = {
+      kode: '',
+      is_status: '1'
+    }
+
+    this.reloadDataTable()
   }
 
   empty() {
