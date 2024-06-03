@@ -9,11 +9,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SettingComponent } from './setting/setting.component';
 
 
 @NgModule({
   declarations: [
-    SliderComponent
+    SliderComponent,
+    SettingComponent
   ],
   imports: [
     CommonModule,
