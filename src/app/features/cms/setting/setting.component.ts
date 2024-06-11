@@ -27,7 +27,7 @@ export class SettingComponent implements OnInit{
   }
 
   getData() {
-    this.globalService.DataGet("/setting", {}, false).subscribe((res: any) => {
+    this.globalService.DataGet("/setting", {kategori: 'S'}, false).subscribe((res: any) => {
       res.data.forEach((val, k) => {
         if(val.name === 'icon'){
           this.model.icon = val.value
