@@ -17,6 +17,7 @@ export class AppComponent {
   ) { }
 
   ngOnInit() {
+    console.log('here');
     this.loadingRouteConfig = true;
     this.router.events.subscribe(event => {
       switch (true) {
@@ -42,20 +43,6 @@ export class AppComponent {
         }
       }
       const conn = (navigator as any).connection;
-      // if (conn) {
-      //     if (conn.saveData) {
-      //         console.log('here', conn);
-      //     }
-      //     const connectionlist = ["slow-2g", "2g", "3g", "4g"];
-      //     this.effectiveType = conn.effectiveType;
-      //     if (this.effectiveType !== "4g") {
-      //         this.showAlertNetwork = true;
-      //     }
-      //     else {
-      //         this.showAlertNetwork = false;
-      //     }
-      // }
-      // this.modalService.dismissAll();
     });
 
     /** spinner starts on init */

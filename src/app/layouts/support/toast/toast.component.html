@@ -1,0 +1,97 @@
+<div class="toast-container">
+  <div class="bs-toast toast fade show" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'normal'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-primary" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'primary'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-secondary" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'secondary'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-success" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'success'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-danger" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'danger'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-warning" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'warning'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-info" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'info'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+
+  <div class="bs-toast toast fade show bg-dark" role="alert" aria-live="assertive" aria-atomic="true" *ngIf="status == 'dark'">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto fw-semibold">{{ title }}</div>
+      <small>{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+</div>
