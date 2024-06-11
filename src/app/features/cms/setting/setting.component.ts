@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.scss']
 })
-export class SettingComponent implements OnInit{
+export class SettingComponent implements OnInit {
   showForm: boolean = true;
   isEdit: boolean = false;
   isView: boolean = false;
@@ -27,25 +27,25 @@ export class SettingComponent implements OnInit{
   }
 
   getData() {
-    this.globalService.DataGet("/setting", {kategori: 'S'}, false).subscribe((res: any) => {
+    this.globalService.DataGet("/setting", { kategori: 'S' }, false).subscribe((res: any) => {
       res.data.forEach((val, k) => {
-        if(val.name === 'icon'){
+        if (val.name === 'icon') {
           this.model.icon = val.value
         }
-        if(val.name === 'favicon'){
+        if (val.name === 'favicon') {
           this.model.favicon = val.value
         }
-        if(val.name === 'title'){
+        if (val.name === 'title') {
           this.model.title = val.value
         }
-        if(val.name === 'deskripsi'){
+        if (val.name === 'deskripsi') {
           this.model.deskripsi = val.value
         }
-        if(val.name === 'keyword'){
+        if (val.name === 'keyword') {
           this.model.keyword = val.value
           this.listTags = val.value;
         }
-        if(val.name === 'author'){
+        if (val.name === 'author') {
           this.model.author = val.value
         }
       });
@@ -53,8 +53,14 @@ export class SettingComponent implements OnInit{
   }
 
   save() {
-    this.model.icon = this.setImageBase64(this.model.icon);
-    this.model.favicon = this.setImageBase64(this.model.favicon, 'mobile');
+    var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+    if (base64regex.test(this.model.icon)) {
+      this.model.icon = this.setImageBase64(this.model.icon);
+    }
+    if (base64regex.test(this.model.favicon)) {
+      this.model.favicon = this.setImageBase64(this.model.favicon, 'mobile');
+    }
+
     const final = Object.assign(this.model)
     this.globalService.DataPost('/setting/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
