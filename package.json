@@ -22,6 +22,8 @@
     "@angular/router": "^16.2.0",
     "@ckeditor/ckeditor5-angular": "^7.0.1",
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^41.4.2",
+    "@haifahrul/ckeditor5-build-rich": "^18.0.2",
     "@ks89/angular-modal-gallery": "^11.1.2",
     "@ng-bootstrap/ng-bootstrap": "^15.1.2",
     "@ng-select/ng-option-highlight": "^11.2.0",

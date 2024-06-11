@@ -155,7 +155,7 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label required" for="keterangan">Konten</label>
-                  <ckeditor [editor]="editor" [data]="content" (change)="onChangeDetailEditor($event)"
+                  <ckeditor [editor]="editor" [config]="configEditor" [data]="content" (change)="onChangeDetailEditor($event)"
                     [disabled]="isView"></ckeditor>
                 </div>
                 <div class="mb-3">
