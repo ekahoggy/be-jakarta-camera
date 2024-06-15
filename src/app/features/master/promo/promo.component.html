@@ -189,7 +189,7 @@
                   <th class="align-middle" width="15%">Harga</th>
                   <th class="align-middle" width="10%">Jumlah</th>
                   <th class="align-middle" width="10%">Sisa</th>
-                  <th class="align-middle" width="10%">Diskon</th>
+                  <th class="align-middle" width="25%">Diskon</th>
                 </tr>
               </thead>
               <tbody>
@@ -229,10 +229,21 @@
                       </div>
                     </td>
                     <td>
-                      <div class="input-group input-group-merge">
-                        <input type="text" class="form-control text-end" mask="00" [(ngModel)]="item.persen"
-                          name="persen_{{i}}" style="padding-right: 10px;" [disabled]="isEdit || isView">
-                        <span class="input-group-text" id="persen">%</span>
+                      <div class="row">
+                        <div class="col">
+                          <div class="input-group input-group-merge">
+                            <span class="input-group-text text-end" id="nominal_{{i}}">Rp</span>
+                            <input type='text' class="form-control text-end" mask="separator.3" thousandSeparator="."
+                              [(ngModel)]="item.nominal" name="nominal_{{i}}">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="input-group input-group-merge">
+                            <input type="text" class="form-control text-end" mask="00" [(ngModel)]="item.persen"
+                              name="persen_{{i}}" style="padding-right: 10px;" [disabled]="isEdit || isView">
+                            <span class="input-group-text" id="persen">%</span>
+                          </div>
+                        </div>
                       </div>
                     </td>
                   </tr>

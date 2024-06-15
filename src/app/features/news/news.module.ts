@@ -8,10 +8,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { KategoriComponent } from './kategori/kategori.component';
 import { BeritaComponent } from './berita/berita.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 
 @NgModule({
@@ -29,8 +29,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     NgxMaskDirective,
     NgxMaskPipe,
     DragDropModule,
-    CKEditorModule,
-    MatExpansionModule
+    MatExpansionModule,
+    EditorModule
   ]
 })
 export class NewsModule { }

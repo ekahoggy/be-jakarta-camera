@@ -133,6 +133,11 @@
                   </div>
                 </div>
                 <div class="mb-3">
+                  <label class="form-label" for="alt-img">Alt Image</label>
+                  <input type="text" class="form-control" id="alt-img" [(ngModel)]="model.image_alt" name="image_alt"
+                    placeholder="Alt Image ...">
+                </div>
+                <div class="mb-3">
                   <label class="form-label" for="judul">Judul *</label>
                   <input type="text" class="form-control" id="judul" [(ngModel)]="model.judul" name="judul"
                     placeholder="Judul ..." required>
@@ -155,19 +160,14 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label required" for="keterangan">Konten</label>
-                  <ckeditor [editor]="editor" [config]="configEditor" [data]="content" (change)="onChangeDetailEditor($event)"
-                    [disabled]="isView"></ckeditor>
+                  <editor apiKey="qnthaw2brmeq3hmytop1zvg22o8owpeyikcp8gmdsussis8g" [init]="configMCE"></editor>
                 </div>
                 <div class="mb-3">
                   <label class="form-label" for="meta-content">Meta Konten</label>
                   <textarea id="meta-content" class="form-control" rows="3" [(ngModel)]="model.meta_content"
                     name="meta_content" placeholder="Meta Konten..."></textarea>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label" for="alt-img">Alt Image</label>
-                  <input type="text" class="form-control" id="alt-img" [(ngModel)]="model.image_alt" name="image_alt"
-                    placeholder="Alt Image ...">
-                </div>
+
               </fieldset>
             </form>
           </div>

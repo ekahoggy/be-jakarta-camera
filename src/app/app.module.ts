@@ -14,10 +14,12 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { AngularTreeGridModule } from "angular-tree-grid";
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
+import { EditorModule } from '@tinymce/tinymce-angular';
 import {
   NgxDaterangepickerBootstrapModule,
   NgxDaterangepickerLocaleService,
 } from 'ngx-daterangepicker-bootstrap';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import {
     AngularTreeGridModule,
     NgProgressModule,
     NgProgressHttpModule,
+    CKEditorModule,
+    EditorModule,
     NgxSpinnerModule.forRoot({ type: 'ball-atom' })
   ],
   exports:[

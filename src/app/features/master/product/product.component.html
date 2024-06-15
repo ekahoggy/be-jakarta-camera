@@ -38,8 +38,8 @@
                   </ng-select>
                 </div>
                 <div class="col-2">
-                  <select class="form-select" id="is_active" placeholder="Status"
-                    [(ngModel)]="modelParam.is_active" name="is_active">
+                  <select class="form-select" id="is_active" placeholder="Status" [(ngModel)]="modelParam.is_active"
+                    name="is_active">
                     <option value="1">Aktif</option>
                     <option value="0">Tidak Aktif</option>
                   </select>
@@ -83,15 +83,18 @@
                     </td>
                     <td class="text-center">
                       <span *ngIf="item.variant.all_varian.length == 0">-</span>
-                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0" style="text-align: left;">
+                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
+                        style="text-align: left;">
                         <div class="detail-variant" *ngFor="let variant of item.variant.all_varian">
-                          <span>{{ variant.varian1 }} <span *ngIf="variant.varian2 !== null">- {{ variant.varian2 }}</span></span>
+                          <span>{{ variant.varian1 }} <span *ngIf="variant.varian2 !== null">- {{ variant.varian2
+                              }}</span></span>
                         </div>
                       </div>
                     </td>
                     <td class="text-center">
                       <span *ngIf="item.variant.all_varian.length == 0">-</span>
-                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0" style="text-align: left;">
+                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
+                        style="text-align: left;">
                         <div class="detail-variant" *ngFor="let variant of item.variant.all_varian">
                           <span>{{ variant.sku }}</span>
                         </div>
@@ -110,7 +113,8 @@
                           <i class="bx bx-save"></i>
                         </a>
                       </div>
-                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0" style="text-align: left;">
+                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
+                        style="text-align: left;">
                         <div class="detail-variant" *ngFor="let variant of item.variant.all_varian; index as i">
                           <span *ngIf="!variant.is_edit">{{ variant.stok }}</span> &nbsp;
                           <input type="text" class="input-stok" id="stok-variant-{{variant.id}}"
@@ -413,7 +417,8 @@
                             <!-- untuk warna -->
                             <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue1"
-                              name="varianwarna" *ngIf="valueVarian1 == 'warna'" (add)="isiVarian1($event, 'warna')" (remove)="onRemoveVarian1($event)">
+                              name="varianwarna" *ngIf="valueVarian1 == 'warna'" (add)="isiVarian1($event, 'warna')"
+                              (remove)="onRemoveVarian1($event)">
                               <ng-template ng-option-tmp let-item="item" let-index="index">
                                 <div class="d-flex justify-content-left">
                                   <div class="varian-warna-select" [style.background]="item.warna"></div>
@@ -424,8 +429,8 @@
                             <!-- untuk ukuran -->
                             <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue1"
-                              name="varianukuran" *ngIf="valueVarian1 == 'ukuran'"
-                              (add)="isiVarian1($event, 'ukuran')" (remove)="onRemoveVarian1($event)">
+                              name="varianukuran" *ngIf="valueVarian1 == 'ukuran'" (add)="isiVarian1($event, 'ukuran')"
+                              (remove)="onRemoveVarian1($event)">
                             </ng-select>
                             <!-- untuk custom varian -->
                             <ng-select [items]="varian1" bindLabel="nama" bindValue="nama" [multiple]="true"
@@ -521,8 +526,8 @@
                             <!-- untuk warna -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Warna" [(ngModel)]="modelVarian.varianValue2"
-                              name="varianwarna2" *ngIf="valueVarian2 == 'warna'"
-                              (add)="isiVarian2($event, 'warna')" (remove)="onRemoveVarian2($event)">
+                              name="varianwarna2" *ngIf="valueVarian2 == 'warna'" (add)="isiVarian2($event, 'warna')"
+                              (remove)="onRemoveVarian2($event)">
                               <ng-template ng-option-tmp let-item="item" let-index="index">
                                 <div class="d-flex justify-content-left">
                                   <div class="varian-warna-select" [style.background]="item.warna"></div>
@@ -533,8 +538,8 @@
                             <!-- untuk ukuran -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
                               placeholder="Tambahkan Tipe Varian Ukuran" [(ngModel)]="modelVarian.varianValue2"
-                              name="varianukuran2" *ngIf="valueVarian2 == 'ukuran'"
-                              (add)="isiVarian2($event, 'ukuran')" (remove)="onRemoveVarian2($event)">
+                              name="varianukuran2" *ngIf="valueVarian2 == 'ukuran'" (add)="isiVarian2($event, 'ukuran')"
+                              (remove)="onRemoveVarian2($event)">
                             </ng-select>
                             <!-- untuk custom varian -->
                             <ng-select [items]="varian2" bindLabel="nama" bindValue="nama" [multiple]="true"
