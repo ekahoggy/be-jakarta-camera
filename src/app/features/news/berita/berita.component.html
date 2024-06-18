@@ -9,26 +9,28 @@
     </nav>
     <div class="card" *ngIf="!showForm">
       <div class="card-header">
-        <div class="row form-group my-2">
-          <div class="col-2">
-            <input type="text" name="param_judul" [(ngModel)]="modelParam.judul" class="form-control form-control-sm"
-              placeholder="Cari Judul ... " (input)="reloadDataTable()">
-          </div>
-          <div class="col-2">
-            <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
-              <i class="fas fa-undo"></i>Reset</button>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
         <div class="row">
-          <div class="col-12 text-end mb-5">
+          <div class="col-12 text-end">
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="mb-0">News</h4>
               <button class="btn btn-primary" (click)="create()">
                 <i class="bx bx-xs bx-plus me-1"></i>
                 Tambah
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 row form-group mb-5">
+            <div class="col-2">
+              <input type="text" name="param_judul" [(ngModel)]="modelParam.judul" class="form-control form-control-sm"
+                placeholder="Cari Judul ... " (input)="reloadDataTable()">
+            </div>
+            <div class="col-2">
+              <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
+                <i class="fas fa-undo"></i>Reset</button>
             </div>
           </div>
           <div class="col-12">
@@ -160,7 +162,7 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label required" for="keterangan">Konten</label>
-                  <editor apiKey="qnthaw2brmeq3hmytop1zvg22o8owpeyikcp8gmdsussis8g" [init]="configMCE"></editor>
+                  <editor apiKey="qnthaw2brmeq3hmytop1zvg22o8owpeyikcp8gmdsussis8g" name="keterangan" [init]="configMCE" [(ngModel)]="model.content" [disabled]="isView"></editor>
                 </div>
                 <div class="mb-3">
                   <label class="form-label" for="meta-content">Meta Konten</label>

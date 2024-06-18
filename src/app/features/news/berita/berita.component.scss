@@ -23,3 +23,10 @@
   overflow: hidden;
   background-color: #f1f1f1;
 }
+
+.limited-text {
+  display: -webkit-box;
+ -webkit-box-orient: vertical;
+ -webkit-line-clamp: 3;  /* Number of lines displayed before it truncate */
+  overflow: hidden;
+}

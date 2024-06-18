@@ -119,6 +119,36 @@
       </a>
     </li>
 
+    <li id="menu-edukasi" class="menu-item" routerLinkActive="active">
+      <a href="javascript:void(0);" (click)="openMenu('menu-edukasi')" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-book-content"></i>
+        <div data-i18n="Edukasi">Edukasi</div>
+      </a>
+
+      <ul class="menu-sub">
+        <li class="menu-item" [routerLink]="['/edukasi/kategori']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Kategori Edukasi">Kategori</div>
+          </a>
+        </li>
+        <li class="menu-item" [routerLink]="['/edukasi/daftar']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Edukasi">Edukasi</div>
+          </a>
+        </li>
+        <li class="menu-item" [routerLink]="['/edukasi/slider']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Slider">Slider</div>
+          </a>
+        </li>
+        <li class="menu-item" [routerLink]="['/edukasi/order']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Order">Order</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <li class="menu-item" [routerLink]="['/masters/role']" routerLinkActive="active">
       <a href="javascript:void(0);" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-user-detail"></i>
