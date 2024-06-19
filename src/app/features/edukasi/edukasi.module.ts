@@ -12,7 +12,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     NgOptionHighlightModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    DragDropModule
+    DragDropModule,
+    EditorModule
   ]
 })
 export class EdukasiModule { }

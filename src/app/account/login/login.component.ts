@@ -37,7 +37,10 @@ export class LoginComponent implements OnInit {
           token: res.data.auth
         }
         let bt = btoa(JSON.stringify(session));
+        console.log(res)
+
         localStorage.setItem('session', bt);
+        localStorage.setItem('token', res.data.auth.original.access_token);
         this.router.navigate(['dashboard']);
       }
       else {

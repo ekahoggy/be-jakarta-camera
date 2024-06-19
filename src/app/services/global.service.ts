@@ -108,9 +108,9 @@ export class GlobalService {
   }
 
   getToken() {
-    let auth = this.getAuth();
-    if (auth !== null) {
-      this.token = auth.token.original.access_token;
+    let token = localStorage.getItem('token');
+    if (token !== null) {
+      this.token = token;
       return this.token;
     }
     else {

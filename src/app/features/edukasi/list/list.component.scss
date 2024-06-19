@@ -1,0 +1,137 @@
+.selectgroup {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+
+  .selectgroup-item {
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    position: relative;
+  }
+
+  input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+  }
+
+  .selectgroup-input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+  }
+
+  .selectgroup-input:focus+.selectgroup-button,
+  .selectgroup-input:checked+.selectgroup-button {
+    background-color: #6777ef;
+    color: #fff;
+    z-index: 1;
+  }
+
+  .selectedcheckbox {
+    background-color: #6777ef;
+    color: #fff;
+    z-index: 1;
+  }
+
+  .unselectcheckbox {
+    background-color: #fdfdff;
+  }
+
+  .selectgroup-item:not(:last-child) .selectgroup-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .selectgroup-button {
+    background-color: #fdfdff;
+    border-color: #e4e6fc;
+    border-width: 1px;
+    border-style: solid;
+    display: block;
+    text-align: center;
+    padding: 0 1rem;
+    height: 35px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 3px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 13px;
+    min-width: 2.375rem;
+    line-height: 36px;
+  }
+}
+
+.alert {
+  padding: 20px;
+  background-color: #ffb04d;
+  color: white;
+}
+
+input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.lblcheckbox {
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 60px;
+  height: 30px;
+  background: grey;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+
+.lblcheckbox:after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+input:checked+.lblcheckbox {
+  background: #bada55;
+}
+
+input:checked+.lblcheckbox:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+.lblcheckbox:active:after {
+  width: 130px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

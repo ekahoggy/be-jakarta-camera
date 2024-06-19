@@ -1,1 +1,266 @@
-<p>list works!</p>
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0);">Edukasi</a>
+        </li>
+        <li class="breadcrumb-item active">Edukasi</li>
+      </ol>
+    </nav>
+    <div class="card" *ngIf="!showForm">
+      <div class="card-header">
+        <div class="row form-group my-2">
+          <div class="col-2">
+            <input type="text" name="param_judul" [(ngModel)]="modelParam.judul"
+              class="form-control form-control-sm" placeholder="Cari Edukasi ... " (input)="reloadDataTable()">
+          </div>
+          <div class="col-2">
+            <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
+              <i class="fas fa-undo"></i>Reset</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Edukasi</h4>
+              <button class="btn btn-primary" (click)="create()">
+                <i class="bx bx-xs bx-plus me-1"></i>
+                Tambah
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class=" text-nowrap">
+              <!---->
+              <table datatable [dtOptions]="dtOptions" class="table" data-page-length="10">
+                <thead>
+                  <tr>
+                    <th width="15%">Gambar</th>
+                    <th>Edukasi</th>
+                    <th width="10%">Harga</th>
+                    <th width="5%">Tingkatan</th>
+                    <th width="5%">Publish</th>
+                    <th width="5%">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td><img class="rounded" [src]="item.gambar" width="200" height="100"></td>
+                    <td>
+                      {{ item.judul }} <br>
+                      {{ item.slug }}<br>
+                      <span class="badge bg-label-primary me-1">{{ item.kategori }}</span>
+                    </td>
+                    <td>
+                      Rp. {{ item.harga | number }}
+                    </td>
+                    <td class="text-center">
+                      <img data-bs-toggle="tooltip" data-bs-custom-class="font-poppins" data-bs-placement="bottom"
+                        src="assets/img/icons/levels/easy.svg" class="icon-level" alt="ic_level" aria-label="Beginner"
+                        data-bs-original-title="Beginner" *ngIf="item.tingkatan === 'beginner'">
+                      <img data-bs-toggle="tooltip" data-bs-custom-class="font-poppins" data-bs-placement="bottom"
+                        src="assets/img/icons/levels/medium.svg" class="icon-level" alt="ic_level"
+                        aria-label="Intermediate" data-bs-original-title="Intermediate"
+                        *ngIf="item.tingkatan === 'intermediate'">
+                      <img data-bs-toggle="tooltip" data-bs-custom-class="font-poppins" data-bs-placement="bottom"
+                        src="assets/img/icons/levels/pro.svg" class="icon-level" alt="ic_level"
+                        aria-label="Professional" data-bs-original-title="Professional"
+                        *ngIf="item.tingkatan === 'professional'">
+                    </td>
+                    <td class="text-center">
+                      <i class='bx bxs-star' style="font-size: 25px;color: gold; cursor:pointer;" *ngIf="item.is_publish == 1"
+                        (click)="changePublish(item.id, item.is_publish)"></i>
+                      <i class='bx bx-star' style="font-size: 25px;color: grey; cursor:pointer;" *ngIf="item.is_publish == 0"
+                        (click)="changePublish(item.id, item.is_publish)"></i>
+                    </td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
+                            <i class="bx bx-edit-alt me-1"></i>
+                            Ubah
+                          </a>
+                          <a class="dropdown-item" href="javascript:void(0);" (click)="changeStatus(item.id, item.is_deleted)">
+                            <i class="bx bx-trash me-1"></i>
+                            Hapus
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="showForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-end mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Form Edukasi</h4>
+            </div>
+          </div>
+          <div class="col-12">
+            <form>
+              <fieldset [disabled]="isView || isLoading">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="row align-items-start align-items-sm-center gap-4 mb-3">
+                      <div class="col-12">
+                        <img *ngIf="!base64Image" [src]="model.gambar" alt="user-avatar" class="d-block rounded"
+                          height="100%" width="100%" id="uploadedAvatar">
+                        <img *ngIf="!!base64Image" [src]="base64Image" alt="user-avatar" class="d-block rounded"
+                          height="100%" width="100%" id="uploadedAvatar">
+                      </div>
+                      <div class="col-12">
+                        <div class="button-wrapper">
+                          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                            <i class="bx bx-upload d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Upload Gambar</span>
+                            <input type="file" id="upload" class="account-file-input" hidden=""
+                              accept="image/png, image/jpeg" (change)="onFileSelected($event)">
+                          </label>
+
+                          <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="judul">Edukasi</label>
+                      <input type="text" class="form-control" id="judul" [(ngModel)]="model.judul" name="judul"
+                        placeholder="Edukasi ...">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="kategori">Kategori</label>
+                      <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Kategori ..."
+                        [(ngModel)]="model.kategori_id" name="kategori" [disabled]="isView">
+                      </ng-select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="harga">Harga</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text" id="harga">Rp</span>
+                        <input type="text" class="form-control pl-2" id="harga" [(ngModel)]="model.harga" name="harga"
+                          placeholder="Harga..." mask="separator.3" thousandSeparator=".">
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="form-group">
+                        <label class="form-label">Tingkatan</label>
+                        <div class="selectgroup w-100">
+                          <label class="selectgroup-item">
+                            <input type="radio" name="tingkatan_1" [ngClass]="model.tingkatan == 'beginner' ? 'selectedcheckbox' : 'unselectcheckbox'" [(ngModel)]="model.tingkatan" class="selectgroup-input" (change)="changeLevel('beginner')">
+                            <span class="selectgroup-button">Beginner</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="radio" name="tingkatan_2" [ngClass]="model.tingkatan == 'intermediate' ? 'selectedcheckbox' : 'unselectcheckbox'" [(ngModel)]="model.tingkatan" class="selectgroup-input" (change)="changeLevel('intermediate')">
+                            <span class="selectgroup-button">Intermediate</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="radio" name="tingkatan_3" [ngClass]="model.tingkatan == 'professional' ? 'selectedcheckbox' : 'unselectcheckbox'" [(ngModel)]="model.tingkatan" class="selectgroup-input" (change)="changeLevel('professional')">
+                            <span class="selectgroup-button">Pro</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <div class="mb-3">
+                      <label class="form-label required" for="deskripsi">Deskripsi</label>
+                      <editor apiKey="qnthaw2brmeq3hmytop1zvg22o8owpeyikcp8gmdsussis8g" name="deskripsi"
+                        [init]="configMCE" [(ngModel)]="model.deskripsi" [disabled]="isView"></editor>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label required" for="peralatan">Peralatan</label>
+                      <editor apiKey="qnthaw2brmeq3hmytop1zvg22o8owpeyikcp8gmdsussis8g" name="peralatan"
+                        [init]="configMCE" [(ngModel)]="model.peralatan" [disabled]="isView"></editor>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="mb-3">
+                    <div class="divider">
+                      <div class="divider-text">Detail Edukasi</div>
+                    </div>
+                  </div>
+                  <div class="alert">
+                    Ukuran Video : maks. 10 MB <br>
+                    Format Video : MP4
+                  </div>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="align-middle" width="5%">
+                          <button class="btn btn-sm btn-success" (click)="addEdukasi()" [disabled]="isView">
+                            <i class="bx bx-plus"></i>
+                          </button>
+                        </th>
+                        <th class="align-middle" width="30%">Video</th>
+                        <th class="align-middle">Judul</th>
+                        <th class="align-middle" width="5%">Kunci</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="listDetail.length > 0">
+                        <tr *ngFor="let item of listDetail; index as i">
+                          <td>
+                            <button class="btn btn-sm btn-danger" (click)="removeEdukasi(i)" [disabled]="isView">
+                              <i class="bx bx-trash"></i>
+                            </button>
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <video [src]="item.video_url" *ngIf="item.video_url" height="200"
+                              controls controlsList="nodownload"></video>
+                            <br />
+                            <input type='file' (change)="onSelectFile($event, i)" [disabled]="isView"
+                              accept="video/*" />
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" id="title{{i}}" [(ngModel)]="item.title"
+                              name="title{{i}}" placeholder="Judul ...">
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <input type="checkbox" id="switch{{i}}" [(ngModel)]="item.is_lock"
+                              (change)="changeLock($event, i)" name="is_lock{{i}}" /><label class="lblcheckbox"
+                              for="switch{{i}}">Lock</label>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="listDetail.length == 0">
+                        <tr>
+                          <td colspan="5" class="text-center">Tidak ada detail</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-light me-1" (click)="index()">
+          <i class="bx bx-chevron-left me-1"></i>
+          Kembali
+        </button>
+        <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
+          <i class="bx bx-save me-1"></i>
+          Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-backdrop fade"></div>
+</div>
