@@ -199,6 +199,8 @@ export class ProductComponent implements OnInit {
   public sourceIndex: number;
   public dragIndex: number;
   public activeContainer;
+  url;
+  format;
 
   constructor(
     private globalService: GlobalService,
@@ -361,6 +363,22 @@ export class ProductComponent implements OnInit {
     })
   }
 
+  onSelectFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      if (file.type.indexOf('image') > -1) {
+        this.format = 'image';
+      } else if (file.type.indexOf('video') > -1) {
+        this.format = 'video';
+      }
+      reader.onload = (event) => {
+        this.model.video = (<FileReader>event.target).result;
+      }
+    }
+  }
+
   onChangeDetailEditor({ editor }: ChangeEvent, jenis) {
     const data = editor.getData();
     if (jenis === 'detail_produk') {
@@ -443,7 +461,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  mergeImages(data1, data2): void{
+  mergeImages(data1, data2): void {
     // Iterate through each item in data2
     data2.forEach(item2 => {
       // Find the corresponding item in data1 based on varian1

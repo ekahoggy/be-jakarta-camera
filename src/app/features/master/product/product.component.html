@@ -356,6 +356,39 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="divider">
+                      <div class="divider-text">Video</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="alert">
+                          Pilih salah satu inputan untuk video (internal/eksternal)
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="link_video">Link Video Eksternal</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text" id="link_video">https://</span>
+                          <input type="text" class="form-control pl-2" id="link_video" [(ngModel)]="model.link_video"
+                            name="link_video" placeholder="youtube.com">
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="video_upload">Video Internal</label>
+                        <div class="input-group input-group-merge">
+                          <video [src]="model.video" *ngIf="model.video" height="200" controls
+                            controlsList="nodownload"></video>
+                          <br />
+                          <input type='file' (change)="onSelectFile($event)" [disabled]="isView"
+                            style="padding: 0 !important;" accept="video/*" />
+                          <p>
+                            Ukuran Video : maks. 10 MB <br>
+                            Format Video : MP4
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-6">
                     <div class="mb-3">

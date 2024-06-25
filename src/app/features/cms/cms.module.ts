@@ -11,13 +11,15 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SettingComponent } from './setting/setting.component';
 import { PromoSliderComponent } from './promo-slider/promo-slider.component';
+import { DaftarComponent } from './daftar/daftar.component';
 
 
 @NgModule({
   declarations: [
     SliderComponent,
     SettingComponent,
-    PromoSliderComponent
+    PromoSliderComponent,
+    DaftarComponent
   ],
   imports: [
     CommonModule,

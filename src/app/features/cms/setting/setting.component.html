@@ -1,95 +1,82 @@
-<div class="content-wrapper">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb breadcrumb-style1">
-        <li class="breadcrumb-item">
-          <a href="javascript:void(0);">Web</a>
-        </li>
-        <li class="breadcrumb-item active">Pengaturan</li>
-      </ol>
-    </nav>
-    <div class="card" *ngIf="showForm">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12 text-end mb-5">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Pengaturan Web</h4>
-            </div>
-          </div>
-          <div class="col-8">
-            <form>
-              <fieldset [disabled]="isView || isLoading">
-                <div class="mb-3 row">
-                  <div class="col-8">
-                    <label class="form-label" for="slider-desktop">Logo</label>
-                    <div class="d-column align-items-start align-items-sm-center gap-4 mb-3">
-                      <img *ngIf="!base64Image" [src]="model.icon" alt="logo" class="d-block rounded img-logo"
-                        height="100%" width="100%" id="uploadedAvatar">
-                      <img *ngIf="!!base64Image" [src]="base64Image" alt="logo" class="d-block rounded img-logo"
-                        height="100%" width="100%" id="uploadedAvatar">
-                      <div class="button-wrapper pt-3">
-                        <label for="slider-desktop" class="btn btn-primary me-2 mb-4" tabindex="0">
-                          <span class="d-none d-sm-block">Upload Logo</span>
-                          <i class="bx bx-upload d-block d-sm-none"></i>
-                          <input type="file" id="slider-desktop" class="account-file-input" hidden=""
-                            accept="image/png, image/jpeg" (change)="onFileSelected($event)">
-                        </label>
-                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <label class="form-label" for="slider-mobile">Favicon</label>
-                    <div class="d-column align-items-start align-items-sm-center gap-4 mb-3">
-                      <img *ngIf="!base64ImageFavicon" [src]="model.favicon" alt="user-avatar"
-                        class="d-block rounded img-favicon" height="100%" width="100%" id="uploadedAvatar">
-                      <img *ngIf="!!base64ImageFavicon" [src]="base64ImageFavicon" alt="user-avatar"
-                        class="d-block rounded img-favicon" height="100%" width="100%" id="uploadedAvatar">
-                      <div class="button-wrapper pt-3">
-                        <label for="slider-mobile" class="btn btn-primary me-2 mb-4" tabindex="0">
-                          <span class="d-none d-sm-block">Upload Favicon</span>
-                          <i class="bx bx-upload d-block d-sm-none"></i>
-                          <input type="file" id="slider-mobile" class="account-file-input" hidden=""
-                            accept="image/png, image/jpeg" (change)="onFileSelectedMobile($event)">
-                        </label>
-                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="title">Judul</label>
-                  <input type="text" class="form-control" id="title" [(ngModel)]="model.title" name="title"
-                    placeholder="Judul Web ...">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="deskripsi">Deskripsi</label>
-                  <textarea id="deskripsi" class="form-control" rows="3" [(ngModel)]="model.deskripsi" name="deskripsi"
-                    placeholder="Deskripsi ..."></textarea>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="author">Author</label>
-                  <input type="text" class="form-control" id="author" [(ngModel)]="model.author" name="author"
-                    placeholder="Author ...">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="tags">Keyword</label>
-                  <ng-select [items]="listTags" bindLabel="name" bindValue="id" name="tags" [addTag]="addCustomTag"
-                    [multiple]="true" placeholder="Masukkan Tag" [(ngModel)]="model.keyword" [disabled]="isView">
-                  </ng-select>
-                </div>
-              </fieldset>
-            </form>
-          </div>
+<div class="card" *ngIf="showForm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 text-end mb-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Pengaturan Web</h4>
         </div>
       </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-primary" (click)="save()">
-          <i class="bx bx-save me-1"></i>
-          Simpan
-        </button>
+      <div class="col-8">
+        <form>
+          <fieldset [disabled]="isView || isLoading">
+            <div class="mb-3 row">
+              <div class="col-8">
+                <label class="form-label" for="slider-desktop">Logo</label>
+                <div class="d-column align-items-start align-items-sm-center gap-4 mb-3">
+                  <img *ngIf="!base64Image" [src]="model.icon" alt="logo" class="d-block rounded img-logo" height="100%"
+                    width="100%" id="uploadedAvatar">
+                  <img *ngIf="!!base64Image" [src]="base64Image" alt="logo" class="d-block rounded img-logo"
+                    height="100%" width="100%" id="uploadedAvatar">
+                  <div class="button-wrapper pt-3">
+                    <label for="slider-desktop" class="btn btn-primary me-2 mb-4" tabindex="0">
+                      <span class="d-none d-sm-block">Upload Logo</span>
+                      <i class="bx bx-upload d-block d-sm-none"></i>
+                      <input type="file" id="slider-desktop" class="account-file-input" hidden=""
+                        accept="image/png, image/jpeg" (change)="onFileSelected($event)">
+                    </label>
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <label class="form-label" for="slider-mobile">Favicon</label>
+                <div class="d-column align-items-start align-items-sm-center gap-4 mb-3">
+                  <img *ngIf="!base64ImageFavicon" [src]="model.favicon" alt="user-avatar"
+                    class="d-block rounded img-favicon" height="100%" width="100%" id="uploadedAvatar">
+                  <img *ngIf="!!base64ImageFavicon" [src]="base64ImageFavicon" alt="user-avatar"
+                    class="d-block rounded img-favicon" height="100%" width="100%" id="uploadedAvatar">
+                  <div class="button-wrapper pt-3">
+                    <label for="slider-mobile" class="btn btn-primary me-2 mb-4" tabindex="0">
+                      <span class="d-none d-sm-block">Upload Favicon</span>
+                      <i class="bx bx-upload d-block d-sm-none"></i>
+                      <input type="file" id="slider-mobile" class="account-file-input" hidden=""
+                        accept="image/png, image/jpeg" (change)="onFileSelectedMobile($event)">
+                    </label>
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="title">Judul</label>
+              <input type="text" class="form-control" id="title" [(ngModel)]="model.title" name="title"
+                placeholder="Judul Web ...">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="deskripsi">Deskripsi</label>
+              <textarea id="deskripsi" class="form-control" rows="3" [(ngModel)]="model.deskripsi" name="deskripsi"
+                placeholder="Deskripsi ..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="author">Author</label>
+              <input type="text" class="form-control" id="author" [(ngModel)]="model.author" name="author"
+                placeholder="Author ...">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="tags">Keyword</label>
+              <ng-select [items]="listTags" bindLabel="name" bindValue="id" name="tags" [addTag]="addCustomTag"
+                [multiple]="true" placeholder="Masukkan Tag" [(ngModel)]="model.keyword" [disabled]="isView">
+              </ng-select>
+            </div>
+          </fieldset>
+        </form>
       </div>
     </div>
   </div>
-  <div class="content-backdrop fade"></div>
+  <div class="card-footer text-end">
+    <button class="btn btn-primary" (click)="save()">
+      <i class="bx bx-save me-1"></i>
+      Simpan
+    </button>
+  </div>
 </div>

@@ -1,0 +1,22 @@
+.card-left {
+  width: 15%;
+}
+
+.pengaturan-sidebar {
+  background: #ffffff;
+  box-shadow: 0px 20px 30px rgb(218 236 242 / 70%),
+    inset 0px 0px 4px rgb(0 0 0 / 15%);
+  border-radius: 15px;
+}
+
+.pengaturan-content {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.list-group-item.active {
+  z-index: 2;
+  color: #131313;
+  background-color: #e5e8eb !important;
+  border-color: #d6d6d6 !important;
+}

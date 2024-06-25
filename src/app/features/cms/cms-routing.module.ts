@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SliderComponent } from './slider/slider.component';
 import { SettingComponent } from './setting/setting.component';
 import { PromoSliderComponent } from './promo-slider/promo-slider.component';
+import { DaftarComponent } from './daftar/daftar.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'setting',
     component: SettingComponent,
+  },
+  {
+    path: 'daftar',
+    component: DaftarComponent,
   },
 ];
 
