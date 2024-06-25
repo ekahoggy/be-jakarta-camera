@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
-import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-promo',
@@ -17,16 +16,20 @@ export class PromoComponent implements OnInit {
   isEdit: boolean = false;
   isView: boolean = false;
   listData: any = [];
+
   listProduk: any = [];
+  listCategory: any;
   selectedProduk: any = [];
+
+  listEdukasi: any = [];
+  listCategoryEdukasi: any;
+  selectedEdukasi: any = [];
+
   model: any = {};
   modelParam: any = {};
   modelDetail: any = {};
   isLoading: boolean = false;
-
-  maxDate?: dayjs.Dayjs;
-  minDate?: dayjs.Dayjs;
-  invalidDates: dayjs.Dayjs[] = [];
+  addFromKategori: boolean = false;
 
   constructor(
     private globalService: GlobalService,
@@ -100,7 +103,9 @@ export class PromoComponent implements OnInit {
     this.isEdit = false;
     this.isView = false;
     this.model.is_flashsale = 0
+    this.model.type = 'produk'
     this.getProduk();
+    this.getListCategory();
   }
 
   edit(val) {
@@ -109,6 +114,7 @@ export class PromoComponent implements OnInit {
     this.isView = false;
     this.getDataById(val.id);
     this.getProduk();
+    this.getListCategory();
   }
 
   view(val) {
@@ -117,6 +123,7 @@ export class PromoComponent implements OnInit {
     this.isView = true;
     this.getDataById(val.id);
     this.getProduk();
+    this.getListCategory();
   }
 
   getDataById(id: string = null) {
@@ -125,6 +132,12 @@ export class PromoComponent implements OnInit {
       this.model = res.data
       this.selectedProduk = res.data.detail;
       this.isLoading = false;
+    })
+  }
+
+  getListCategory() {
+    this.globalService.DataGet('/kategori', {}, false).subscribe((res: any) => {
+      this.listCategory = res.data.list;
     })
   }
 
@@ -139,6 +152,32 @@ export class PromoComponent implements OnInit {
         this.globalService.alertSuccess('Success', 'Promo saved successfully')
         this.index();
       }
+    })
+  }
+
+  getProdukByKategori() {
+    this.selectedProduk = [];
+    this.listProduk = [];
+    this.addFromKategori = false;
+    this.globalService.DataGet(`/produk/byKategori/`+this.model.kategori_id, false).subscribe((res: any) => {
+      this.listProduk = res.data;
+      let data = res.data;
+      this.addFromKategori = true;
+
+      data.forEach(item => {
+        let row = {
+          m_produk_id: item.id,
+          nama: item.nama,
+          harga: item.harga,
+          qty: 1,
+          promo_used: "-",
+          nominal: 0,
+          persen: 0,
+          status: true
+        }
+
+        this.selectedProduk.push(row);
+      });
     })
   }
 
@@ -159,22 +198,49 @@ export class PromoComponent implements OnInit {
         // this.globalService.alertError('Gagal', 'Produk sudah ada di dalam daftar promo');
       }
     });
-    console.log(this.selectedProduk)
   }
 
   addProduk() {
+    this.getProduk();
     let row = {
       m_produk_id: "",
       nama: "",
       harga: 0,
       qty: 1,
       promo_used: "-",
-      persen: 0
+      nominal: 0,
+      persen: 0,
+      status: false
     }
     this.selectedProduk.push(row);
   }
 
   removeProduk(i) {
     this.selectedProduk.splice(i, 1);
+  }
+
+  hitungDiskon(item){
+    let diskon = 0;
+
+    diskon = (item.nominal/item.harga) * 100;
+    item.persen = diskon;
+  }
+
+  hitungHarga(item){
+    let diskon = 0;
+
+    diskon = (item.persen / 100) * item.harga;
+    item.nominal = diskon;
+  }
+
+  changeStatusProduk(e, i) {
+    this.selectedProduk[i].status = e.currentTarget.checked;
+  }
+
+  changeType(){
+    if(this.model.type === 'edukasi'){
+      this.model.is_flashsale = 0;
+
+    }
   }
 }

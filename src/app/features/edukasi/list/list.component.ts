@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-list',
@@ -24,6 +25,7 @@ export class ListComponent {
   isLoading: boolean = false;
   url;
   format;
+  keyMCE = environment.tinyMCE;
 
   configMCE = {
     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',

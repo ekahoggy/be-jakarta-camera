@@ -176,12 +176,12 @@
                   <div class="col-8">
                     <div class="mb-3">
                       <label class="form-label required" for="deskripsi">Deskripsi</label>
-                      <editor apiKey="fb5gtrcs7ygspt7tjcza2xqwq0pfnr81a5yfeumf5v1mzm8b" name="deskripsi"
+                      <editor [apiKey]="keyMCE" name="deskripsi"
                         [init]="configMCE" [(ngModel)]="model.deskripsi" [disabled]="isView"></editor>
                     </div>
                     <div class="mb-3">
                       <label class="form-label required" for="peralatan">Peralatan</label>
-                      <editor apiKey="fb5gtrcs7ygspt7tjcza2xqwq0pfnr81a5yfeumf5v1mzm8b" name="peralatan"
+                      <editor [apiKey]="keyMCE" name="peralatan"
                         [init]="configMCE" [(ngModel)]="model.peralatan" [disabled]="isView"></editor>
                     </div>
                   </div>

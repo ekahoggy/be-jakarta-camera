@@ -28,8 +28,8 @@
                     placeholder="Cari Kode/Nama Promo ... ">
                 </div>
                 <div class="col-2">
-                  <select class="form-select" id="is_status" placeholder="Status"
-                    [(ngModel)]="modelParam.is_status" name="is_status">
+                  <select class="form-select" id="is_status" placeholder="Status" [(ngModel)]="modelParam.is_status"
+                    name="is_status">
                     <option value="1">Aktif</option>
                     <option value="0">Tidak Aktif</option>
                   </select>
@@ -54,6 +54,7 @@
                     <th width="10%">Flashsale</th>
                     <th width="10%">Kode</th>
                     <th>Nama</th>
+                    <th width="10%">Untuk</th>
                     <th width="20%">Tanggal Mulai</th>
                     <th width="20%">Tanggal Selesai</th>
                     <th width="5%">Aksi</th>
@@ -71,6 +72,7 @@
                     </td>
                     <td> {{ item.kode }} </td>
                     <td> {{ item.promo }} </td>
+                    <td> {{ item.type }} </td>
                     <td> {{ item.tanggal_mulai }} {{ item.jam_mulai }} </td>
                     <td> {{ item.tanggal_selesai }} {{ item.jam_selesai }} </td>
                     <td>
@@ -103,7 +105,7 @@
         <form class="row">
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Form Promo</h4>
+              <h4 class="mb-0">Form Promo</h4>
             </div>
           </div>
           <div class="col-12 row">
@@ -150,25 +152,54 @@
                 <label class="form-label" for="promo_min_beli">Min. Pembelian</label>
                 <div class="input-group input-group-merge">
                   <input type="number" class="form-control" id="promo_min_beli" placeholder="0"
-                    [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1" [disabled]="isEdit || isView">
+                    [(ngModel)]="model.promo_min_beli" name="promo_min_beli" placeholder="1"
+                    [disabled]="isEdit || isView">
                   <span class="input-group-text" id="promo_min_beli">unit</span>
                 </div>
               </div>
               <div class="mb-3">
+                <label class="form-label" for="type">Untuk</label>
+                <div>
+                  <button class="btn btn-sm py-2 px-3 me-1" [disabled]="isView"
+                    [ngClass]="model.type == 'produk' ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="model.type = 'produk'; changeType()">
+                    <i class="bx bx-check me-1" *ngIf="model.type == 'produk'"></i>
+                    Produk
+                  </button>
+                  <button class="btn btn-sm py-2 px-3" [disabled]="isView"
+                    [ngClass]="model.type == 'edukasi' ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="model.type = 'edukasi'; changeType()">
+                    <i class="bx bx-check me-1" *ngIf="model.type == 'edukasi'"></i>
+                    Edukasi
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3" *ngIf="model.type == 'produk'">
                 <label class="form-label" for="flashsale">Flashsale</label>
                 <div>
-                  <button class="btn btn-sm py-2 px-3 me-1"
+                  <button class="btn btn-sm py-2 px-3 me-1" [disabled]="isView"
                     [ngClass]="model.is_flashsale == 0 ? 'btn-primary' : 'btn-outline-primary'"
                     (click)="model.is_flashsale = 0">
                     <i class="bx bx-check me-1" *ngIf="model.is_flashsale == 0"></i>
                     No
                   </button>
-                  <button class="btn btn-sm py-2 px-3"
+                  <button class="btn btn-sm py-2 px-3" [disabled]="isView"
                     [ngClass]="model.is_flashsale == 1 ? 'btn-primary' : 'btn-outline-primary'"
                     (click)="model.is_flashsale = 1">
                     <i class="bx bx-check me-1" *ngIf="model.is_flashsale == 1"></i>
                     Yes
                   </button>
+                </div>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label" for="kategori">Kategori Produk</label>
+                <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Kategori ..."
+                  [(ngModel)]="model.kategori_id" name="kategori" [disabled]="isView" (change)="getProdukByKategori()">
+                </ng-select>
+              </div>
+              <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                  Pilih Kategori untuk memilih semua produk yang ada dikategori
                 </div>
               </div>
             </div>
@@ -186,10 +217,11 @@
                     </button>
                   </th>
                   <th class="align-middle">Produk</th>
-                  <th class="align-middle" width="15%">Harga</th>
+                  <th class="align-middle" width="18%">Harga</th>
                   <th class="align-middle" width="10%">Jumlah</th>
-                  <th class="align-middle" width="10%">Sisa</th>
-                  <th class="align-middle" width="25%">Diskon</th>
+                  <th class="align-middle" width="8%">Sisa</th>
+                  <th class="align-middle" width="30%">Diskon</th>
+                  <th class="align-middle" width="5%">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -202,7 +234,8 @@
                     </td>
                     <td>
                       <ng-select [items]="listProduk" [(ngModel)]="item.m_produk_id" bindLabel="nama" bindValue="id"
-                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)" [disabled]="isEdit || isView">
+                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)" [disabled]="isEdit || isView"
+                        style="width: 350px;">
                         <ng-template ng-label-tmp let-item="item">
                           <!-- <img height="15" width="15" [src]="item.avatar"/> -->
                           {{item.nama}}
@@ -234,23 +267,29 @@
                           <div class="input-group input-group-merge">
                             <span class="input-group-text text-end" id="nominal_{{i}}">Rp</span>
                             <input type='text' class="form-control text-end" mask="separator.3" thousandSeparator="."
-                              [(ngModel)]="item.nominal" name="nominal_{{i}}">
+                              [(ngModel)]="item.nominal" name="nominal_{{i}}" (change)="hitungDiskon(item)">
                           </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-5">
                           <div class="input-group input-group-merge">
-                            <input type="text" class="form-control text-end" mask="00" [(ngModel)]="item.persen"
-                              name="persen_{{i}}" style="padding-right: 10px;" [disabled]="isEdit || isView">
+                            <input type="text" class="form-control text-end" mask="separator,2" [(ngModel)]="item.persen"
+                              name="persen_{{i}}" style="padding-right: 10px;" [disabled]="isEdit || isView" (change)="hitungHarga(item)">
                             <span class="input-group-text" id="persen">%</span>
                           </div>
                         </div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                          [(ngModel)]="item.status" name="status_{{i}}" (change)="changeStatusProduk($event, i)">
                       </div>
                     </td>
                   </tr>
                 </ng-container>
                 <ng-container *ngIf="selectedProduk.length == 0">
                   <tr>
-                    <td colspan="6" class="text-center">There are no produk yet</td>
+                    <td colspan="7" class="text-center">Tidak Produk yang terpilih</td>
                   </tr>
                 </ng-container>
               </tbody>

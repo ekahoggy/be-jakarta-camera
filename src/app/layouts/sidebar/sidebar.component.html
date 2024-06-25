@@ -48,13 +48,13 @@
     <li id="menu-master" class="menu-item" routerLinkActive="active">
       <a href="javascript:void(0);" (click)="openMenu('menu-master')" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bxs-cube-alt"></i>
-        <div data-i18n="Master">Master</div>
+        <div data-i18n="Master">Produk</div>
       </a>
 
       <ul class="menu-sub">
         <li class="menu-item" [routerLink]="['/masters/product-category']" routerLinkActive="active">
           <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="Kategori Produk">Kategori Produk</div>
+            <div data-i18n="Kategori Produk">Kategori</div>
           </a>
         </li>
         <li class="menu-item" [routerLink]="['/masters/product']" routerLinkActive="active">
@@ -62,53 +62,60 @@
             <div data-i18n="Produk">Produk</div>
           </a>
         </li>
-        <li class="menu-item" [routerLink]="['/masters/promo']" routerLinkActive="active">
-          <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="Promo">Promo</div>
-          </a>
-        </li>
-        <li class="menu-item" [routerLink]="['/masters/voucher']" routerLinkActive="active">
-          <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="Voucher">Voucher</div>
-          </a>
-        </li>
       </ul>
     </li>
 
-    <li id="menu-stok" class="menu-item" routerLinkActive="active">
-      <a href="javascript:void(0);" (click)="openMenu('menu-stok')" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bxs-box"></i>
-        <div data-i18n="Layouts">Stok</div>
+    <li class="menu-item" [routerLink]="['/masters/promo']" routerLinkActive="active">
+      <a href="javascript:void(0);" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-discount"></i>
+        <div data-i18n="Promo">Promo</div>
       </a>
-
-      <ul class="menu-sub">
-        <li class="menu-item" [routerLink]="['/stok/kategori']" routerLinkActive="active">
-          <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="kategori">Kategori</div>
-          </a>
-        </li>
-        <li class="menu-item" [routerLink]="['/stok/masuk']" routerLinkActive="active">
-          <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="masuk">Masuk</div>
-          </a>
-        </li>
-        <li class="menu-item" [routerLink]="['/stok/keluar']" routerLinkActive="active">
-          <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="keluar">Keluar</div>
-          </a>
-        </li>
-        <li class="menu-item" [routerLink]="['/stok/opname']" routerLinkActive="active">
-          <a href="javascript:void(0);" class="menu-link">
-            <div data-i18n="opname">Opname</div>
-          </a>
-        </li>
-      </ul>
     </li>
+
+    <li class="menu-item" [routerLink]="['/masters/voucher']" routerLinkActive="active">
+      <a href="javascript:void(0);" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-coupon"></i>
+        <div data-i18n="Voucher">Voucher</div>
+      </a>
+    </li>
+    <!--
+      <li id="menu-stok" class="menu-item" routerLinkActive="active">
+        <a href="javascript:void(0);" (click)="openMenu('menu-stok')" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons bx bxs-box"></i>
+          <div data-i18n="Layouts">Stok</div>
+        </a>
+
+        <ul class="menu-sub">
+          <li class="menu-item" [routerLink]="['/stok/kategori']" routerLinkActive="active">
+            <a href="javascript:void(0);" class="menu-link">
+              <div data-i18n="kategori">Kategori</div>
+            </a>
+          </li>
+          <li class="menu-item" [routerLink]="['/stok/masuk']" routerLinkActive="active">
+            <a href="javascript:void(0);" class="menu-link">
+              <div data-i18n="masuk">Masuk</div>
+            </a>
+          </li>
+          <li class="menu-item" [routerLink]="['/stok/keluar']" routerLinkActive="active">
+            <a href="javascript:void(0);" class="menu-link">
+              <div data-i18n="keluar">Keluar</div>
+            </a>
+          </li>
+          <li class="menu-item" [routerLink]="['/stok/opname']" routerLinkActive="active">
+            <a href="javascript:void(0);" class="menu-link">
+              <div data-i18n="opname">Opname</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    -->
 
     <li class="menu-item" [routerLink]="['/order']" routerLinkActive="active">
       <a href="javascript:void(0);" class="menu-link">
         <i class="menu-icon tf-icons bx bx-store-alt"></i>
-        <div data-i18n="Pesanan">Pesanan <span class="badge">{{ counterPesanan | number }}</span></div>
+        <div data-i18n="Pesanan">Pesanan
+          <span class="badge bg-danger rounded-pill">{{ counterPesanan | number }}</span>
+        </div>
       </a>
     </li>
 

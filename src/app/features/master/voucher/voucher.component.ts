@@ -16,6 +16,8 @@ export class VoucherComponent {
   isEdit: boolean = false;
   isView: boolean = false;
   listData: any = [];
+  listUser: any = [];
+  modelParam: any = {};
   model: any = {};
   base64Image: string | null = null;
   isLoading: boolean = false;
@@ -25,6 +27,7 @@ export class VoucherComponent {
   ) { }
 
   ngOnInit(): void {
+    this.modelParam.is_status = '1';
     this.empty();
     this.getData();
   }
@@ -39,7 +42,7 @@ export class VoucherComponent {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify({}),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
@@ -58,6 +61,21 @@ export class VoucherComponent {
     };
   }
 
+  reloadDataTable(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
+
+  reset() {
+    this.modelParam = {
+      kode: '',
+      is_status: '1'
+    }
+
+    this.reloadDataTable()
+  }
+
   empty() {
     this.model = {};
     this.model.gambar = "assets/img/elements/18.jpg";
@@ -70,8 +88,13 @@ export class VoucherComponent {
 
   create() {
     this.showForm = !this.showForm;
+    this.model.kategori = 'T'
+    this.model.type = 'P'
+    this.model.untuk = 'umum'
+    this.model.voucher_value = 0
     this.isEdit = false;
     this.isView = false;
+    this.getUser()
   }
 
   edit(val) {
@@ -79,6 +102,7 @@ export class VoucherComponent {
     this.isEdit = true;
     this.isView = false;
     this.getDataById(val.id)
+    this.getUser()
   }
 
   view(val) {
@@ -86,6 +110,13 @@ export class VoucherComponent {
     this.isEdit = false;
     this.isView = true;
     this.getDataById(val.id)
+    this.getUser()
+  }
+
+  getUser() {
+    this.globalService.DataGet('/customer', {}, false).subscribe((res: any) => {
+      this.listUser = res.data.list;
+    })
   }
 
   save() {
