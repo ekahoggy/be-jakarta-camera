@@ -1,0 +1,156 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+  <h3 class="modal-title text-primary mt-0">Cetak Resi </h3>
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid" id="printResi">
+    <table id="tableprint" width="100%" border="1">
+      <thead>
+        <tr>
+          <th colspan="2">
+            <div
+              style="display: flex; justify-content: space-between !important; align-items: center !important;padding: 0.5rem;">
+              <img alt="250x250" src="assets/img/logo.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="50" />
+              <img alt="250x250" src="assets/img/shipping/jnt.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" width="100"
+                *ngIf="modelResi.shipping_service === 'jt' || modelResi.shipping_service === 'jnt'" />
+              <img alt="250x250" src="assets/img/shipping/id_express.png" data-holder-rendered="true"
+                class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'idx'" />
+              <img alt="250x250" src="assets/img/shipping/indah_cargo.png" data-holder-rendered="true"
+                class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'indah_cargo'" />
+              <img alt="250x250" src="assets/img/shipping/jne.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'jne'" />
+              <img alt="250x250" src="assets/img/shipping/lion.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'lion'" />
+              <img alt="250x250" src="assets/img/shipping/paxel.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'paxel'" />
+              <img alt="250x250" src="assets/img/shipping/sapx.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60"
+                *ngIf="modelResi.shipping_service === 'sapx' || modelResi.shipping_service === 'sap'" />
+              <img alt="250x250" src="assets/img/shipping/sentralcargo.png" data-holder-rendered="true"
+                class="text-center" class="logo-img" height="60"
+                *ngIf="modelResi.shipping_service === 'sentral_cargo' || modelResi.shipping_service === 'sentral'" />
+              <img alt="250x250" src="assets/img/shipping/sicepat.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'sicepat'" />
+              <img alt="250x250" src="assets/img/shipping/jtcargo.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'jtcargo'" />
+              <img alt="250x250" src="assets/img/shipping/ncs.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'ncs'" />
+              <img alt="250x250" src="assets/img/shipping/anteraja.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'anteraja'" />
+              <img alt="250x250" src="assets/img/shipping/ninja.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'ninja'" />
+              <img alt="250x250" src="assets/img/shipping/tiki.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'tiki'" />
+              <img alt="250x250" src="assets/img/shipping/gojek.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'gojek'" />
+              <img alt="250x250" src="assets/img/shipping/grab.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'grab'" />
+              <img alt="250x250" src="assets/img/shipping/lalamove.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'lalamove'" />
+              <img alt="250x250" src="assets/img/shipping/deliveree.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'deliveree'" />
+              <img alt="250x250" src="assets/img/shipping/borzo.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'borzo'" />
+              <img alt="250x250" src="assets/img/shipping/paxel.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'paxel'" />
+              <img alt="250x250" src="assets/img/shipping/pos.png" data-holder-rendered="true" class="text-center"
+                class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'pos'" />
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2">
+            <div style="text-align: center !important; padding: 0.5rem; position: relative;">
+              <img alt="250x250" [src]="modelResi.url_awb" data-holder-rendered="true" width="100%" height="80px"
+                style="text-align: center;" />
+              <div class="container"
+                style=" width:100%; text-align: center; background: white;margin-top: -20px;position: absolute; padding: 0; margin-left: -8px;">
+                <span style="font-size: 16px; font-weight: bold;" *ngIf="modelResi.shipping_type !== 'BiteShip'">
+                  AWB {{modelResi.awb_shipping}}
+                </span>
+                <span style="font-size: 16px; font-weight: bold;" *ngIf="modelResi.shipping_type === 'BiteShip'">
+                  {{modelResi.receipt_number}}
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center; padding: 0.5rem; font-size: 16px;font-weight: bold;">
+            Non COD
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center; padding: 0.5rem; font-size: 16px;font-weight: bold;">
+            Jenis Layanan : {{ modelResi.shipping_group}}
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="3"
+            style="position: relative; text-align: center; padding: 0.5rem; padding-bottom: 0 !important;">
+            <img alt="250x250" [src]="modelResi.url_order" data-holder-rendered="true"
+              style="text-align: center; width: 60%;" />
+          </td>
+          <td style="padding: 0.5rem !important;">Asuransi : Rp. {{ asuransiPaket | number }}</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem !important;">Berat : {{ beratPaketResi | number }} gram</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem !important;">QTY : {{ qtyPaketResi }}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Isi Paket
+            : <br>
+            <div style="font-weight: normal;" [innerHtml]="isiPaketResi"></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Penerima : <br>
+            {{modelResi.shipping_recipient}}
+          </td>
+          <td style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Pengirim : <br>
+            Depo {{modelResi.depot_name}}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem !important; vertical-align: text-top; font-size: 14px;font-weight: bold;">
+            {{modelResi.shipping_recipient_phone}} | {{ modelResi.shipping_address }} <br>
+            {{modelResi.shipping_subdistrict_name}}, {{modelResi.shipping_city_name}},
+            {{modelResi.shipping_province_name}}, {{modelResi.shipping_postal_code}}
+          </td>
+          <td style="padding: 0.5rem !important; vertical-align: text-top; font-size: 14px;font-weight: bold;">
+            {{modelResi.depot_phone_code}}{{modelResi.depot_phone_number}} | {{ modelResi.depot_address
+            }} <br>
+            {{modelResi.depot_subdistrict_name}}, {{modelResi.depot_city_name}},
+            {{modelResi.depot_province_name}}, {{modelResi.depot_postal_code}}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem !important;" colspan="2">
+            Catatan : {{ modelResi.order_note }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding: 0.5rem !important; font-size: 10px">
+            <i>*Pengirim wajib meminta bukti serah terima paket ke kurir.</i><br>
+            <i>*Jika paket ini retur, pengirim tetap dikenakan biaya keberangkatan dan biaya retur
+              sesuai ekspedisi.</i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary btn-sm btn-rounded">
+    <i class="fa fa-print mr-2"></i>
+    Cetak
+  </button>
+</div>

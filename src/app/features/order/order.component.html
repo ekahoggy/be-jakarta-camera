@@ -26,8 +26,8 @@
             <div class="row form-group my-2">
               <div class="col-12 row mb-2">
                 <div class="col-2">
-                  <input type="text" name="param_invoice" [(ngModel)]="modelParam.invoice_number" class="form-control form-control"
-                    placeholder="Cari Invoice ... ">
+                  <input type="text" name="param_invoice" [(ngModel)]="modelParam.invoice_number"
+                    class="form-control form-control" placeholder="Cari Invoice ... ">
                 </div>
                 <div class="col-2">
                   <select class="form-select" id="status_order" placeholder="Status"
@@ -55,11 +55,11 @@
               <table datatable [dtOptions]="dtOptions" class="table" data-page-length="5">
                 <thead>
                   <tr>
-                    <th width="100">Status</th>
-                    <th width="120">Invoice</th>
-                    <th>Customer</th>
-                    <th width="120">Pengiriman</th>
-                    <th width="120">Total</th>
+                    <th class="text-center" width="100">Status</th>
+                    <th class="text-center" width="120">Invoice</th>
+                    <th class="text-center">Customer</th>
+                    <th class="text-center" width="120">Pengiriman</th>
+                    <th class="text-center" width="120">Total</th>
                     <th class="text-center" width="80">Actions</th>
                   </tr>
                 </thead>
@@ -81,23 +81,37 @@
                       <p>{{ item.name }}</p>
                       <span>{{ item.email }}</span> (<span> {{ item.phone_code }} {{ item.phone_number }} </span>)
                     </td>
-                    <td> - </td>
+                    <td class="text-center">
+                      <p *ngIf="item.awb_shipping">
+                        {{ item.shipping_sender }}<br>
+                        <span>{{ item.awb_shipping }}</span>
+                      </p>
+                      <button class="btn btn-primary me-1" *ngIf="item.awb_shipping">
+                        <i class='bx bx-printer me-1'></i>
+                        Print Resi
+                      </button>
+                      <span *ngIf="item.awb_shipping == null">-</span>
+                    </td>
                     <td class="text-right"> Rp {{ item.grand_total | number }} </td>
 
                     <td class="text-center">
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'ordered'" (click)="edit(item, 'processed')">
+                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'ordered'"
+                        (click)="edit(item, 'processed')">
                         <i class='bx bx-check me-1'></i>
                         Setujui
                       </a>
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'processed'" (click)="edit(item, 'sent')">
+                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'processed'"
+                        (click)="kirim(item)">
                         <i class='bx bxs-package me-1'></i>
                         Kirim
                       </a>
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'sent'" (click)="edit(item, 'received')">
+                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'sent'"
+                        (click)="edit(item, 'received')">
                         <i class='bx bx-check-shield me-1'></i>
                         Selesai
                       </a>
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'received'" (click)="view(item)">
+                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'received'"
+                        (click)="view(item)">
                         <i class='bx bx-eye me-1'></i>
                         Lihat
                       </a>
@@ -204,31 +218,39 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <div class="divider">
                       <div class="divider-text">Detail Produk</div>
                     </div>
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>SKU</th>
-                          <th>Nama Produk</th>
-                          <th>Harga</th>
-                          <th>Qty</th>
-                          <th>Subtotal</th>
+                          <th class="text-center">SKU</th>
+                          <th class="text-center">Nama Produk</th>
+                          <th class="text-center">Harga</th>
+                          <th class="text-center">Qty</th>
+                          <th class="text-center">Subtotal</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of listDetail">
+                          <td>{{ item.sku }}</td>
                           <td>{{ item.nama }}</td>
-                          <td class="text-center">{{ item.sku }}</td>
                           <td class="text-end">{{ item.price | number }}</td>
-                          <td class="text-center">{{ item.subtotal_price / item.price }} pcs</td>
-                          <td class="text-end">Rp {{ item.grandtotal_price | number }}</td>
+                          <td class="text-center">{{ item.qty }}</td>
+                          <td class="text-end">Rp {{ item.subtotal | number }}</td>
                         </tr>
                         <tr>
-                          <td class="text-end pe-3" colspan="4">Total</td>
-                          <td class="text-end">Rp {{ grandtotal | number }}</td>
+                          <td class="text-end pe-3" colspan="4">Total Pengiriman</td>
+                          <td class="text-end">Rp {{ model.total_pengiriman | number }}</td>
+                        </tr>
+                        <tr *ngIf="model.voucher_id">
+                          <td class="text-end pe-3" colspan="4">Total Voucher</td>
+                          <td class="text-end">Rp {{ model.total_voucher | number }}</td>
+                        </tr>
+                        <tr>
+                          <td class="text-end pe-3" style="font-weight: bold;" colspan="4">Total</td>
+                          <td class="text-end" style="font-weight: bold;">Rp {{ model.grand_total | number }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -244,10 +266,6 @@
           <i class="bx bx-chevron-left me-1"></i>
           Back
         </button>
-        <!-- <button class="btn btn-primary" (click)="save()">
-					<i class="bx bx-save me-1"></i>
-					Save
-				</button> -->
       </div>
     </div>
   </div>
