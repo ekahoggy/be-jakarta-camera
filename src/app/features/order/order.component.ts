@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalService } from 'src/app/services/global.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-order',
@@ -34,15 +34,8 @@ export class OrderComponent implements OnInit {
   nohp: string = '';
   newItems: any = [];
 
-  qtyPaketResi = 0;
-  beratPaketResi = 0;
-  asuransiPaket = 0;
-  isiPaketResi = '';
-  detailResi = [];
-
   constructor(
     private globalService: GlobalService,
-    public activeModal: NgbActiveModal,
     private modalService: NgbModal
   ) { }
 
@@ -212,38 +205,6 @@ export class OrderComponent implements OnInit {
     })
   }
 
-  cetakResi(modal, data) {
-    this.modelResi = data;
-    let paket = '';
-    let params = {
-      invoice_number: this.modelResi.invoice_number,
-      depot_id: this.modelResi.depot_id
-    };
-    this.qtyPaketResi = 0;
-    this.beratPaketResi = 0;
-    this.asuransiPaket = 0;
-    this.isiPaketResi = '';
-    this.detailResi = [];
-
-    this.modelResi.shipping_group = this.modelResi.shipping_group.replace(/_/g, " ");
-    this.modelResi.url_awb = 'https://barcode.tec-it.com/barcode.ashx?data=' + this.modelResi.awb_shipping;
-    this.modelResi.url_order = 'https://barcode.tec-it.com/barcode.ashx?data=' + this.modelResi.invoice_number;
-    this.globalService.DataGet('/salesorder/detail_order_voucher', params).subscribe((res: any) => {
-      if (res.status_code === 200) {
-        this.detailResi = res.data;
-        this.detailResi.forEach((val, key) => {
-          this.qtyPaketResi += val.product_qty;
-          this.beratPaketResi += val.item_weight;
-          this.asuransiPaket = val.total_insurance;
-          if (key < 5) {
-            this.isiPaketResi += val.product_name + ', ';
-          }
-        });
-        this.modalService.open(modal, { size: 'lg', backdrop: 'static' });
-      }
-    });
-  }
-
   getDataById(id: string = null) {
     this.isLoading = true;
     this.globalService.DataGet(`/order/${id}`, {}, false).subscribe((res: any) => {
@@ -303,6 +264,10 @@ export class OrderComponent implements OnInit {
     }
 
     this.reloadDataTable()
+  }
+
+  openResi(){
+
   }
 
 }

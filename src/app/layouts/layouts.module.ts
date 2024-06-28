@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LoaderKontenComponent } from './loader-konten/loader-konten.component';
 import { SupportModule } from './support/support.module';
+import { ModalModule } from './modal/modal.module';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { SupportModule } from './support/support.module';
     CommonModule,
     RouterModule,
     SupportModule,
-
+    ModalModule
   ]
 })
 export class LayoutsModule { }

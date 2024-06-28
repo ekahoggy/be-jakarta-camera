@@ -28,7 +28,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule,
     HttpClientModule,
     LayoutsModule,
     DataTablesModule,
