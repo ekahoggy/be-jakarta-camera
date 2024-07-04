@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, RouteConfigLoadStart, RouteConfigLoadEnd, ChildActivationStart, ChildActivationEnd, ActivationStart, ActivationEnd, ActivatedRoute, Routes } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
@@ -13,6 +14,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
+    private modalService: NgbModal,
     private spinner: NgxSpinnerService
   ) { }
 
@@ -47,6 +49,7 @@ export class AppComponent {
 
     /** spinner starts on init */
     this.spinner.show();
+    this.modalService.dismissAll()
 
     setTimeout(() => {
       /** spinner ends after 5 seconds */

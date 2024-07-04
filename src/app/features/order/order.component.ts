@@ -34,6 +34,12 @@ export class OrderComponent implements OnInit {
   nohp: string = '';
   newItems: any = [];
 
+  qtyPaketResi = 0;
+  beratPaketResi = 0;
+  asuransiPaket = 0;
+  isiPaketResi = '';
+  detailResi = [];
+
   constructor(
     private globalService: GlobalService,
     private modalService: NgbModal
@@ -123,6 +129,14 @@ export class OrderComponent implements OnInit {
         this.index();
       }
     })
+  }
+
+  openModal(modal){
+    this.modalService.open(modal, {
+      size: 'lg',
+      backdrop: 'static',
+      centered: true,
+  });
   }
 
   getSetting() {
