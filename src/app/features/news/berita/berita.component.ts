@@ -3,6 +3,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { GlobalService } from '../../../services/global.service';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { environment } from '../../../../environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-berita',
@@ -14,6 +15,7 @@ export class BeritaComponent implements OnInit {
   dtElement: any = DataTableDirective;
   dtInstance: any = Promise<DataTables.Api>;
   dtOptions: DataTables.Settings = {};
+  dtOptionsKomentar: DataTables.Settings = {};
   //tinyMCE
   keyMCE = environment.tinyMCE;
   configMCE = {
@@ -27,8 +29,10 @@ export class BeritaComponent implements OnInit {
   isEdit: boolean = false;
   isView: boolean = false;
   listData: any = [];
+  listDataKomentar: any = [];
   model: any = {};
   modelParam: any = {};
+  modelParamKomentar: any = {};
   base64Image: string | null = null;
   listCategory: any = [];
   listTags: any = [];
@@ -38,6 +42,7 @@ export class BeritaComponent implements OnInit {
 
   constructor(
     private globalService: GlobalService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -88,7 +93,7 @@ export class BeritaComponent implements OnInit {
     this.model.image = "assets/img/elements/18.jpg";
   }
 
-  collapseInfo(){
+  collapseInfo() {
     this.panelOpenState = !this.panelOpenState;
   }
 
@@ -210,5 +215,77 @@ export class BeritaComponent implements OnInit {
   onChangeDetailEditor({ editor }: ChangeEvent) {
     const data = editor.getData();
     this.model.content = data;
+  }
+
+  openModal(modal) {
+    this.modalService.open(modal, {
+      size: 'xl',
+      backdrop: 'static',
+      centered: true,
+    });
+
+    this.getDataKomentar();
+  }
+
+  changeKomentar(item) {
+    let param = {
+      'balasan': item.balasan,
+      'id': item.id
+    }
+    const final = Object.assign(param)
+
+    this.globalService.DataPost('/news-komentar/saveBalasan', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.reloadDataTable();
+      }
+    })
+  }
+
+  closeModal() {
+    this.modalService.dismissAll()
+  }
+
+  changeStatusBalasan(item){
+    let param = {
+      'is_publish': item.is_publish == 1 ? 0 : 1,
+      'id': item.id
+    }
+    const final = Object.assign(param)
+
+    this.globalService.DataPost('/news-komentar/status', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.reloadDataTable();
+        this.modalService.dismissAll()
+      }
+    })
+  }
+
+  getDataKomentar() {
+    this.dtOptionsKomentar = {
+      serverSide: true,
+      processing: true,
+      ordering: false,
+      searching: false,
+      lengthChange: false,
+      pagingType: "simple_numbers",
+      ajax: (dataTablesParameters: any, callback) => {
+        const params = {
+          filter: JSON.stringify(this.modelParamKomentar),
+          offset: dataTablesParameters.start,
+          limit: dataTablesParameters.length,
+        };
+        this.globalService.DataGet("/news-komentar", params).subscribe((res: any) => {
+          this.listDataKomentar = res.data.list;
+
+          callback({
+            recordsTotal: res.data.totalItems,
+            recordsFiltered: res.data.totalItems,
+            data: [],
+          });
+        }, (error: any) => {
+          this.listDataKomentar = [];
+        })
+      },
+    };
   }
 }

@@ -12,6 +12,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SettingComponent } from './setting/setting.component';
 import { PromoSliderComponent } from './promo-slider/promo-slider.component';
 import { DaftarComponent } from './daftar/daftar.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { DaftarComponent } from './daftar/daftar.component';
     SliderComponent,
     SettingComponent,
     PromoSliderComponent,
-    DaftarComponent
+    DaftarComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,

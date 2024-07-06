@@ -131,12 +131,70 @@ export class OrderComponent implements OnInit {
     })
   }
 
-  openModal(modal){
+  openModal(modal, item) {
+    this.modelResi = item;
     this.modalService.open(modal, {
       size: 'lg',
       backdrop: 'static',
       centered: true,
-  });
+    });
+  }
+
+  closeModal() {
+    this.modalService.dismissAll()
+  }
+
+  cetakResi(modal, data) {
+    this.modelResi = data;
+    let paket = '';
+    let params = {
+      invoice_number: this.modelResi.invoice_number,
+      depot_id: this.modelResi.depot_id
+    };
+    this.qtyPaketResi = 0;
+    this.beratPaketResi = 0;
+    this.asuransiPaket = 0;
+    this.isiPaketResi = '';
+    this.detailResi = [];
+
+    this.modelResi.shipping_group = this.modelResi.shipping_group.replace(/_/g, " ");
+    this.modelResi.url_awb = 'https://barcode.tec-it.com/barcode.ashx?data=' + this.modelResi.awb_shipping;
+    this.modelResi.url_order = 'https://barcode.tec-it.com/barcode.ashx?data=' + this.modelResi.invoice_number;
+    this.globalService.DataGet(`/order/${this.modelResi.id}`, {}, false).subscribe((res: any) => {
+      if (res.status_code === 200) {
+        this.detailResi = res.data.detail;
+        this.detailResi.forEach((val, key) => {
+          this.qtyPaketResi += val.qty;
+          this.beratPaketResi += val.berat;
+          this.asuransiPaket = 0;
+          if (key < 5) {
+            this.isiPaketResi += val.nama + ', ';
+          }
+        });
+        this.modalService.open(modal, { size: 'lg', backdrop: 'static' });
+      }
+    })
+  }
+
+  printResi(el) {
+    var printContents = document.getElementById(el);
+    const newTab = window.open('', '_blank');
+    newTab.document.open();
+    newTab.document.write(printContents.outerHTML);
+    newTab.document.close();
+    newTab.addEventListener('load', function () {
+      setTimeout(function () {
+        newTab.print();
+        newTab.close();
+      }, 3000); // Waktu tunggu dalam milidetik (5000 ms = 5 detik)
+    });
+
+    // table.style.width = '100%';
+    // const originalContents = document.body.innerHTML;
+    // document.body.innerHTML = printContents;
+    // window.print();
+    // window.close();
+    // document.body.innerHTML = originalContents;
   }
 
   getSetting() {
@@ -280,7 +338,7 @@ export class OrderComponent implements OnInit {
     this.reloadDataTable()
   }
 
-  openResi(){
+  openResi() {
 
   }
 

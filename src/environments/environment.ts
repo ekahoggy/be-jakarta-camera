@@ -9,7 +9,7 @@ if (window.location.hostname == 'localhost') {
 export const environment = {
   apiURL: apiURL,
   imgURL: imgURL,
-  tinyMCE : 'fb5gtrcs7ygspt7tjcza2xqwq0pfnr81a5yfeumf5v1mzm8b',
+  tinyMCE : '5gu15warc1ppkm0rq253hrims1chc9kxgl1urh0f5ctpivkx',
 
   version: 1.0
 };

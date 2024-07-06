@@ -29,6 +29,13 @@
               PopUp
               <i class='bx bx-chevron-right'></i>
           </button>
+          <button type="button"
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              (click)="changeMenu('footer')"
+              [ngClass]="isActive == 'footer' ? 'active' : ''">
+              Konten
+              <i class='bx bx-chevron-right'></i>
+          </button>
       </div>
       </div>
 
@@ -36,6 +43,7 @@
         <app-setting *ngIf="isActive == 'seo'"></app-setting>
         <app-slider *ngIf="isActive == 'slider'"></app-slider>
         <app-promo-slider *ngIf="isActive == 'popup'"></app-promo-slider>
+        <app-footer *ngIf="isActive == 'footer'"></app-footer>
       </div>
     </div>
   </div>

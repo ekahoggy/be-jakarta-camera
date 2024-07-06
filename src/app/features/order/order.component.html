@@ -86,7 +86,8 @@
                         {{ item.shipping_sender }}<br>
                         <span>{{ item.awb_shipping }}</span>
                       </p>
-                      <button class="btn btn-primary me-1" *ngIf="item.awb_shipping" (click)="openModal(modalResi)">
+                      <button class="btn btn-primary me-1" *ngIf="item.awb_shipping"
+                        (click)="cetakResi(modalResi, item)">
                         <i class='bx bx-printer me-1'></i>
                         Print Resi
                       </button>
@@ -277,13 +278,11 @@
 <ng-template #modalResi let-modal>
   <div class="modal-header d-flex justify-content-between align-items-center">
     <h3 class="modal-title text-primary mt-0">Cetak Resi </h3>
-    <button type="button" class="close" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close close" aria-label="Close" (click)="closeModal()"></button>
   </div>
   <div class="modal-body">
     <div class="container-fluid" id="printResi">
-      <table id="tableprint" width="100%" border="1">
+      <table id="tableprint" class="tableprint" width="100%" border="1">
         <thead>
           <tr>
             <th colspan="2">
@@ -293,50 +292,53 @@
                   class="logo-img" height="50" />
                 <img alt="250x250" src="assets/img/shipping/jnt.png" data-holder-rendered="true" class="text-center"
                   class="logo-img" width="100"
-                  *ngIf="modelResi.shipping_service === 'jt' || modelResi.shipping_service === 'jnt'" />
+                  *ngIf="modelResi.shipping_sender_code === 'jt' || modelResi.shipping_sender_code === 'jnt'" />
                 <img alt="250x250" src="assets/img/shipping/id_express.png" data-holder-rendered="true"
-                  class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'idx'" />
+                  class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'idx'" />
                 <img alt="250x250" src="assets/img/shipping/indah_cargo.png" data-holder-rendered="true"
                   class="text-center" class="logo-img" height="60"
-                  *ngIf="modelResi.shipping_service === 'indah_cargo'" />
+                  *ngIf="modelResi.shipping_sender_code === 'indah_cargo'" />
                 <img alt="250x250" src="assets/img/shipping/jne.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'jne'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'jne'" />
                 <img alt="250x250" src="assets/img/shipping/lion.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'lion'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'lion'" />
                 <img alt="250x250" src="assets/img/shipping/paxel.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'paxel'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'paxel'" />
                 <img alt="250x250" src="assets/img/shipping/sapx.png" data-holder-rendered="true" class="text-center"
                   class="logo-img" height="60"
-                  *ngIf="modelResi.shipping_service === 'sapx' || modelResi.shipping_service === 'sap'" />
+                  *ngIf="modelResi.shipping_sender_code === 'sapx' || modelResi.shipping_sender_code === 'sap'" />
                 <img alt="250x250" src="assets/img/shipping/sentralcargo.png" data-holder-rendered="true"
                   class="text-center" class="logo-img" height="60"
-                  *ngIf="modelResi.shipping_service === 'sentral_cargo' || modelResi.shipping_service === 'sentral'" />
+                  *ngIf="modelResi.shipping_sender_code === 'sentral_cargo' || modelResi.shipping_sender_code === 'sentral'" />
                 <img alt="250x250" src="assets/img/shipping/sicepat.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'sicepat'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'sicepat'" />
                 <img alt="250x250" src="assets/img/shipping/jtcargo.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'jtcargo'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'jtcargo'" />
                 <img alt="250x250" src="assets/img/shipping/ncs.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'ncs'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'ncs'" />
                 <img alt="250x250" src="assets/img/shipping/anteraja.png" data-holder-rendered="true"
-                  class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'anteraja'" />
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="modelResi.shipping_sender_code === 'anteraja'" />
                 <img alt="250x250" src="assets/img/shipping/ninja.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'ninja'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'ninja'" />
                 <img alt="250x250" src="assets/img/shipping/tiki.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'tiki'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'tiki'" />
                 <img alt="250x250" src="assets/img/shipping/gojek.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'gojek'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'gojek'" />
                 <img alt="250x250" src="assets/img/shipping/grab.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'grab'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'grab'" />
                 <img alt="250x250" src="assets/img/shipping/lalamove.png" data-holder-rendered="true"
-                  class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'lalamove'" />
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="modelResi.shipping_sender_code === 'lalamove'" />
                 <img alt="250x250" src="assets/img/shipping/deliveree.png" data-holder-rendered="true"
-                  class="text-center" class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'deliveree'" />
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="modelResi.shipping_sender_code === 'deliveree'" />
                 <img alt="250x250" src="assets/img/shipping/borzo.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'borzo'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'borzo'" />
                 <img alt="250x250" src="assets/img/shipping/paxel.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'paxel'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'paxel'" />
                 <img alt="250x250" src="assets/img/shipping/pos.png" data-holder-rendered="true" class="text-center"
-                  class="logo-img" height="60" *ngIf="modelResi.shipping_service === 'pos'" />
+                  class="logo-img" height="60" *ngIf="modelResi.shipping_sender_code === 'pos'" />
               </div>
             </th>
           </tr>
@@ -350,7 +352,7 @@
                 <div class="container"
                   style=" width:100%; text-align: center; background: white;margin-top: -20px;position: absolute; padding: 0; margin-left: -8px;">
                   <span style="font-size: 16px; font-weight: bold;" *ngIf="modelResi.shipping_type !== 'BiteShip'">
-                    AWB {{modelResi.awb_shipping}}
+                    {{modelResi.awb_shipping}}
                   </span>
                   <span style="font-size: 16px; font-weight: bold;" *ngIf="modelResi.shipping_type === 'BiteShip'">
                     {{modelResi.receipt_number}}
@@ -370,12 +372,12 @@
             </td>
           </tr>
           <tr>
-            <td rowspan="3"
+            <td rowspan="3" width="50%"
               style="position: relative; text-align: center; padding: 0.5rem; padding-bottom: 0 !important;">
               <img alt="250x250" [src]="modelResi.url_order" data-holder-rendered="true"
-                style="text-align: center; width: 60%;" />
+                style="text-align: center; width: 80%;" />
             </td>
-            <td style="padding: 0.5rem !important;">Asuransi : Rp. {{ asuransiPaket | number }}</td>
+            <td width="50%" style="padding: 0.5rem !important;">Asuransi : Rp. {{ asuransiPaket | number }}</td>
           </tr>
           <tr>
             <td style="padding: 0.5rem !important;">Berat : {{ beratPaketResi | number }} gram</td>
@@ -391,23 +393,20 @@
           </tr>
           <tr>
             <td style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Penerima : <br>
-              {{modelResi.shipping_recipient}}
+              {{modelResi.recipient}}
             </td>
             <td style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Pengirim : <br>
-              Depo {{modelResi.depot_name}}
+              Jakarta Camera
             </td>
           </tr>
           <tr>
             <td style="padding: 0.5rem !important; vertical-align: text-top; font-size: 14px;font-weight: bold;">
-              {{modelResi.shipping_recipient_phone}} | {{ modelResi.shipping_address }} <br>
-              {{modelResi.shipping_subdistrict_name}}, {{modelResi.shipping_city_name}},
-              {{modelResi.shipping_province_name}}, {{modelResi.shipping_postal_code}}
+              {{modelResi.phone_code}}{{modelResi.phone_number}} | {{ modelResi.address }} <br>
+              {{modelResi.village_name}}, {{modelResi.subdistrict_name}},
+              {{modelResi.city_name}}, {{modelResi.province_name}}, {{modelResi.postal_code}}
             </td>
             <td style="padding: 0.5rem !important; vertical-align: text-top; font-size: 14px;font-weight: bold;">
-              {{modelResi.depot_phone_code}}{{modelResi.depot_phone_number}} | {{ modelResi.depot_address
-              }} <br>
-              {{modelResi.depot_subdistrict_name}}, {{modelResi.depot_city_name}},
-              {{modelResi.depot_province_name}}, {{modelResi.depot_postal_code}}
+              {{nohp}} | {{ alamat }}
             </td>
           </tr>
           <tr>
@@ -427,7 +426,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary btn-sm btn-rounded">
+    <button class="btn btn-primary btn-sm btn-rounded" (click)="printResi('printResi')">
       <i class="fa fa-print mr-2"></i>
       Cetak
     </button>

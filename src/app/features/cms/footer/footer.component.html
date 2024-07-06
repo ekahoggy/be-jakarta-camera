@@ -1,0 +1,177 @@
+<div class="card" *ngIf="showForm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 text-end mb-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Informasi Kontak</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <form>
+          <fieldset [disabled]="isView || isLoading">
+            <div class="row">
+              <div class="col-8">
+                <div class="mb-3">
+                  <label class="form-label" for="alamat">Alamat</label>
+                  <textarea id="alamat" class="form-control" rows="3" [(ngModel)]="model.alamat" name="alamat"
+                placeholder="Alamat ..."></textarea>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label" for="kodepos">Kode Pos</label>
+                  <input type="text" class="form-control" id="kodepos" [(ngModel)]="model.kodepos" name="kodepos"
+                    placeholder="Kode Pos ...">
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="no_hp">No WA</label>
+                  <input type="text" class="form-control" id="no_hp" [(ngModel)]="model.no_hp" name="no_hp"
+                    placeholder="No WA ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="no_telp">No Telp</label>
+                  <input type="text" class="form-control" id="no_telp" [(ngModel)]="model.no_telp" name="no_telp"
+                    placeholder="No Telp ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="email">Email</label>
+                  <input type="text" class="form-control" id="email" [(ngModel)]="model.email" name="email"
+                    placeholder="Email ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="hari_kerja">Hari Kerja</label>
+                  <input type="text" class="form-control" id="hari_kerja" [(ngModel)]="model.hari_kerja" name="hari_kerja"
+                    placeholder="Hari Kerja ...">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-primary" (click)="save()">
+      <i class="bx bx-save me-1"></i>
+      Simpan
+    </button>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 15px" *ngIf="showForm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 text-end mb-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Tentang Kami</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <form>
+          <fieldset [disabled]="isView || isLoading">
+            <div class="row">
+              <div class="col-8">
+                <div class="mb-3">
+                  <label class="form-label" for="tentang_kami">Tentang Kami</label>
+                  <textarea id="tentang_kami" class="form-control" rows="10" [(ngModel)]="modelTentang.tentang_kami" name="tentang_kami"
+                placeholder="Tentang Kami ..."></textarea>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-primary" (click)="saveTentang()">
+      <i class="bx bx-save me-1"></i>
+      Simpan
+    </button>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 15px" *ngIf="showForm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 text-end mb-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Marketplace & Social Media</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <form>
+          <fieldset [disabled]="isView || isLoading">
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="bukalapak">Bukalapak</label>
+                  <input type="text" class="form-control" id="bukalapak" [(ngModel)]="modelMarketplace.bukalapak" name="bukalapak"
+                    placeholder="Link Bukalapak ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="shopee">Shopee</label>
+                  <input type="text" class="form-control" id="shopee" [(ngModel)]="modelMarketplace.shopee" name="shopee"
+                    placeholder="Link Shopee ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="tokopedia">Tokopedia</label>
+                  <input type="text" class="form-control" id="tokopedia" [(ngModel)]="modelMarketplace.tokopedia" name="tokopedia"
+                    placeholder="Link Tokopedia ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="blibli">Blibli</label>
+                  <input type="text" class="form-control" id="blibli" [(ngModel)]="modelMarketplace.blibli" name="blibli"
+                    placeholder="Link Blibli ...">
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="instagram">Instagram</label>
+                  <input type="text" class="form-control" id="instagram" [(ngModel)]="modelMarketplace.instagram" name="instagram"
+                    placeholder="Link Instagram ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="tiktok">Tiktok</label>
+                  <input type="text" class="form-control" id="tiktok" [(ngModel)]="modelMarketplace.tiktok" name="tiktok"
+                    placeholder="Link Tiktok ...">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label" for="youtube">Youtube</label>
+                  <input type="text" class="form-control" id="youtube" [(ngModel)]="modelMarketplace.youtube" name="youtube"
+                    placeholder="Link Youtube ...">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-primary" (click)="saveMarketplace()">
+      <i class="bx bx-save me-1"></i>
+      Simpan
+    </button>
+  </div>
+</div>
