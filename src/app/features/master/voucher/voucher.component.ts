@@ -47,7 +47,7 @@ export class VoucherComponent {
           limit: dataTablesParameters.length,
         };
         this.globalService.DataGet("/voucher", params, false).subscribe((res: any) => {
-          this.listData = res.data;
+          this.listData = res.data.list;
 
           callback({
             recordsTotal: res.data.totalItems,
