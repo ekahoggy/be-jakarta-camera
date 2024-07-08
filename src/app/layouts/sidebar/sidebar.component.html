@@ -133,7 +133,6 @@
           <span class="badge bg-danger rounded-pill">0</span>
         </div>
       </a>
-
       <ul class="menu-sub">
         <li class="menu-item" [routerLink]="['/edukasi/kategori']" routerLinkActive="active">
           <a href="javascript:void(0);" class="menu-link">
@@ -153,6 +152,25 @@
         <li class="menu-item" [routerLink]="['/edukasi/order']" routerLinkActive="active">
           <a href="javascript:void(0);" class="menu-link">
             <div data-i18n="Order">Order</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li id="menu-laporan" class="menu-item" routerLinkActive="active">
+      <a href="javascript:void(0);" (click)="openMenu('menu-laporan')" class="menu-link menu-toggle">
+        <i class='menu-icon tf-icons bx bx-file'></i>
+        <div data-i18n="Laporan">Laporan</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item" [routerLink]="['/laporan/order']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Pesanan">Pesanan</div>
+          </a>
+        </li>
+        <li class="menu-item" [routerLink]="['/laporan/stok']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Stok">Stok</div>
           </a>
         </li>
       </ul>

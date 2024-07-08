@@ -82,8 +82,8 @@
                       <span>{{ item.email }}</span> (<span> {{ item.phone_code }} {{ item.phone_number }} </span>)
                     </td>
                     <td class="text-center">
+                      {{ item.shipping_sender }}<br>
                       <p *ngIf="item.awb_shipping">
-                        {{ item.shipping_sender }}<br>
                         <span>{{ item.awb_shipping }}</span>
                       </p>
                       <button class="btn btn-primary me-1" *ngIf="item.awb_shipping"

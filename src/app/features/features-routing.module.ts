@@ -41,6 +41,10 @@ const routes: Routes = [
   {
     path: 'edukasi',
     loadChildren: () => import('./edukasi/edukasi.module').then((m) => m.EdukasiModule),
+  },
+  {
+    path: 'laporan',
+    loadChildren: () => import('./laporan/laporan.module').then((m) => m.LaporanModule),
   }
 ];
 

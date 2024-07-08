@@ -5,23 +5,12 @@
         <li class="breadcrumb-item">
           <a href="javascript:void(0);">Edukasi</a>
         </li>
-        <li class="breadcrumb-item active">Monitoring Order</li>
+        <li class="breadcrumb-item active">Monitoring Edukasi</li>
       </ol>
     </nav>
     <div class="card" *ngIf="!showForm">
       <div class="card-body">
         <div class="row">
-          <div class="col-12 text-end mb-5">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Monitoring Order</h4>
-              <!--
-                <button class="btn btn-primary" (click)="create()">
-                  <i class="bx bx-xs bx-plus me-1"></i>
-                  Create
-                </button>
-              -->
-            </div>
-          </div>
           <div class="col-12 mb-2">
             <div class="row form-group my-2">
               <div class="col-12 row mb-2">
@@ -55,17 +44,17 @@
               <table datatable [dtOptions]="dtOptions" class="table" data-page-length="5">
                 <thead>
                   <tr>
-                    <th class="text-center" width="100">Status</th>
+                    <th class="text-center" width="80">Status</th>
                     <th class="text-center" width="120">Invoice</th>
-                    <th class="text-center">Customer</th>
-                    <th class="text-center" width="120">Pengiriman</th>
-                    <th class="text-center" width="120">Total</th>
+                    <th class="text-center" width="100">Customer</th>
+                    <th class="text-center">Edukasi</th>
+                    <th class="text-end" width="120">Total</th>
                     <th class="text-center" width="80">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
-                    <td>
+                    <td class="text-center">
                       <span class="badge" [ngClass]="{
 													'bg-label-warning': item.status_order == 'ordered',
 													'bg-label-primary': item.status_order == 'processed',
@@ -77,40 +66,27 @@
                       </span>
                     </td>
                     <td> {{ item.invoice_number }} </td>
-                    <td>
+                    <td class="text-center">
                       <p>{{ item.name }}</p>
-                      <span>{{ item.email }}</span> (<span> {{ item.phone_code }} {{ item.phone_number }} </span>)
+                      <span>{{ item.email }}</span>
                     </td>
                     <td class="text-center">
-                      <p *ngIf="item.awb_shipping">
-                        {{ item.shipping_sender }}<br>
-                        <span>{{ item.awb_shipping }}</span>
-                      </p>
-                      <button class="btn btn-primary me-1" *ngIf="item.awb_shipping">
-                        <i class='bx bx-printer me-1'></i>
-                        Print Resi
-                      </button>
-                      <span *ngIf="item.awb_shipping == null">-</span>
+                      {{ item.judul }}<br>
+                      <img data-bs-toggle="tooltip" data-bs-custom-class="font-poppins" data-bs-placement="bottom"
+                        src="assets/img/icons/levels/easy.svg" class="icon-level" alt="ic_level" aria-label="Beginner"
+                        data-bs-original-title="Beginner" *ngIf="item.tingkatan === 'beginner'">
+                      <img data-bs-toggle="tooltip" data-bs-custom-class="font-poppins" data-bs-placement="bottom"
+                        src="assets/img/icons/levels/medium.svg" class="icon-level" alt="ic_level"
+                        aria-label="Intermediate" data-bs-original-title="Intermediate"
+                        *ngIf="item.tingkatan === 'intermediate'">
+                      <img data-bs-toggle="tooltip" data-bs-custom-class="font-poppins" data-bs-placement="bottom"
+                        src="assets/img/icons/levels/pro.svg" class="icon-level" alt="ic_level"
+                        aria-label="Professional" data-bs-original-title="Professional"
+                        *ngIf="item.tingkatan === 'professional'">
                     </td>
-                    <td class="text-right"> Rp {{ item.grand_total | number }} </td>
-
+                    <td class="text-end"> Rp {{ item.grand_total | number }} </td>
                     <td class="text-center">
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'ordered'"
-                        (click)="edit(item, 'processed')">
-                        <i class='bx bx-check me-1'></i>
-                        Setujui
-                      </a>
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'processed'"
-                        (click)="kirim(item)">
-                        <i class='bx bxs-package me-1'></i>
-                        Kirim
-                      </a>
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'sent'"
-                        (click)="edit(item, 'received')">
-                        <i class='bx bx-check-shield me-1'></i>
-                        Selesai
-                      </a>
-                      <a class="dropdown-item" href="javascript:void(0);" *ngIf="item.status_order === 'received'"
+                      <a class="dropdown-item" href="javascript:void(0);"
                         (click)="view(item)">
                         <i class='bx bx-eye me-1'></i>
                         Lihat
@@ -161,99 +137,55 @@
                       <input type="text" class="form-control" id="date" [(ngModel)]="model.date" name="date"
                         placeholder="enter the date...">
                     </div>
-                    <div class="mb-3">
-                      <label class="form-label" for="keterangan">Catatan</label>
-                      <textarea id="note" class="form-control" rows="3" [(ngModel)]="model.note" name="note"
-                        placeholder="enter the note..."></textarea>
-                    </div>
                   </div>
                   <div class="col-6">
                     <div class="divider">
-                      <div class="divider-text">Penerima</div>
+                      <div class="divider-text">Edukasi</div>
                     </div>
                     <div class="row">
-                      <div class="col-6 mb-3">
-                        <label class="form-label" for="recipient">Nama</label>
-                        <input type="text" class="form-control" id="recipient" [(ngModel)]="model.recipient"
-                          name="recipient" placeholder="enter the recipient...">
+                      <div class="col-12 mb-3">
+                        <label class="form-label" for="judul">Edukasi</label>
+                        <input type="text" class="form-control" id="judul" [(ngModel)]="model.judul"
+                          name="judul" placeholder="enter the judul...">
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label" for="phone_number">No Hp</label>
+                        <label class="form-label" for="kategori">Kategori</label>
+                        <input type="text" class="form-control" id="kategori" [(ngModel)]="model.kategori" name="kategori">
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="harga">Harga</label>
                         <div class="input-group">
-                          <span class="input-group-text" id="phone_number">{{ model.phone_code }}</span>
-                          <input type="text" class="form-control" id="phone_number" [(ngModel)]="model.phone_number"
-                            name="phone_number" placeholder="enter the phone number...">
+                          <span class="input-group-text" id="harga">Rp</span>
+                          <input type="text" class="form-control" id="harga" [(ngModel)]="model.harga" mask="separator.3" thousandSeparator="."
+                            name="harga" placeholder="enter the phone number...">
+                        </div>
+                      </div>
+
+                      <div class="col-6 mb-3">
+                        <label class="form-label" for="promo">Promo</label>
+                        <div class="input-group">
+                          <span class="input-group-text" id="promo">Rp</span>
+                          <input type="text" class="form-control" id="promo" [(ngModel)]="model.promo" mask="separator.3" thousandSeparator="."
+                            name="promo" placeholder="Promo...">
                         </div>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label" for="village_name">Desa</label>
-                        <input type="text" class="form-control" id="village_name" [(ngModel)]="model.village_name"
-                          name="village_name" placeholder="enter the village name...">
+                        <label class="form-label" for="voucher">Voucher</label>
+                        <div class="input-group">
+                          <span class="input-group-text" id="voucher">Rp</span>
+                          <input type="text" class="form-control" id="voucher" [(ngModel)]="model.voucher" mask="separator.3" thousandSeparator="."
+                            name="voucher" placeholder="Voucher...">
+                        </div>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label" for="subdistrict_name">Kecematan</label>
-                        <input type="text" class="form-control" id="subdistrict_name"
-                          [(ngModel)]="model.subdistrict_name" name="subdistrict_name"
-                          placeholder="enter the subdistrict name...">
-                      </div>
-                      <div class="col-6 mb-3">
-                        <label class="form-label" for="city_name">Kota</label>
-                        <input type="text" class="form-control" id="city_name" [(ngModel)]="model.city_name"
-                          name="city_name" placeholder="enter the village name...">
-                      </div>
-                      <div class="col-6 mb-3">
-                        <label class="form-label" for="province_name">Provinsi</label>
-                        <input type="text" class="form-control" id="province_name" [(ngModel)]="model.province_name"
-                          name="province_name" placeholder="enter the subdistrict name...">
-                      </div>
-                      <div class="col-6 mb-3">
-                        <label class="form-label" for="postal_code">Kode Pos</label>
-                        <input type="text" class="form-control" id="postal_code" [(ngModel)]="model.postal_code"
-                          name="postal_code" placeholder="enter the postal code...">
-                      </div>
-                      <div class="col-12 mb-3">
-                        <label class="form-label" for="address">Alamat</label>
-                        <textarea type="text" class="form-control" id="address" [(ngModel)]="model.address"
-                          name="address" placeholder="enter the address..." rows="3"></textarea>
+                        <label class="form-label" for="grandtotal">Grand Total</label>
+                        <div class="input-group">
+                          <span class="input-group-text" id="grandtotal">Rp</span>
+                          <input type="text" class="form-control" id="grandtotal" [(ngModel)]="model.grand_total" mask="separator.3" thousandSeparator="."
+                            name="grand_total" placeholder="enter the phone number...">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="divider">
-                      <div class="divider-text">Detail Produk</div>
-                    </div>
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th class="text-center">SKU</th>
-                          <th class="text-center">Nama Produk</th>
-                          <th class="text-center">Harga</th>
-                          <th class="text-center">Qty</th>
-                          <th class="text-center">Subtotal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let item of listDetail">
-                          <td>{{ item.sku }}</td>
-                          <td>{{ item.nama }}</td>
-                          <td class="text-end">{{ item.price | number }}</td>
-                          <td class="text-center">{{ item.qty }}</td>
-                          <td class="text-end">Rp {{ item.subtotal | number }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-end pe-3" colspan="4">Total Pengiriman</td>
-                          <td class="text-end">Rp {{ model.total_pengiriman | number }}</td>
-                        </tr>
-                        <tr *ngIf="model.voucher_id">
-                          <td class="text-end pe-3" colspan="4">Total Voucher</td>
-                          <td class="text-end">Rp {{ model.total_voucher | number }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-end pe-3" style="font-weight: bold;" colspan="4">Total</td>
-                          <td class="text-end" style="font-weight: bold;">Rp {{ model.grand_total | number }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
                 </div>
               </fieldset>
@@ -265,6 +197,10 @@
         <button class="btn btn-light me-1" (click)="index()">
           <i class="bx bx-chevron-left me-1"></i>
           Back
+        </button>
+        <button class="btn btn-danger me-1" (click)="invoice()">
+          <i class='bx bxs-file-pdf me-1' ></i>
+          Invoice
         </button>
       </div>
     </div>

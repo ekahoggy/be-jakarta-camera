@@ -1,0 +1,24 @@
+.btn-close{
+  background-color: #fff;
+  border-radius: 0 !important;
+  opacity: 1;
+  padding: 0.635rem;
+  box-shadow: none !important;
+  transition: all 0.23s ease 0.1s;
+  transform: none !important;
+}
+
+.tableprint{
+  thead, tbody, tfoot, tr, td, th {
+    border: 1px solid black !important;
+    :hover {
+      background-color: white !important;
+    }
+  }
+  tr{
+    th{
+      border: 1px solid black !important;
+      background-color: white !important;
+    }
+  }
+}

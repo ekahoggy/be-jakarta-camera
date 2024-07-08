@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { GlobalService } from 'src/app/services/global.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'src/environments/environment.development';
+import { GlobalService } from '../../../services/global.service';
 
 @Component({
   selector: 'app-order',
@@ -20,16 +18,14 @@ export class OrderComponent {
   listData: any = [];
   model: any = {};
   modelParam: any = {};
+  listCategory: any = [];
   isLoading: boolean = false;
-  apiUrl: any;
 
   constructor(
     private globalService: GlobalService,
-    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
-    this.apiUrl = environment.apiURL
     this.empty();
     this.getData();
   }
@@ -44,12 +40,13 @@ export class OrderComponent {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify({}),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/edukasi/order", params, false).subscribe((res: any) => {
+        this.globalService.DataGet("/order/kategori", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
+
           callback({
             recordsTotal: res.data.totalItems,
             recordsFiltered: res.data.totalItems,
@@ -70,8 +67,6 @@ export class OrderComponent {
 
   empty() {
     this.model = {};
-    this.modelParam.status_order = '';
-    this.model.icon = "assets/img/elements/18.jpg";
   }
 
   index() {
@@ -79,24 +74,54 @@ export class OrderComponent {
     this.empty();
   }
 
+  create() {
+    this.showForm = !this.showForm;
+    this.isEdit = false;
+    this.isView = false;
+  }
+
+  edit(val) {
+    this.showForm = !this.showForm;
+    this.isEdit = true;
+    this.isView = false;
+    this.getDataById(val.id)
+  }
+
   view(val) {
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = true;
-    this.model = val
+    this.getDataById(val.id)
+  }
+
+  save() {
+    const final = Object.assign(this.model)
+    this.globalService.DataPost('/edukasi/kategori/save', final, true).subscribe((res: any) => {
+      if (res.status_code == 200) {
+        this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disimpan')
+        this.index();
+      }
+    },
+      error => {
+        this.empty();
+        this.globalService.alertError('Gagal', error.error.message);
+      })
+  }
+
+  getDataById(id: string = null) {
+    this.isLoading = true;
+    this.globalService.DataGet(`/edukasi/kategori/${id}`, {}, false).subscribe((res: any) => {
+      this.model = res.data
+      this.isLoading = false;
+    })
   }
 
   reset() {
     this.modelParam = {
-      invoice_number: '',
-      status_order: ''
+      kategori: ''
     }
 
     this.reloadDataTable()
-  }
-
-  invoice(){
-    window.open(this.apiUrl + '/edukasi/order/pdf/' + this.model.id, '_blank');
   }
 
 }

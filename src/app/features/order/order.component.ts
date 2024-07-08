@@ -188,13 +188,6 @@ export class OrderComponent implements OnInit {
         newTab.close();
       }, 3000); // Waktu tunggu dalam milidetik (5000 ms = 5 detik)
     });
-
-    // table.style.width = '100%';
-    // const originalContents = document.body.innerHTML;
-    // document.body.innerHTML = printContents;
-    // window.print();
-    // window.close();
-    // document.body.innerHTML = originalContents;
   }
 
   getSetting() {
@@ -223,57 +216,74 @@ export class OrderComponent implements OnInit {
   }
 
   kirim(item) {
-    this.getDataById(item.id);
-    let params = {
-      "shipper_contact_name": "Jakarta Camera",
-      "shipper_contact_phone": this.nohp,
-      "shipper_contact_email": this.email,
-      "shipper_organization": "Jakarta Camera Official Store",
-      "origin_contact_name": "Jakarta Camera",
-      "origin_contact_phone": this.nohp,
-      "origin_address": this.alamat,
-      "origin_coordinate": {
-        "latitude": this.lat,
-        "longitude": this.long
-      },
-      "origin_note": "",
-      "origin_postal_code": this.kodepos,
-      "destination_contact_name": item.recipient,
-      "destination_contact_phone": item.phone_number,
-      "destination_contact_email": item.email,
-      "destination_address": item.address,
-      "destination_postal_code": item.postal_code,
-      "destination_coordinate": {
-        "latitude": item.latitude,
-        "longitude": item.longitude
-      },
-      "destination_note": "",
-      "courier_company": item.shipping_sender_code,
-      "courier_type": item.shipping_service,
-      "courier_insurance": 0,
-      "delivery_type": "now",
-      "order_note": item.note,
-      "metadata": {},
-      "items": this.newItems
-    }
-
-    this.globalService.DataPost('/order/kirim', params).subscribe((res: any) => {
-      if (res.status_code == 200) {
-        const dataPengiriman = {
-          'id': item.id,
-          'shipping_id': res.data.id,
-          'awb_shipping': res.data.courier.waybill_id,
-          'receipt_number': res.data.courier.tracking_id,
-          'shipping_url': res.data.courier.link
+    this.globalService.DataGet(`/order/${item.id}`, {}, false).subscribe((respon: any) => {
+      this.model = respon.data.data;
+      respon.data.detail.forEach((val) => {
+        const p = {
+          "name": val.nama,
+          "description": "",
+          "value": val.price,
+          "quantity": val.qty,
+          "height": val.tinggi,
+          "length": val.lebar,
+          "weight": val.berat,
+          "width": val.panjang
         }
 
-        this.globalService.DataPost('/order/statusPengiriman', dataPengiriman).subscribe((response: any) => {
-          if (response.status_code == 200) {
-            this.globalService.alertSuccess('Success', 'Request Pickup')
-            this.edit(this.model, 'sent');
-          }
-        });
+        this.newItems.push(p)
+      });
+
+      let params = {
+        "shipper_contact_name": "Jakarta Camera",
+        "shipper_contact_phone": this.nohp,
+        "shipper_contact_email": this.email,
+        "shipper_organization": "Jakarta Camera Official Store",
+        "origin_contact_name": "Jakarta Camera",
+        "origin_contact_phone": this.nohp,
+        "origin_address": this.alamat,
+        "origin_coordinate": {
+          "latitude": this.lat,
+          "longitude": this.long
+        },
+        "origin_note": "",
+        "origin_postal_code": this.kodepos,
+        "destination_contact_name": item.recipient,
+        "destination_contact_phone": item.phone_number,
+        "destination_contact_email": item.email,
+        "destination_address": item.address,
+        "destination_postal_code": item.postal_code,
+        "destination_coordinate": {
+          "latitude": item.latitude,
+          "longitude": item.longitude
+        },
+        "destination_note": "",
+        "courier_company": item.shipping_sender_code,
+        "courier_type": item.shipping_service,
+        "courier_insurance": 0,
+        "delivery_type": "now",
+        "order_note": item.note,
+        "metadata": {},
+        "items": this.newItems
       }
+
+      this.globalService.DataPost('/order/kirim', params).subscribe((res: any) => {
+        if (res.status_code == 200) {
+          const dataPengiriman = {
+            'id': item.id,
+            'shipping_id': res.data.id,
+            'awb_shipping': res.data.courier.waybill_id,
+            'receipt_number': res.data.courier.tracking_id,
+            'shipping_url': res.data.courier.link
+          }
+
+          this.globalService.DataPost('/order/statusPengiriman', dataPengiriman).subscribe((response: any) => {
+            if (response.status_code == 200) {
+              this.globalService.alertSuccess('Success', 'Request Pickup')
+              this.edit(this.model, 'sent');
+            }
+          });
+        }
+      })
     })
   }
 
