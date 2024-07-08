@@ -20,43 +20,21 @@ export class OrderComponent {
   modelParam: any = {};
   listCategory: any = [];
   isLoading: boolean = false;
+  total: number = 0;
 
   constructor(
     private globalService: GlobalService,
   ) { }
 
   ngOnInit(): void {
-    this.empty();
     this.getData();
   }
 
   getData() {
-    this.dtOptions = {
-      serverSide: true,
-      processing: true,
-      ordering: false,
-      searching: false,
-      lengthChange: false,
-      pagingType: "simple_numbers",
-      ajax: (dataTablesParameters: any, callback) => {
-        const params = {
-          filter: JSON.stringify(this.modelParam),
-          offset: dataTablesParameters.start,
-          limit: dataTablesParameters.length,
-        };
-        this.globalService.DataGet("/order/kategori", params, false).subscribe((res: any) => {
-          this.listData = res.data.list;
-
-          callback({
-            recordsTotal: res.data.totalItems,
-            recordsFiltered: res.data.totalItems,
-            data: [],
-          });
-        }, (error: any) => {
-          this.listData = [];
-        })
-      },
-    };
+    this.globalService.DataGet("/laporan/penjualan", {}, false).subscribe((res: any) => {
+      this.listData = res.data;
+      this.total = res.data.total;
+    })
   }
 
   reloadDataTable(): void {
@@ -65,63 +43,8 @@ export class OrderComponent {
     });
   }
 
-  empty() {
-    this.model = {};
-  }
+  reset(){
 
-  index() {
-    this.showForm = !this.showForm;
-    this.empty();
-  }
-
-  create() {
-    this.showForm = !this.showForm;
-    this.isEdit = false;
-    this.isView = false;
-  }
-
-  edit(val) {
-    this.showForm = !this.showForm;
-    this.isEdit = true;
-    this.isView = false;
-    this.getDataById(val.id)
-  }
-
-  view(val) {
-    this.showForm = !this.showForm;
-    this.isEdit = false;
-    this.isView = true;
-    this.getDataById(val.id)
-  }
-
-  save() {
-    const final = Object.assign(this.model)
-    this.globalService.DataPost('/edukasi/kategori/save', final, true).subscribe((res: any) => {
-      if (res.status_code == 200) {
-        this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disimpan')
-        this.index();
-      }
-    },
-      error => {
-        this.empty();
-        this.globalService.alertError('Gagal', error.error.message);
-      })
-  }
-
-  getDataById(id: string = null) {
-    this.isLoading = true;
-    this.globalService.DataGet(`/edukasi/kategori/${id}`, {}, false).subscribe((res: any) => {
-      this.model = res.data
-      this.isLoading = false;
-    })
-  }
-
-  reset() {
-    this.modelParam = {
-      kategori: ''
-    }
-
-    this.reloadDataTable()
   }
 
 }
