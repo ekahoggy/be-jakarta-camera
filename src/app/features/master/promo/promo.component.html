@@ -191,15 +191,48 @@
                   </button>
                 </div>
               </div>
-              <div class="col-6 mb-3">
-                <label class="form-label" for="kategori">Kategori Produk</label>
-                <ng-select [items]="listCategory" bindLabel="kategori" bindValue="id" placeholder="Kategori ..."
+              <div class="mb-3" *ngIf="model.type == 'produk'">
+                <div>
+                  <button class="btn btn-sm py-2 px-3 me-1" [disabled]="isView"
+                    [ngClass]="model.jenis == 'kategori' ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="model.jenis = 'kategori'; changeType()">
+                    <i class="bx bx-check me-1" *ngIf="model.jenis == 'kategori'"></i>
+                    Kategori
+                  </button>
+                  <button class="btn btn-sm py-2 px-3" [disabled]="isView"
+                    [ngClass]="model.jenis == 'brand' ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="model.jenis = 'brand'; changeType()">
+                    <i class="bx bx-check me-1" *ngIf="model.jenis == 'brand'"></i>
+                    Brand
+                  </button>
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label" for="kategori">Kategori
+                  <span *ngIf="model.type == 'edukasi'">Edukasi</span>
+                  <span *ngIf="model.type == 'produk'">Produk</span>
+                </label>
+                <ng-select *ngIf="model.type == 'produk' && model.jenis == 'kategori'" [items]="listCategory"
+                  bindLabel="kategori" bindValue="id" placeholder="Kategori Produk..." [multiple]="true"
                   [(ngModel)]="model.kategori_id" name="kategori" [disabled]="isView" (change)="getProdukByKategori()">
+                </ng-select>
+
+                <ng-select *ngIf="model.type == 'produk' && model.jenis == 'brand'" [items]="listBrand"
+                  bindLabel="brand" bindValue="id" placeholder="Brand Produk..." [multiple]="true"
+                  [(ngModel)]="model.brand_id" name="brand" [disabled]="isView" (change)="getProdukByBrand()">
+                </ng-select>
+
+                <ng-select *ngIf="model.type == 'edukasi'" [items]="listCategoryEdukasi" bindLabel="kategori"
+                  bindValue="id" placeholder="Kategori Edukasi..." [multiple]="true" [(ngModel)]="model.kategori_id"
+                  name="kategori" [disabled]="isView" (change)="getEdukasiByKategori()">
                 </ng-select>
               </div>
               <div class="col-12">
                 <div class="alert alert-warning" role="alert">
-                  Pilih Kategori untuk memilih semua produk yang ada dikategori
+                  Pilih <span *ngIf="model.jenis == 'kategori'">Kategori</span> <span
+                    *ngIf="model.jenis == 'brand'">Brand</span> untuk memilih
+                  <span *ngIf="model.type == 'edukasi'">Edukasi</span>
+                  <span *ngIf="model.type == 'produk'">Produk</span>
                 </div>
               </div>
             </div>
@@ -211,12 +244,10 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th class="align-middle" width="5%">
-                    <button class="btn btn-sm btn-success" (click)="addProduk()" [disabled]="isEdit || isView">
-                      <i class="bx bx-plus"></i>
-                    </button>
+                  <th class="align-middle">
+                    <span *ngIf="model.type == 'edukasi'">Edukasi</span>
+                    <span *ngIf="model.type == 'produk'">Produk</span>
                   </th>
-                  <th class="align-middle">Produk</th>
                   <th class="align-middle" width="18%">Harga</th>
                   <th class="align-middle" width="10%">Jumlah</th>
                   <th class="align-middle" width="8%">Sisa</th>
@@ -228,19 +259,11 @@
                 <ng-container *ngIf="selectedProduk.length > 0">
                   <tr *ngFor="let item of selectedProduk; index as i">
                     <td>
-                      <button class="btn btn-sm btn-danger" (click)="removeProduk(i)" [disabled]="isEdit || isView">
-                        <i class="bx bx-trash"></i>
-                      </button>
-                    </td>
-                    <td>
-                      <ng-select [items]="listProduk" [(ngModel)]="item.m_produk_id" bindLabel="nama" bindValue="id"
-                        name="itemproduk_{{i}}" (change)="changeProduk($event, i)" [disabled]="isEdit || isView"
-                        style="width: 350px;">
-                        <ng-template ng-label-tmp let-item="item">
-                          <!-- <img height="15" width="15" [src]="item.avatar"/> -->
-                          {{item.nama}}
-                        </ng-template>
-                      </ng-select>
+                      <span>{{ item.nama }}</span><br>
+                      <span class="badge bg-label-info me-1">{{ item.kategori }}</span>
+                      <span class="badge bg-label-primary me-1">{{ item.brand }}</span>
+                      <span class="ps-2" *ngIf="model.type == 'produk'">Stok : </span>
+                      <span class="badge bg-label-danger me-1" *ngIf="model.type == 'produk'">{{ item.stok }}</span>
                     </td>
                     <td>
                       <div class="input-group input-group-merge">
@@ -252,7 +275,7 @@
                     <td>
                       <div class="input-group input-group-merge">
                         <input type="text" class="form-control text-end" mask="000" thousandSeparator="."
-                          [(ngModel)]="item.qty" name="qty_{{i}}" [disabled]="isEdit || isView">
+                          [(ngModel)]="item.qty" name="qty_{{i}}" [disabled]="isEdit || isView || item.disabled">
                       </div>
                     </td>
                     <td>
@@ -272,8 +295,9 @@
                         </div>
                         <div class="col-5">
                           <div class="input-group input-group-merge">
-                            <input type="text" class="form-control text-end" mask="separator,2" [(ngModel)]="item.persen"
-                              name="persen_{{i}}" style="padding-right: 10px;" [disabled]="isEdit || isView" (change)="hitungHarga(item)">
+                            <input type="text" class="form-control text-end" mask="separator,2"
+                              [(ngModel)]="item.persen" name="persen_{{i}}" style="padding-right: 10px;"
+                              [disabled]="isEdit || isView" (change)="hitungHarga(item)">
                             <span class="input-group-text" id="persen">%</span>
                           </div>
                         </div>
@@ -282,7 +306,8 @@
                     <td class="text-center">
                       <div class="form-check form-switch mb-2">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-                          [(ngModel)]="item.status" name="status_{{i}}" (change)="changeStatusProduk($event, i)">
+                          [(ngModel)]="item.status" name="status_{{i}}" (change)="changeStatusProduk($event, i)"
+                          [disabled]="item.disabled">
                       </div>
                     </td>
                   </tr>

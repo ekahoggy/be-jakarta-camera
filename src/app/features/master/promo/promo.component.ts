@@ -19,6 +19,7 @@ export class PromoComponent implements OnInit {
 
   listProduk: any = [];
   listCategory: any;
+  listBrand: any;
   selectedProduk: any = [];
 
   listEdukasi: any = [];
@@ -103,27 +104,35 @@ export class PromoComponent implements OnInit {
     this.isEdit = false;
     this.isView = false;
     this.model.is_flashsale = 0
+    this.model.promo_min_beli = 1
     this.model.type = 'produk'
+    this.model.jenis = 'kategori'
     this.getProduk();
-    this.getListCategory();
+    this.getListCategoryProduk();
+    this.getListBrandProduk();
+    this.getListCategoryEdukasi();
   }
 
   edit(val) {
     this.showForm = !this.showForm;
     this.isEdit = true;
     this.isView = false;
-    this.getDataById(val.id);
+    this.getListCategoryProduk();
+    this.getListBrandProduk();
+    this.getListCategoryEdukasi();
     this.getProduk();
-    this.getListCategory();
+    this.getDataById(val.id);
   }
 
   view(val) {
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = true;
-    this.getDataById(val.id);
+    this.getListCategoryProduk();
+    this.getListBrandProduk();
+    this.getListCategoryEdukasi();
     this.getProduk();
-    this.getListCategory();
+    this.getDataById(val.id);
   }
 
   getDataById(id: string = null) {
@@ -131,13 +140,38 @@ export class PromoComponent implements OnInit {
     this.globalService.DataGet(`/promo/${id}`, {}, false).subscribe((res: any) => {
       this.model = res.data
       this.selectedProduk = res.data.detail;
+
+      if(this.model.jenis == 'brand'){
+        this.listBrand = res.data.promo_kategori;
+        this.listBrand.forEach(val => {
+          val.id = val.brand_id;
+        });
+      }
+      else{
+        this.listCategory = res.data.promo_kategori;
+        this.listCategory.forEach(val => {
+          val.id = val.kategori_id;
+        });
+      }
       this.isLoading = false;
     })
   }
 
-  getListCategory() {
+  getListCategoryProduk() {
     this.globalService.DataGet('/kategori', {}, false).subscribe((res: any) => {
       this.listCategory = res.data.list;
+    })
+  }
+
+  getListBrandProduk() {
+    this.globalService.DataGet('/brand', {}, false).subscribe((res: any) => {
+      this.listBrand = res.data.list;
+    })
+  }
+
+  getListCategoryEdukasi() {
+    this.globalService.DataGet('/edukasi/kategori', {}, false).subscribe((res: any) => {
+      this.listCategoryEdukasi = res.data.list;
     })
   }
 
@@ -155,11 +189,42 @@ export class PromoComponent implements OnInit {
     })
   }
 
+  getEdukasiByKategori() {
+    this.selectedProduk = [];
+    this.listProduk = [];
+    this.listEdukasi = [];
+    this.addFromKategori = false;
+    this.globalService.DataPost(`/edukasi/byKategori`, this.model.kategori_id).subscribe((res: any) => {
+      this.listProduk = res.data;
+      let data = res.data;
+      this.addFromKategori = true;
+
+      data.forEach(item => {
+        let row = {
+          m_edukasi_id: item.id,
+          nama: item.judul,
+          harga: item.harga,
+          kategori: item.kategori_edukasi,
+          kategori_id: item.kategori_id,
+          qty: item.stok < 1 ? 0 : 1,
+          promo_used: "-",
+          nominal: 0,
+          persen: 0,
+          status: item.stok < 1 ? false : true,
+          disabled: item.stok < 1 ? true : false
+        }
+
+        this.selectedProduk.push(row);
+      });
+    })
+  }
+
   getProdukByKategori() {
     this.selectedProduk = [];
     this.listProduk = [];
+    this.listEdukasi = [];
     this.addFromKategori = false;
-    this.globalService.DataGet(`/produk/byKategori/`+this.model.kategori_id, false).subscribe((res: any) => {
+    this.globalService.DataPost(`/produk/byKategori`, this.model.kategori_id).subscribe((res: any) => {
       this.listProduk = res.data;
       let data = res.data;
       this.addFromKategori = true;
@@ -169,11 +234,50 @@ export class PromoComponent implements OnInit {
           m_produk_id: item.id,
           nama: item.nama,
           harga: item.harga,
-          qty: 1,
+          kategori: item.kategori_produk,
+          kategori_id: item.m_kategori_id,
+          brand: item.brand_produk,
+          brand_id: item.m_brand_id,
+          qty: item.stok < 1 ? 0 : 1,
+          stok: item.stok,
           promo_used: "-",
           nominal: 0,
           persen: 0,
-          status: true
+          status: item.stok < 1 ? false : true,
+          disabled: item.stok < 1 ? true : false
+        }
+
+        this.selectedProduk.push(row);
+      });
+    })
+  }
+
+  getProdukByBrand() {
+    this.selectedProduk = [];
+    this.listProduk = [];
+    this.listEdukasi = [];
+    this.addFromKategori = false;
+    this.globalService.DataPost(`/produk/byBrand`, this.model.brand_id).subscribe((res: any) => {
+      this.listProduk = res.data;
+      let data = res.data;
+      this.addFromKategori = true;
+
+      data.forEach(item => {
+        let row = {
+          m_produk_id: item.id,
+          nama: item.nama,
+          harga: item.harga,
+          kategori: item.kategori_produk,
+          kategori_id: item.m_kategori_id,
+          brand: item.brand_produk,
+          brand_id: item.m_brand_id,
+          qty: item.stok < 1 ? 0 : 1,
+          stok: item.stok,
+          promo_used: "-",
+          nominal: 0,
+          persen: 0,
+          status: item.stok < 1 ? false : true,
+          disabled: item.stok < 1 ? true : false
         }
 
         this.selectedProduk.push(row);
@@ -194,7 +298,6 @@ export class PromoComponent implements OnInit {
         v.harga = e.harga;
       }
       if (v.id === e.id) {
-        console.log("sama");
         // this.globalService.alertError('Gagal', 'Produk sudah ada di dalam daftar promo');
       }
     });
@@ -238,9 +341,18 @@ export class PromoComponent implements OnInit {
   }
 
   changeType(){
+    this.listProduk = [];
+    this.selectedProduk = [];
+    this.model.kategori_id = [];
+    this.model.brand_id = [];
+
     if(this.model.type === 'edukasi'){
       this.model.is_flashsale = 0;
-
+      this.getListCategoryEdukasi()
+    }
+    else{
+      this.getListBrandProduk()
+      this.getListCategoryProduk()
     }
   }
 }

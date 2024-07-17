@@ -21,6 +21,7 @@ export class VoucherComponent {
   model: any = {};
   base64Image: string | null = null;
   isLoading: boolean = false;
+  selectedProduk: any = [];
 
   constructor(
     private globalService: GlobalService,
@@ -91,6 +92,8 @@ export class VoucherComponent {
     this.model.kategori = 'T'
     this.model.type = 'P'
     this.model.untuk = 'umum'
+    this.model.for_co = 'kategori'
+    this.model.used_to = 'produk'
     this.model.voucher_value = 0
     this.isEdit = false;
     this.isView = false;
@@ -158,5 +161,23 @@ export class VoucherComponent {
     }
 
     return gambar;
+  }
+
+  hitungDiskon(item){
+    let diskon = 0;
+
+    diskon = (item.nominal/item.harga) * 100;
+    item.persen = diskon;
+  }
+
+  hitungHarga(item){
+    let diskon = 0;
+
+    diskon = (item.persen / 100) * item.harga;
+    item.nominal = diskon;
+  }
+
+  changeStatusProduk(e, i) {
+    this.selectedProduk[i].status = e.currentTarget.checked;
   }
 }
