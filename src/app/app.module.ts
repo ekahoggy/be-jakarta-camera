@@ -15,6 +15,7 @@ import { AngularTreeGridModule } from "angular-tree-grid";
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { AngularMyDatePickerModule } from '@nodro7/angular-mydatepicker';
 import {
   NgxDaterangepickerBootstrapModule,
   NgxDaterangepickerLocaleService,
@@ -39,6 +40,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     NgProgressHttpModule,
     CKEditorModule,
     EditorModule,
+    AngularMyDatePickerModule,
     NgxSpinnerModule.forRoot({ type: 'ball-atom' })
   ],
   exports:[

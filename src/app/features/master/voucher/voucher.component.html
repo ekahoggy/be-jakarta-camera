@@ -263,13 +263,13 @@
                       <div>
                         <button class="btn btn-sm py-2 px-3 me-1" [disabled]="isView"
                           [ngClass]="model.used_to == 'produk' ? 'btn-primary' : 'btn-outline-primary'"
-                          (click)="model.used_to = 'produk';">
+                          (click)="model.used_to = 'produk'; changeType()">
                           <i class="bx bx-check me-1" *ngIf="model.used_to == 'produk'"></i>
                           Produk
                         </button>
                         <button class="btn btn-sm py-2 px-3" [disabled]="isView"
                           [ngClass]="model.used_to == 'edukasi' ? 'btn-primary' : 'btn-outline-primary'"
-                          (click)="model.used_to = 'edukasi';">
+                          (click)="model.used_to = 'edukasi'; changeType()">
                           <i class="bx bx-check me-1" *ngIf="model.used_to == 'edukasi'"></i>
                           Edukasi
                         </button>
@@ -280,16 +280,44 @@
                       <div>
                         <button class="btn btn-sm py-2 px-3 me-1" [disabled]="isView"
                           [ngClass]="model.for_co == 'kategori' ? 'btn-primary' : 'btn-outline-primary'"
-                          (click)="model.for_co = 'kategori';">
+                          (click)="model.for_co = 'kategori'; changeType()">
                           <i class="bx bx-check me-1" *ngIf="model.for_co == 'kategori'"></i>
                           Kategori
                         </button>
                         <button class="btn btn-sm py-2 px-3" [disabled]="isView"
                           [ngClass]="model.for_co == 'brand' ? 'btn-primary' : 'btn-outline-primary'"
-                          (click)="model.for_co = 'brand';">
+                          (click)="model.for_co = 'brand'; changeType()">
                           <i class="bx bx-check me-1" *ngIf="model.for_co == 'brand'"></i>
                           Brand
                         </button>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label" for="kategori">Kategori
+                        <span *ngIf="model.used_to == 'edukasi'">Edukasi</span>
+                        <span *ngIf="model.used_to == 'produk'">Produk</span>
+                      </label>
+                      <ng-select *ngIf="model.used_to == 'produk' && model.for_co == 'kategori'" [items]="listCategory"
+                        bindLabel="kategori" bindValue="id" placeholder="Kategori Produk..." [multiple]="true"
+                        [(ngModel)]="model.kategori_id" name="kategori" [disabled]="isView" (change)="getProdukByKategori()">
+                      </ng-select>
+
+                      <ng-select *ngIf="model.used_to == 'produk' && model.for_co == 'brand'" [items]="listBrand"
+                        bindLabel="brand" bindValue="id" placeholder="Brand Produk..." [multiple]="true"
+                        [(ngModel)]="model.brand_id" name="brand" [disabled]="isView" (change)="getProdukByBrand()">
+                      </ng-select>
+
+                      <ng-select *ngIf="model.used_to == 'edukasi'" [items]="listCategoryEdukasi" bindLabel="kategori"
+                        bindValue="id" placeholder="Kategori Edukasi..." [multiple]="true" [(ngModel)]="model.kategori_id"
+                        name="kategori" [disabled]="isView" (change)="getEdukasiByKategori()">
+                      </ng-select>
+                    </div>
+                    <div class="col-12">
+                      <div class="alert alert-warning" role="alert">
+                        Pilih <span *ngIf="model.for_co == 'kategori'">Kategori</span> <span
+                          *ngIf="model.for_co == 'brand'">Brand</span> untuk memilih
+                        <span *ngIf="model.used_to == 'edukasi'">Edukasi</span>
+                        <span *ngIf="model.used_to == 'produk'">Produk</span>
                       </div>
                     </div>
                     <div class="mb-3">
@@ -318,6 +346,28 @@
                         </ng-template>
                       </ng-select>
                     </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="tampilkan">Tampilkan Voucher</label>
+                      <div>
+                        <button class="btn btn-sm py-2 px-3 me-1"
+                          [ngClass]="model.is_hidden == 0 ? 'btn-primary' : 'btn-outline-primary'"
+                          (click)="model.is_hidden = 0; model.user_id == null">
+                          <i class="bx bx-check me-1" *ngIf="model.is_hidden == 0"></i>
+                          Ya
+                        </button>
+                        <button class="btn btn-sm py-2 px-3"
+                          [ngClass]="model.is_hidden == 1 ? 'btn-primary' : 'btn-outline-primary'"
+                          (click)="model.is_hidden = 1;">
+                          <i class="bx bx-check me-1" *ngIf="model.is_hidden == 1"></i>
+                          Tidak
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="alert alert-warning" role="alert">
+                        Ketika tampilkan voucher : tidak, maka voucher harus di ketik customer
+                      </div>
+                    </div>
                   </div>
 
                   <div class="col-12">
@@ -345,8 +395,8 @@
                               <span>{{ item.nama }}</span><br>
                               <span class="badge bg-label-info me-1">{{ item.kategori }}</span>
                               <span class="badge bg-label-primary me-1">{{ item.brand }}</span>
-                              <span class="ps-2">Stok : </span>
-                              <span class="badge bg-label-danger me-1">{{ item.stok }}</span>
+                              <span class="ps-2" *ngIf="model.used_to == 'produk'">Stok : </span>
+                              <span class="badge bg-label-danger me-1" *ngIf="model.used_to == 'produk'">{{ item.stok }}</span>
                             </td>
                             <td>
                               <div class="input-group input-group-merge">
@@ -413,7 +463,7 @@
           <i class="bx bx-chevron-left me-1"></i>
           Kembali
         </button>
-        <button class="btn btn-primary" (click)="save()">
+        <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
           <i class="bx bx-save me-1"></i>
           Simpan
         </button>

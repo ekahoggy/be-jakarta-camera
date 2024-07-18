@@ -107,6 +107,8 @@ export class PromoComponent implements OnInit {
     this.model.promo_min_beli = 1
     this.model.type = 'produk'
     this.model.jenis = 'kategori'
+    this.model.kategori_id = [];
+    this.model.brand_id = [];
     this.getProduk();
     this.getListCategoryProduk();
     this.getListBrandProduk();
@@ -117,22 +119,22 @@ export class PromoComponent implements OnInit {
     this.showForm = !this.showForm;
     this.isEdit = true;
     this.isView = false;
+    this.getDataById(val.id);
     this.getListCategoryProduk();
     this.getListBrandProduk();
     this.getListCategoryEdukasi();
     this.getProduk();
-    this.getDataById(val.id);
   }
 
   view(val) {
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = true;
+    this.getDataById(val.id);
     this.getListCategoryProduk();
     this.getListBrandProduk();
     this.getListCategoryEdukasi();
     this.getProduk();
-    this.getDataById(val.id);
   }
 
   getDataById(id: string = null) {
@@ -141,18 +143,6 @@ export class PromoComponent implements OnInit {
       this.model = res.data
       this.selectedProduk = res.data.detail;
 
-      if(this.model.jenis == 'brand'){
-        this.listBrand = res.data.promo_kategori;
-        this.listBrand.forEach(val => {
-          val.id = val.brand_id;
-        });
-      }
-      else{
-        this.listCategory = res.data.promo_kategori;
-        this.listCategory.forEach(val => {
-          val.id = val.kategori_id;
-        });
-      }
       this.isLoading = false;
     })
   }

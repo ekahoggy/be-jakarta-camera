@@ -21,7 +21,15 @@ export class VoucherComponent {
   model: any = {};
   base64Image: string | null = null;
   isLoading: boolean = false;
+
+  listProduk: any = [];
+  listCategory: any;
+  listBrand: any;
   selectedProduk: any = [];
+
+  listEdukasi: any = [];
+  listCategoryEdukasi: any;
+  selectedEdukasi: any = [];
 
   constructor(
     private globalService: GlobalService,
@@ -95,9 +103,17 @@ export class VoucherComponent {
     this.model.for_co = 'kategori'
     this.model.used_to = 'produk'
     this.model.voucher_value = 0
+    this.model.is_hidden = 0
+    this.model.kategori_id = [];
+    this.model.brand_id = [];
+    this.model.user_id = [];
     this.isEdit = false;
     this.isView = false;
     this.getUser()
+
+    this.getListCategoryProduk();
+    this.getListBrandProduk();
+    this.getListCategoryEdukasi();
   }
 
   edit(val) {
@@ -124,7 +140,11 @@ export class VoucherComponent {
 
   save() {
     this.model.gambar = this.setImageBase64(this.model.gambar);
-    const final = Object.assign(this.model)
+    let data = {
+      main: this.model,
+      detail: this.selectedProduk
+    };
+    const final = Object.assign(data)
     this.globalService.DataPost('/voucher/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
         this.globalService.alertSuccess('Success', 'Voucher saved successfully')
@@ -138,7 +158,133 @@ export class VoucherComponent {
     this.globalService.DataGet(`/voucher/${id}`, {}, false).subscribe((res: any) => {
       this.model = res.data
       this.model.gambar = this.globalService.getImage('voucher', this.model.gambar)
+      this.selectedProduk = res.data.detail;
+
+      if(this.model.jenis == 'brand'){
+        this.listBrand = res.data.voucher_kategori;
+        this.listBrand.forEach(val => {
+          val.id = val.brand_id;
+        });
+      }
+      else{
+        this.listCategory = res.data.voucher_kategori;
+        this.listCategory.forEach(val => {
+          val.id = val.kategori_id;
+        });
+      }
       this.isLoading = false;
+    })
+  }
+
+  getEdukasiByKategori() {
+    this.selectedProduk = [];
+    this.listProduk = [];
+    this.listEdukasi = [];
+    this.globalService.DataPost(`/edukasi/byKategori`, this.model.kategori_id).subscribe((res: any) => {
+      this.listProduk = res.data;
+      let data = res.data;
+
+      data.forEach(item => {
+        let row = {
+          m_edukasi_id: item.id,
+          nama: item.judul,
+          harga: item.harga,
+          kategori: item.kategori_edukasi,
+          kategori_id: item.kategori_id,
+          qty: item.stok < 1 ? 0 : 1,
+          promo_used: "-",
+          nominal: 0,
+          persen: 0,
+          status: item.stok < 1 ? false : true,
+          disabled: item.stok < 1 ? true : false
+        }
+
+        this.selectedProduk.push(row);
+      });
+    })
+  }
+
+  getProdukByKategori() {
+    this.selectedProduk = [];
+    this.listProduk = [];
+    this.listEdukasi = [];
+
+    this.globalService.DataPost(`/produk/byKategori`, this.model.kategori_id).subscribe((res: any) => {
+      this.listProduk = res.data;
+      let data = res.data;
+
+
+      data.forEach(item => {
+        let row = {
+          m_produk_id: item.id,
+          nama: item.nama,
+          harga: item.harga,
+          kategori: item.kategori_produk,
+          kategori_id: item.m_kategori_id,
+          brand: item.brand_produk,
+          brand_id: item.m_brand_id,
+          qty: item.stok < 1 ? 0 : 1,
+          stok: item.stok,
+          promo_used: "-",
+          nominal: 0,
+          persen: 0,
+          status: item.stok < 1 ? false : true,
+          disabled: item.stok < 1 ? true : false
+        }
+
+        this.selectedProduk.push(row);
+      });
+    })
+  }
+
+  getProdukByBrand() {
+    this.selectedProduk = [];
+    this.listProduk = [];
+    this.listEdukasi = [];
+
+    this.globalService.DataPost(`/produk/byBrand`, this.model.brand_id).subscribe((res: any) => {
+      this.listProduk = res.data;
+      let data = res.data;
+
+
+      data.forEach(item => {
+        let row = {
+          m_produk_id: item.id,
+          nama: item.nama,
+          harga: item.harga,
+          kategori: item.kategori_produk,
+          kategori_id: item.m_kategori_id,
+          brand: item.brand_produk,
+          brand_id: item.m_brand_id,
+          qty: item.stok < 1 ? 0 : 1,
+          stok: item.stok,
+          promo_used: "-",
+          nominal: 0,
+          persen: 0,
+          status: item.stok < 1 ? false : true,
+          disabled: item.stok < 1 ? true : false
+        }
+
+        this.selectedProduk.push(row);
+      });
+    })
+  }
+
+  getListCategoryProduk() {
+    this.globalService.DataGet('/kategori', {}, false).subscribe((res: any) => {
+      this.listCategory = res.data.list;
+    })
+  }
+
+  getListBrandProduk() {
+    this.globalService.DataGet('/brand', {}, false).subscribe((res: any) => {
+      this.listBrand = res.data.list;
+    })
+  }
+
+  getListCategoryEdukasi() {
+    this.globalService.DataGet('/edukasi/kategori', {}, false).subscribe((res: any) => {
+      this.listCategoryEdukasi = res.data.list;
     })
   }
 
@@ -163,14 +309,14 @@ export class VoucherComponent {
     return gambar;
   }
 
-  hitungDiskon(item){
+  hitungDiskon(item) {
     let diskon = 0;
 
-    diskon = (item.nominal/item.harga) * 100;
+    diskon = (item.nominal / item.harga) * 100;
     item.persen = diskon;
   }
 
-  hitungHarga(item){
+  hitungHarga(item) {
     let diskon = 0;
 
     diskon = (item.persen / 100) * item.harga;
@@ -179,5 +325,20 @@ export class VoucherComponent {
 
   changeStatusProduk(e, i) {
     this.selectedProduk[i].status = e.currentTarget.checked;
+  }
+
+  changeType(){
+    this.listProduk = [];
+    this.selectedProduk = [];
+    this.model.kategori_id = [];
+    this.model.brand_id = [];
+
+    if(this.model.used_to === 'edukasi'){
+      this.getListCategoryEdukasi()
+    }
+    else{
+      this.getListBrandProduk()
+      this.getListCategoryProduk()
+    }
   }
 }

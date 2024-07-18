@@ -61,7 +61,7 @@ export class OrderComponent implements OnInit {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify({}),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
