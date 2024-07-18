@@ -47,6 +47,10 @@
                 <button class="btn btn-outline-primary btn-rounded ms-2" (click)="reset()">
                   <i class="bx bx-refresh"></i>Reset
                 </button>
+                <button class="btn btn-primary me-1 ms-2" *ngIf="multipleResi" (click)="printMulti(modalResiMultiple)">
+                  <i class='bx bx-printer me-1'></i>
+                  Print Multi Resi
+                </button>
               </div>
             </div>
           </div>
@@ -55,17 +59,22 @@
               <table datatable [dtOptions]="dtOptions" class="table" data-page-length="5">
                 <thead>
                   <tr>
+                    <th class="text-center" width="20"></th>
                     <th class="text-center" width="100">Status</th>
-                    <th class="text-center" width="120">Tanggal</th>
-                    <th class="text-center" width="120">Invoice</th>
-                    <th class="text-center">Customer</th>
-                    <th class="text-center" width="120">Pengiriman</th>
-                    <th class="text-center" width="120">Total</th>
+                    <th class="text-center" width="100">Tanggal</th>
+                    <th class="text-center" width="100">Invoice</th>
+                    <th class="text-center" width="100">Customer</th>
+                    <th class="text-center" width="100">Pengiriman</th>
+                    <th class="text-center" width="100">Total</th>
                     <th class="text-center" width="80">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                    <td>
+                      <input type="checkbox" [(ngModel)]="item.cekResi" name="cekresi" (change)="pushResi($event, item)"
+                        *ngIf="item.awb_shipping">
+                    </td>
                     <td>
                       <span class="badge" [ngClass]="{
 													'bg-label-warning': item.status_order == 'ordered',
@@ -414,6 +423,164 @@
           <tr>
             <td style="padding: 0.5rem !important;" colspan="2">
               Catatan : {{ modelResi.order_note }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="padding: 0.5rem !important; font-size: 10px">
+              <i>*Pengirim wajib meminta bukti serah terima paket ke kurir.</i><br>
+              <i>*Jika paket ini retur, pengirim tetap dikenakan biaya keberangkatan dan biaya retur
+                sesuai ekspedisi.</i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm btn-rounded" (click)="printResi('printResi')">
+      <i class="fa fa-print mr-2"></i>
+      Cetak
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #modalResiMultiple let-modal>
+  <div class="modal-header d-flex justify-content-between align-items-center">
+    <h3 class="modal-title text-primary mt-0">Cetak Resi </h3>
+    <button type="button" class="btn-close close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid" id="printResi">
+      <table id="tableprint" class="tableprint my-2" width="100%" border="1" *ngFor="let item of dataMultiResi">
+        <thead>
+          <tr>
+            <th colspan="2">
+              <div
+                style="display: flex; justify-content: space-between !important; align-items: center !important;padding: 0.5rem;">
+                <img alt="250x250" src="assets/img/logo.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="50" />
+                <img alt="250x250" src="assets/img/shipping/jnt.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" width="100"
+                  *ngIf="item.shipping_sender_code === 'jt' || item.shipping_sender_code === 'jnt'" />
+                <img alt="250x250" src="assets/img/shipping/id_express.png" data-holder-rendered="true"
+                  class="text-center" class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'idx'" />
+                <img alt="250x250" src="assets/img/shipping/indah_cargo.png" data-holder-rendered="true"
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="item.shipping_sender_code === 'indah_cargo'" />
+                <img alt="250x250" src="assets/img/shipping/jne.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'jne'" />
+                <img alt="250x250" src="assets/img/shipping/lion.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'lion'" />
+                <img alt="250x250" src="assets/img/shipping/paxel.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'paxel'" />
+                <img alt="250x250" src="assets/img/shipping/sapx.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60"
+                  *ngIf="item.shipping_sender_code === 'sapx' || item.shipping_sender_code === 'sap'" />
+                <img alt="250x250" src="assets/img/shipping/sentralcargo.png" data-holder-rendered="true"
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="item.shipping_sender_code === 'sentral_cargo' || item.shipping_sender_code === 'sentral'" />
+                <img alt="250x250" src="assets/img/shipping/sicepat.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'sicepat'" />
+                <img alt="250x250" src="assets/img/shipping/jtcargo.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'jtcargo'" />
+                <img alt="250x250" src="assets/img/shipping/ncs.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'ncs'" />
+                <img alt="250x250" src="assets/img/shipping/anteraja.png" data-holder-rendered="true"
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="item.shipping_sender_code === 'anteraja'" />
+                <img alt="250x250" src="assets/img/shipping/ninja.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'ninja'" />
+                <img alt="250x250" src="assets/img/shipping/tiki.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'tiki'" />
+                <img alt="250x250" src="assets/img/shipping/gojek.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'gojek'" />
+                <img alt="250x250" src="assets/img/shipping/grab.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'grab'" />
+                <img alt="250x250" src="assets/img/shipping/lalamove.png" data-holder-rendered="true"
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="item.shipping_sender_code === 'lalamove'" />
+                <img alt="250x250" src="assets/img/shipping/deliveree.png" data-holder-rendered="true"
+                  class="text-center" class="logo-img" height="60"
+                  *ngIf="item.shipping_sender_code === 'deliveree'" />
+                <img alt="250x250" src="assets/img/shipping/borzo.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'borzo'" />
+                <img alt="250x250" src="assets/img/shipping/paxel.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'paxel'" />
+                <img alt="250x250" src="assets/img/shipping/pos.png" data-holder-rendered="true" class="text-center"
+                  class="logo-img" height="60" *ngIf="item.shipping_sender_code === 'pos'" />
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <div style="text-align: center !important; padding: 0.5rem; position: relative;">
+                <img alt="250x250" [src]="item.url_awb" data-holder-rendered="true" width="100%" height="80px"
+                  style="text-align: center;" />
+                <div class="container"
+                  style=" width:100%; text-align: center; background: white;margin-top: -20px;position: absolute; padding: 0; margin-left: -8px;">
+                  <span style="font-size: 16px; font-weight: bold;" *ngIf="item.shipping_type !== 'BiteShip'">
+                    {{item.awb_shipping}}
+                  </span>
+                  <span style="font-size: 16px; font-weight: bold;" *ngIf="item.shipping_type === 'BiteShip'">
+                    {{item.receipt_number}}
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align: center; padding: 0.5rem; font-size: 16px;font-weight: bold;">
+              Non COD
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align: center; padding: 0.5rem; font-size: 16px;font-weight: bold;">
+              Jenis Layanan : {{ item.shipping_group}}
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="3" width="50%"
+              style="position: relative; text-align: center; padding: 0.5rem; padding-bottom: 0 !important;">
+              <img alt="250x250" [src]="item.url_order" data-holder-rendered="true"
+                style="text-align: center; width: 80%;" />
+            </td>
+            <td width="50%" style="padding: 0.5rem !important;">Asuransi : Rp. {{ item.asuransiPaket | number }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem !important;">Berat : {{ item.beratPaketResi | number }} gram</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem !important;">QTY : {{ item.qtyPaketResi }}</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Isi Paket
+              : <br>
+              <div style="font-weight: normal;" [innerHtml]="item.isiPaketResi"></div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Penerima : <br>
+              {{item.recipient}}
+            </td>
+            <td style="padding: 0.5rem !important; font-size: 14px;font-weight: bold;">Pengirim : <br>
+              Jakarta Camera
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem !important; vertical-align: text-top; font-size: 14px;font-weight: bold;">
+              {{item.phone_code}}{{item.phone_number}} | {{ item.address }} <br>
+              {{item.village_name}}, {{item.subdistrict_name}},
+              {{item.city_name}}, {{item.province_name}}, {{item.postal_code}}
+            </td>
+            <td style="padding: 0.5rem !important; vertical-align: text-top; font-size: 14px;font-weight: bold;">
+              {{nohp}} | {{ alamat }}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem !important;" colspan="2">
+              Catatan : {{ item.order_note }}
             </td>
           </tr>
           <tr>

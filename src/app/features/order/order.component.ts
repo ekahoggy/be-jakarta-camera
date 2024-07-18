@@ -25,6 +25,9 @@ export class OrderComponent implements OnInit {
   isLoading: boolean = false;
   listDetail: any;
   grandtotal: number = 0;
+  multipleResi: boolean = false;
+  resi: any = [];
+  dataMultiResi: any = [];
 
   lat: string = "";
   long: string = "";
@@ -348,8 +351,42 @@ export class OrderComponent implements OnInit {
     this.reloadDataTable()
   }
 
-  openResi() {
+  printMulti(modal) {
+    const final = Object.assign(this.resi)
+    this.globalService.DataPost('/order/multipleGetId', final).subscribe((res: any) => {
+      this.dataMultiResi = res.data;
+      this.dataMultiResi.forEach(item => {
+        item.shipping_group = item.shipping_group.replace(/_/g, " ");
+        item.url_awb = 'https://barcode.tec-it.com/barcode.ashx?data=' + item.awb_shipping;
+        item.url_order = 'https://barcode.tec-it.com/barcode.ashx?data=' + item.invoice_number;
 
+        item.detail.forEach((val, key) => {
+          item.qtyPaketResi += val.qty;
+          item.beratPaketResi += val.berat;
+          item.asuransiPaket = 0;
+          if (key < 5) {
+            item.isiPaketResi += val.nama + ', ';
+          }
+        });
+      });
+      this.modalService.open(modal, { size: 'lg', backdrop: 'static' });
+    });
+  }
+
+  pushResi(e, item) {
+    this.multipleResi = false;
+    if (e.target.checked) {
+      this.resi.push(item.id);
+    }
+    else {
+      const idToRemove = item.id;
+      let ids = this.resi.filter(id => id !== idToRemove);
+      this.resi = ids;
+    }
+
+    if (this.resi.length > 1) {
+      this.multipleResi = true;
+    }
   }
 
 }
