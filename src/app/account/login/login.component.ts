@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
 
         localStorage.setItem('session', bt);
         localStorage.setItem('token', res.data.auth.original.access_token);
+        window.location.reload();
         this.router.navigate(['dashboard']);
       }
       else {
