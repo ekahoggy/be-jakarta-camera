@@ -41,7 +41,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     CKEditorModule,
     EditorModule,
     AngularMyDatePickerModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-atom' })
+    NgxSpinnerModule.forRoot({ type: 'ball-atom' }),
+
   ],
   exports:[
   ],

@@ -9,6 +9,7 @@ import { OrderComponent } from './order/order.component';
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularMyDatePickerModule } from '@nodro7/angular-mydatepicker';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AngularMyDatePickerModule } from '@nodro7/angular-mydatepicker';
     FeaturesRoutingModule,
     FormsModule,
     AngularMyDatePickerModule,
-    DataTablesModule
+    DataTablesModule,
+    NgApexchartsModule
   ]
 })
 export class FeaturesModule { }
