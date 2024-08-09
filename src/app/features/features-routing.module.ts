@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { OrderComponent } from './order/order.component';
 import { EdukasiModule } from './edukasi/edukasi.module';
+import { LayananModule } from './layanan/layanan.module';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'edukasi',
     loadChildren: () => import('./edukasi/edukasi.module').then((m) => m.EdukasiModule),
+  },
+  {
+    path: 'layanan',
+    loadChildren: () => import('./layanan/layanan.module').then((m) => LayananModule),
   },
   {
     path: 'laporan',

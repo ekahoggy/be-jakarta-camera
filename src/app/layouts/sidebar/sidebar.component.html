@@ -157,6 +157,25 @@
       </ul>
     </li>
 
+    <li id="menu-layanan" class="menu-item" routerLinkActive="active">
+      <a href="javascript:void(0);" (click)="openMenu('menu-layanan')" class="menu-link menu-toggle">
+        <i class='menu-icon tf-icons bx bx-file'></i>
+        <div data-i18n="layanan">Layanan</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item" [routerLink]="['/layanan/service']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="Pesanan">Service Camera</div>
+          </a>
+        </li>
+        <li class="menu-item" [routerLink]="['/layanan/cctv']" routerLinkActive="active">
+          <a href="javascript:void(0);" class="menu-link">
+            <div data-i18n="cctv">CCTV</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <li id="menu-laporan" class="menu-item" routerLinkActive="active">
       <a href="javascript:void(0);" (click)="openMenu('menu-laporan')" class="menu-link menu-toggle">
         <i class='menu-icon tf-icons bx bx-file'></i>
