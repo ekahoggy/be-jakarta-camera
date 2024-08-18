@@ -68,7 +68,7 @@ export class ServiceComponent implements OnInit{
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/order", params, false).subscribe((res: any) => {
+        this.globalService.DataGet("/layanan/service", params, false).subscribe((res: any) => {
           this.listData = res.data.list;
           callback({
             recordsTotal: res.data.totalItems,
