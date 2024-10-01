@@ -20,7 +20,7 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-12 mb-2">
+          <div class="col-12 mb-2" *ngIf="false">
             <div class="row form-group my-2">
               <div class="col-12 row mb-2">
                 <div class="col-2">
@@ -61,8 +61,7 @@
                 <thead>
                   <tr>
                     <th>Produk</th>
-                    <th width="200" class="text-center">Varian</th>
-                    <th width="200" class="text-center">MSKU</th>
+                    <th width="200" class="text-center">Harga</th>
                     <th width="150">Stok</th>
                     <th class="text-center" width="100">Status</th>
                     <th class="text-center" width="50"></th>
@@ -75,34 +74,17 @@
                         <img [src]="item.images[0].src" width="100" style="object-fit: contain;" alt="{{item.images[0].name}}"> &nbsp;
                         <div class="d-column ms-1">
                           <p style="margin-bottom: 5px;">{{ item.name ? item.name : '' }}</p>
-                          <!-- <p style="margin-bottom: 5px;">{{ item.sku }}</p>
-                          <span class="badge bg-label-info me-1">{{ item.kategori }}</span>
-                          <span class="badge bg-label-primary me-1">{{ item.brand }}</span> -->
+                          <p style="margin-bottom: 5px;">{{ item.sku }}</p>
+                          <span class="badge bg-label-info me-1" *ngFor="let kategori of item.categories">{{ kategori.name }}</span>
                         </div>
                       </div>
                     </td>
                     <td class="text-center">
-                      <!-- <span *ngIf="item.variant.all_varian.length == 0">-</span> -->
-                      <!-- <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
-                        style="text-align: left;"> -->
-                        <!-- <div class="detail-variant" *ngFor="let variant of item.variant.all_varian"> -->
-                          <!-- <span>{{ variant.varian1 }} <span *ngIf="variant.varian2 !== null">- {{ variant.varian2
-                              }}</span></span> -->
-                        <!-- </div> -->
-                      <!-- </div> -->
-                    </td>
-                    <td class="text-center">
-                      <!-- <span *ngIf="item.variant.all_varian.length == 0">-</span>
-                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
-                        style="text-align: left;">
-                        <div class="detail-variant" *ngFor="let variant of item.variant.all_varian">
-                          <span>{{ variant.sku }}</span>
-                        </div>
-                      </div> -->
+                      <span>Rp {{ item.regular_price ?? 0 | number }}</span>
                     </td>
                     <td class="text-left">
-                      <!-- <div *ngIf="item.variant.all_varian.length == 0">
-                        <span *ngIf="!changeStokSingle">{{ item.stok }}</span> &nbsp;
+                      <div>
+                        <span *ngIf="!changeStokSingle">{{ item.stock_quantity ?? 0 }}</span> &nbsp;
                         <a href="javascript:void(0);" *ngIf="!changeStokSingle" (click)="changeStokSingle = true">
                           <i class="bx bx-edit-alt"></i>
                         </a>
@@ -112,27 +94,12 @@
                           style="padding-left: 10px;">
                           <i class="bx bx-save"></i>
                         </a>
-                      </div> -->
-                      <!-- <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
-                        style="text-align: left;">
-                        <div class="detail-variant" *ngFor="let variant of item.variant.all_varian; index as i">
-                          <span *ngIf="!variant.is_edit">{{ variant.stok }}</span> &nbsp;
-                          <input type="text" class="input-stok" id="stok-variant-{{variant.id}}"
-                            [(ngModel)]="variant.stok" name="stok" *ngIf="variant.is_edit">
-                          <a href="javascript:void(0);" (click)="ubahStokList(variant, i)" *ngIf="!variant.is_edit">
-                            <i class="bx bx-edit-alt"></i>
-                          </a>
-                          <a href="javascript:void(0);" (click)="simpanStokList(variant, i)" *ngIf="variant.is_edit"
-                            style="padding-left: 10px;">
-                            <i class="bx bx-save"></i>
-                          </a>
-                        </div>
-                      </div> -->
+                      </div>
                     </td>
                     <td class="text-center">
-                      <!-- <a class="badge bg-label-success" href="javascript:void(0)" *ngIf="item.is_active == 1">Aktif</a>
-                      <a class="badge bg-label-danger" href="javascript:void(0)" *ngIf="item.is_active == 0">Tidak
-                        Aktif</a> -->
+                      <a class="badge bg-label-success" href="javascript:void(0)" *ngIf="item.stock_status == 'instock'">instock</a>
+                      <a class="badge bg-label-warning" href="javascript:void(0)" *ngIf="item.stock_status == 'outofstock'">outofstock</a>
+                      <a class="badge bg-label-danger" href="javascript:void(0)" *ngIf="item.stock_status == 'onbackorder'">onbackorder</a>
                     </td>
                     <td>
                       <div class="dropdown text-center">

@@ -231,9 +231,9 @@ export class ProductComponent implements OnInit {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          filter: JSON.stringify(this.modelParam),
+          // filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
-          limit: dataTablesParameters.length,
+          per_page: dataTablesParameters.length,
         };
         this.globalService.DataGet("/woocommerce/produk", params, false).subscribe((res: any) => {
           this.listData = res.data;
