@@ -72,36 +72,36 @@
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
                     <td class="to-top">
                       <div class="d-flex justify-content-beetwen">
-                        <img [src]="item.foto" width="100" style="object-fit: contain;" alt="{{item.nama}}"> &nbsp;
+                        <img [src]="item.images[0].src" width="100" style="object-fit: contain;" alt="{{item.images[0].name}}"> &nbsp;
                         <div class="d-column ms-1">
-                          <p style="margin-bottom: 5px;">{{ item.nama }}</p>
-                          <p style="margin-bottom: 5px;">{{ item.sku }}</p>
+                          <p style="margin-bottom: 5px;">{{ item.name ? item.name : '' }}</p>
+                          <!-- <p style="margin-bottom: 5px;">{{ item.sku }}</p>
                           <span class="badge bg-label-info me-1">{{ item.kategori }}</span>
-                          <span class="badge bg-label-primary me-1">{{ item.brand }}</span>
+                          <span class="badge bg-label-primary me-1">{{ item.brand }}</span> -->
                         </div>
                       </div>
                     </td>
                     <td class="text-center">
-                      <span *ngIf="item.variant.all_varian.length == 0">-</span>
-                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
-                        style="text-align: left;">
-                        <div class="detail-variant" *ngFor="let variant of item.variant.all_varian">
-                          <span>{{ variant.varian1 }} <span *ngIf="variant.varian2 !== null">- {{ variant.varian2
-                              }}</span></span>
-                        </div>
-                      </div>
+                      <!-- <span *ngIf="item.variant.all_varian.length == 0">-</span> -->
+                      <!-- <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
+                        style="text-align: left;"> -->
+                        <!-- <div class="detail-variant" *ngFor="let variant of item.variant.all_varian"> -->
+                          <!-- <span>{{ variant.varian1 }} <span *ngIf="variant.varian2 !== null">- {{ variant.varian2
+                              }}</span></span> -->
+                        <!-- </div> -->
+                      <!-- </div> -->
                     </td>
                     <td class="text-center">
-                      <span *ngIf="item.variant.all_varian.length == 0">-</span>
+                      <!-- <span *ngIf="item.variant.all_varian.length == 0">-</span>
                       <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
                         style="text-align: left;">
                         <div class="detail-variant" *ngFor="let variant of item.variant.all_varian">
                           <span>{{ variant.sku }}</span>
                         </div>
-                      </div>
+                      </div> -->
                     </td>
                     <td class="text-left">
-                      <div *ngIf="item.variant.all_varian.length == 0">
+                      <!-- <div *ngIf="item.variant.all_varian.length == 0">
                         <span *ngIf="!changeStokSingle">{{ item.stok }}</span> &nbsp;
                         <a href="javascript:void(0);" *ngIf="!changeStokSingle" (click)="changeStokSingle = true">
                           <i class="bx bx-edit-alt"></i>
@@ -112,8 +112,8 @@
                           style="padding-left: 10px;">
                           <i class="bx bx-save"></i>
                         </a>
-                      </div>
-                      <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
+                      </div> -->
+                      <!-- <div class="d-table table-variant" *ngIf="item.variant.all_varian.length > 0"
                         style="text-align: left;">
                         <div class="detail-variant" *ngFor="let variant of item.variant.all_varian; index as i">
                           <span *ngIf="!variant.is_edit">{{ variant.stok }}</span> &nbsp;
@@ -127,12 +127,12 @@
                             <i class="bx bx-save"></i>
                           </a>
                         </div>
-                      </div>
+                      </div> -->
                     </td>
                     <td class="text-center">
-                      <a class="badge bg-label-success" href="javascript:void(0)" *ngIf="item.is_active == 1">Aktif</a>
+                      <!-- <a class="badge bg-label-success" href="javascript:void(0)" *ngIf="item.is_active == 1">Aktif</a>
                       <a class="badge bg-label-danger" href="javascript:void(0)" *ngIf="item.is_active == 0">Tidak
-                        Aktif</a>
+                        Aktif</a> -->
                     </td>
                     <td>
                       <div class="dropdown text-center">

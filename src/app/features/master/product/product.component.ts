@@ -235,13 +235,13 @@ export class ProductComponent implements OnInit {
           offset: dataTablesParameters.start,
           limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/produk", params, false).subscribe((res: any) => {
-          this.listData = res.data.list;
-          this.listData.forEach(value => {
-            value.variant.all_varian.forEach(v => {
-              v.is_edit = false;
-            });
-          });
+        this.globalService.DataGet("/woocommerce/produk", params, false).subscribe((res: any) => {
+          this.listData = res.data;
+          // this.listData.forEach(value => {
+          //   value.variant.all_varian.forEach(v => {
+          //     v.is_edit = false;
+          //   });
+          // });
           callback({
             recordsTotal: res.data.totalItems,
             recordsFiltered: res.data.totalItems,
