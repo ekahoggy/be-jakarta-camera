@@ -198,6 +198,7 @@ export class ProductComponent implements OnInit {
   public source: CdkDropList;
   public sourceIndex: number;
   public dragIndex: number;
+  isLoading: boolean = false
   public activeContainer;
   url;
   format;
@@ -231,12 +232,12 @@ export class ProductComponent implements OnInit {
       pagingType: "simple_numbers",
       ajax: (dataTablesParameters: any, callback) => {
         const params = {
-          // filter: JSON.stringify(this.modelParam),
+          filter: JSON.stringify(this.modelParam),
           offset: dataTablesParameters.start,
-          per_page: dataTablesParameters.length,
+          limit: dataTablesParameters.length,
         };
-        this.globalService.DataGet("/woocommerce/produk", params, false).subscribe((res: any) => {
-          this.listData = res.data;
+        this.globalService.DataGet("/produk", params, false).subscribe((res: any) => {
+          this.listData = res.data.list;
           // this.listData.forEach(value => {
           //   value.variant.all_varian.forEach(v => {
           //     v.is_edit = false;
@@ -258,6 +259,15 @@ export class ProductComponent implements OnInit {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.draw();
     });
+  }
+
+  sinkron(){
+    this.isLoading = true
+    this.globalService.DataGet('/woocommerce/sinkron-produk').subscribe((res: any) => {
+      this.isLoading = false;
+      this.globalService.alertSuccess("Berhasil", "Sinkron produk!!!");
+      this.reloadDataTable()
+    })
   }
 
   reset() {

@@ -12,10 +12,18 @@
       <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
           <h4 class="mb-0">Produk</h4>
-          <button class="btn btn-primary" (click)="create()">
-            <i class="bx bx-xs bx-plus me-1"></i>
-            Tambah
-          </button>
+          <div>
+            <button class="btn btn-primary me-2" (click)="sinkron()">
+              <i class='bx bx-refresh' *ngIf="!isLoading"></i>
+              <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+              Sinkron
+            </button>
+            <button class="btn btn-primary" (click)="create()">
+              <i class="bx bx-xs bx-plus" *ngIf="!isLoading"></i>
+              <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+              Tambah
+            </button>
+          </div>
         </div>
       </div>
       <div class="card-body">
@@ -71,20 +79,20 @@
                   <tr *ngFor="let item of listData" (dblclick)="view(item)">
                     <td class="to-top">
                       <div class="d-flex justify-content-beetwen">
-                        <img [src]="item.images[0].src" width="100" style="object-fit: contain;" alt="{{item.images[0].name}}"> &nbsp;
+                        <img [src]="item.photo_product[0].foto" width="100" style="object-fit: contain;" alt="{{item.nama}}"> &nbsp;
                         <div class="d-column ms-1">
-                          <p style="margin-bottom: 5px;">{{ item.name ? item.name : '' }}</p>
+                          <p style="margin-bottom: 5px;">{{ item.nama ? item.nama : '' }}</p>
                           <p style="margin-bottom: 5px;">{{ item.sku }}</p>
                           <span class="badge bg-label-info me-1" *ngFor="let kategori of item.categories">{{ kategori.name }}</span>
                         </div>
                       </div>
                     </td>
                     <td class="text-center">
-                      <span>Rp {{ item.regular_price ?? 0 | number }}</span>
+                      <span>Rp {{ item.harga ?? 0 | number }}</span>
                     </td>
                     <td class="text-left">
                       <div>
-                        <span *ngIf="!changeStokSingle">{{ item.stock_quantity ?? 0 }}</span> &nbsp;
+                        <span *ngIf="!changeStokSingle">{{ item.stok ?? 0 }}</span> &nbsp;
                         <a href="javascript:void(0);" *ngIf="!changeStokSingle" (click)="changeStokSingle = true">
                           <i class="bx bx-edit-alt"></i>
                         </a>

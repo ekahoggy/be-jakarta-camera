@@ -60,6 +60,15 @@ export class ProductCategoryComponent implements OnInit {
     };
   }
 
+  sinkron(){
+    this.isLoading = true
+    this.globalService.DataGet('/woocommerce/sinkron-kategori').subscribe((res: any) => {
+      this.isLoading = false;
+      this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disinkron')
+      this.reloadDataTable()
+    })
+  }
+
   reloadDataTable(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.draw();

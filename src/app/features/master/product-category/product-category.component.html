@@ -26,10 +26,18 @@
           <div class="col-12 text-end mb-5">
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="mb-0">Kategori Produk</h4>
-              <button class="btn btn-primary" (click)="create()">
-                <i class="bx bx-xs bx-plus me-1"></i>
-                Tambah
-              </button>
+              <div>
+                <button class="btn btn-primary me-2" (click)="sinkron()">
+                  <i class='bx bx-refresh' *ngIf="!isLoading"></i>
+                  <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+                  Sinkron
+                </button>
+                <button class="btn btn-primary" (click)="create()">
+                  <i class="bx bx-xs bx-plus" *ngIf="!isLoading"></i>
+                  <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+                  Tambah
+                </button>
+              </div>
             </div>
           </div>
           <div class="col-12">
