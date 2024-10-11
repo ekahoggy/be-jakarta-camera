@@ -1,139 +1,161 @@
 <div class="content-wrapper">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb breadcrumb-style1">
-        <li class="breadcrumb-item">
-          <a href="javascript:void(0);">Master</a>
-        </li>
-        <li class="breadcrumb-item active">Kategori Produk</li>
-      </ol>
-    </nav>
-    <div class="card" *ngIf="!showForm">
-      <div class="card-header">
-        <div class="row form-group my-2">
-          <div class="col-2">
-            <input type="text" name="param_kategori" [(ngModel)]="modelParam.kategori"
-              class="form-control form-control-sm" placeholder="Cari kategori ... " (input)="reloadDataTable()">
-          </div>
-          <div class="col-2">
-            <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
-              <i class="fas fa-undo"></i>Reset</button>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12 text-end mb-5">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="mb-0">Kategori Produk</h4>
-              <div>
-                <button class="btn btn-primary me-2" (click)="sinkron()">
-                  <i class='bx bx-refresh' *ngIf="!isLoading"></i>
-                  <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
-                  Sinkron
-                </button>
-                <button class="btn btn-primary" (click)="create()">
-                  <i class="bx bx-xs bx-plus" *ngIf="!isLoading"></i>
-                  <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
-                  Tambah
-                </button>
-              </div>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-style1">
+                <li class="breadcrumb-item">
+                    <a href="javascript:void(0);">Master</a>
+                </li>
+                <li class="breadcrumb-item active">Kategori Produk</li>
+            </ol>
+        </nav>
+        <div class="card" *ngIf="!showForm">
+            <div class="card-header">
+                <div class="row form-group my-2">
+                    <div class="col-2">
+                        <input type="text" name="param_kategori" [(ngModel)]="modelParam.kategori"
+                            class="form-control form-control-sm" placeholder="Cari kategori ... "
+                            (input)="reloadDataTable()">
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-sm btn-outline-primary btn-rounded" (click)="reset()">
+                            <i class="fas fa-undo"></i>Reset</button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class=" text-nowrap">
-              <!---->
-              <table datatable [dtOptions]="dtOptions" class="table" data-page-length="10">
-                <thead>
-                  <tr>
-                    <th width="120">Ikon</th>
-                    <th>Kategori</th>
-                    <th width="80">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of listData" (dblclick)="view(item)">
-                    <td><img class="rounded" [src]="item.icon ?? '/assets/img/empty-img.png'" width="40" height="40"></td>
-                    <td> {{ item.kategori }} </td>
-                    <td>
-                      <div class="dropdown">
-                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                          <i class="bx bx-dots-vertical-rounded"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)">
-                            <i class="bx bx-edit-alt me-1"></i>
-                            Ubah
-                          </a>
-                          <a class="dropdown-item" href="javascript:void(0);">
-                            <i class="bx bx-trash me-1"></i>
-                            Hapus
-                          </a>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 text-end mb-5">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Kategori Produk</h4>
+                            <div>
+                                <button class="btn btn-primary me-2" (click)="sinkron()">
+                                    <i class='bx bx-refresh' *ngIf="!isLoading"></i>
+                                    <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+                                    Sinkron
+                                </button>
+                                <button class="btn btn-primary" (click)="create()">
+                                    <i class="bx bx-xs bx-plus" *ngIf="!isLoading"></i>
+                                    <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+                                    Tambah
+                                </button>
+                            </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </div>
+                    <div class="col-12">
+                        <div class=" text-nowrap">
+                            <!---->
+                            <table datatable [dtOptions]="dtOptions" class="table" data-page-length="10">
+                                <thead>
+                                    <tr>
+                                        <th width="120">Ikon</th>
+                                        <th>Kategori</th>
+                                        <th width="80">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of listData" (dblclick)="view(item)">
+                                        <td><img class="rounded" [src]="item.icon ?? '/assets/img/empty-img.png'"
+                                                width="40" height="40">
+                                        </td>
+                                        <td> {{ item.kategori }} </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                        (click)="edit(item)">
+                                                        <i class="bx bx-edit-alt me-1"></i>
+                                                        Ubah
+                                                    </a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">
+                                                        <i class="bx bx-trash me-1"></i>
+                                                        Hapus
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="card" *ngIf="showForm">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12 text-end mb-5">
-            <div class="d-flex justify-content-between align-items-center">
-              <h4 class="ms-3 mb-0">Form Kategori Produk</h4>
+        <div class="card" *ngIf="showForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 text-end mb-5">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="ms-3 mb-0">Form Kategori Produk</h4>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <form>
+                            <fieldset [disabled]="isView || isLoading">
+                                <div class="d-flex align-items-start align-items-sm-center gap-4 mb-3">
+                                    <img *ngIf="!base64Image" [src]="model.icon" alt="user-avatar"
+                                        class="d-block rounded" height="150" width="150" id="uploadedAvatar">
+                                    <img *ngIf="!!base64Image" [src]="base64Image" alt="user-avatar"
+                                        class="d-block rounded" height="150" width="150" id="uploadedAvatar">
+                                    <div class="button-wrapper">
+                                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                            <span class="d-none d-sm-block">Upload Icon</span>
+                                            <i class="bx bx-upload d-block d-sm-none"></i>
+                                            <input type="file" id="upload" class="account-file-input" hidden=""
+                                                accept="image/png, image/jpeg" (change)="onFileSelected($event)">
+                                        </label>
+
+                                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="kategori">Kategori</label>
+                                    <input type="text" class="form-control" id="kategori" [(ngModel)]="model.kategori"
+                                        name="kategori" placeholder="Kategori ...">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="kategori">Induk Kategori</label>
+                                    <ng-select [items]="listInduk" bindLabel="kategori" name="induk_id" bindValue="woo_kategori_id"
+                                        placeholder="Pilih Induk Kategori" [(ngModel)]="model.induk_id">
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <img height="15" width="15" [src]="item.icon ?? '/assets/img/empty-img.png'" />
+                                            <b>{{item.kategori}}</b>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <img height="15" width="15" [src]="item.icon ?? '/assets/img/empty-img.png'" />
+                                            <b>{{item.kategori}}</b>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="keterangan">Deskripsi</label>
+                                    <textarea id="keterangan" class="form-control" rows="3"
+                                        [(ngModel)]="model.keterangan" name="keterangan"
+                                        placeholder="Deskripsi..."></textarea>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-8">
-            <form>
-              <fieldset [disabled]="isView || isLoading">
-                <div class="d-flex align-items-start align-items-sm-center gap-4 mb-3">
-                  <img *ngIf="!base64Image" [src]="model.icon" alt="user-avatar" class="d-block rounded" height="150"
-                    width="150" id="uploadedAvatar">
-                  <img *ngIf="!!base64Image" [src]="base64Image" alt="user-avatar" class="d-block rounded" height="150"
-                    width="150" id="uploadedAvatar">
-                  <div class="button-wrapper">
-                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                      <span class="d-none d-sm-block">Upload Icon</span>
-                      <i class="bx bx-upload d-block d-sm-none"></i>
-                      <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg"
-                        (change)="onFileSelected($event)">
-                    </label>
-
-                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="kategori">Kategori</label>
-                  <input type="text" class="form-control" id="kategori" [(ngModel)]="model.kategori" name="kategori"
-                    placeholder="Kategori ...">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="keterangan">Deskripsi</label>
-                  <textarea id="keterangan" class="form-control" rows="3" [(ngModel)]="model.keterangan"
-                    name="keterangan" placeholder="Deskripsi..."></textarea>
-                </div>
-              </fieldset>
-            </form>
-          </div>
+            <div class="card-footer text-end">
+                <button class="btn btn-light me-1" (click)="index()">
+                    <i class="bx bx-chevron-left me-1" *ngIf="!isLoading"></i>
+                    <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+                    Kembali
+                </button>
+                <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
+                    <i class="bx bx-save me-1" *ngIf="!isLoading"></i>
+                    <i class="spinner-border spinner-border-sm text-white" *ngIf="isLoading"></i>
+                    Simpan
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-light me-1" (click)="index()">
-          <i class="bx bx-chevron-left me-1"></i>
-          Kembali
-        </button>
-        <button class="btn btn-primary" (click)="save()" *ngIf="!isView">
-          <i class="bx bx-save me-1"></i>
-          Simpan
-        </button>
-      </div>
     </div>
-  </div>
 
-  <div class="content-backdrop fade"></div>
+    <div class="content-backdrop fade"></div>
 </div>

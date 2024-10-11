@@ -21,6 +21,7 @@ export class ProductCategoryComponent implements OnInit {
   base64Image: string | null = null;
   listCategory: any = [];
   isLoading: boolean = false;
+  listInduk: any = [];
 
   constructor(
     private globalService: GlobalService,
@@ -60,6 +61,12 @@ export class ProductCategoryComponent implements OnInit {
     };
   }
 
+  getInduk(){
+    this.globalService.DataGet('/kategori').subscribe((res: any) => {
+      this.listInduk = res.data.list
+    })
+  }
+
   sinkron(){
     this.isLoading = true
     this.globalService.DataGet('/woocommerce/sinkron-kategori').subscribe((res: any) => {
@@ -86,10 +93,12 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   create() {
+    this.empty()
     this.showForm = !this.showForm;
     this.isEdit = false;
     this.isView = false;
     this.getListCategory();
+    this.getInduk()
   }
 
   edit(val) {
@@ -109,6 +118,7 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   save() {
+    this.isLoading = true;
     this.model.icon = this.setImageBase64(this.model.icon);
     if (this.model.icon === "assets/img/elements/18.jpg") {
       this.model.icon = {};
@@ -117,10 +127,12 @@ export class ProductCategoryComponent implements OnInit {
     this.globalService.DataPost('/kategori/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
         this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disimpan')
+        this.isLoading = false;
         this.index();
       }
     },
-      error => {
+    error => {
+        this.isLoading = false;
         this.empty();
         this.globalService.alertError('Gagal', error.error.message);
       })
