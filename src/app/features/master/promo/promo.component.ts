@@ -109,7 +109,7 @@ export class PromoComponent implements OnInit {
     this.model.jenis = 'kategori'
     this.model.kategori_id = [];
     this.model.brand_id = [];
-    this.getProduk();
+    // this.getProduk();
     this.getListCategoryProduk();
     this.getListBrandProduk();
     this.getListCategoryEdukasi();
@@ -123,7 +123,7 @@ export class PromoComponent implements OnInit {
     this.getListCategoryProduk();
     this.getListBrandProduk();
     this.getListCategoryEdukasi();
-    this.getProduk();
+    // this.getProduk();
   }
 
   view(val) {
@@ -134,7 +134,7 @@ export class PromoComponent implements OnInit {
     this.getListCategoryProduk();
     this.getListBrandProduk();
     this.getListCategoryEdukasi();
-    this.getProduk();
+    // this.getProduk();
   }
 
   getDataById(id: string = null) {

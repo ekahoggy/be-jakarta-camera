@@ -127,6 +127,7 @@ export class ProductCategoryComponent implements OnInit {
     this.globalService.DataPost('/kategori/save', final, true).subscribe((res: any) => {
       if (res.status_code == 200) {
         this.globalService.alertSuccess('Berhasil', 'Kategori berhasil disimpan')
+
         this.isLoading = false;
         this.index();
       }
@@ -141,8 +142,8 @@ export class ProductCategoryComponent implements OnInit {
   getDataById(id: string = null) {
     this.isLoading = true;
     this.globalService.DataGet(`/kategori/${id}`, {}, false).subscribe((res: any) => {
-      this.model = res.data
-      this.model.icon = this.globalService.getImage('kategori', this.model.icon)
+      this.model = res.data;
+      this.model.icon = res.data.icon == null ? "assets/img/elements/18.jpg" : res.data.icon;
       this.isLoading = false;
     })
   }
